@@ -192,28 +192,50 @@ public class Interpreter
 			return true;
 		}
 	}
+	/**
+	 * INC adds one to the given variable
+	 */
 	protected class INC implements Command
 	{
 		protected String var;
+		/**
+		 * @param var the variable to add one to
+		 */
 		INC(String var)
 		{
 			this.var = var;
 		}
+		/**
+		 * adds one to the given Variable
+		 * {@inheritDoc}
+		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
 			variables.get(var).setValue((variables.get(var).getValue() + 1));
 			return true;
 		}
 	}
+	/**
+	 *MUL takes three numbers, multiplies the first two and gives that variable to the third
+	 */
 	protected class MUL implements Command
 	{
 		protected String first, second, third;
+		/**
+		 * @param first
+		 * @param second
+		 * @param third
+		 */
 		MUL(String first, String second, String third)
 		{
 			this.first = first;
 			this.second = second;
 			this.third = third;
 		}
+		/**
+		 * multiplies the first and second numbers and gives that value to the third
+		 * {@inheritDoc}
+		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
 			double f = variables.get(first).getValue();
@@ -223,23 +245,35 @@ public class Interpreter
 			return true;
 		}
 	}
+	/**
+	 * PRINT takes a variable or string and outputs its value
+	 */
 	protected class PRINT implements Command
 	{
 		protected String val;
 		protected boolean isVar = false;
 		protected boolean isString = false;
+		/**
+		 * takes the value to be output and its type
+		 * @param val the Variable or string to output
+		 * @param type 'string' if the value is a string or 'variable' if it is a variable
+		 */
 		PRINT(String val, String type)
 		{
-			if (type == "Variable")
+			if (type == "variable")
 			{
 				isVar = true;
 			}
-			else if (type == "String")
+			else if (type == "string")
 			{
 				isString = true;
 			}
 			this.val = val;
 		}
+		/**
+		 * checks what type the value it then prints it
+		 * {@inheritDoc}
+		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
 			if (isVar)
@@ -257,15 +291,27 @@ public class Interpreter
 			return true;
 		}
 	}
+	/**
+	 * SUB takes three values subtracts the second from the first then assigns that value to the third
+	 */
 	protected class SUB implements Command
 	{
 		protected String first, second, third;
+		/** 
+		 * @param first
+		 * @param second
+		 * @param third
+		 */
 		SUB(String first, String second, String third)
 		{
 			this.first = first;
 			this.second = second;
 			this.third = third;
 		}
+		/**
+		 * divides the first number by the second and assigns that value to the third
+		 * {@inheritDoc}
+		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
 			double f = variables.get(first).getValue();
@@ -275,13 +321,22 @@ public class Interpreter
 			return true;
 		}
 	}
+	/**
+	 * VAR creates a Variable and adds it to the HashMap
+	 */
 	protected class VAR implements Command
 	{
 		protected String name;
-		VAR(String name, double val)
+		/**
+		 * @param name
+		 */
+		VAR(String name)
 		{
 			this.name = name;
 		}
+		/**
+		 * creates a new Variable with the given name and adds it to the HashMap 
+		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
 			variables.put(name, new Variable(name));
@@ -294,20 +349,31 @@ public class Interpreter
 	protected ArrayList<Command> commands;
 	protected JEditorPane io;
 	protected boolean started = false;
+	/**
+	 * takes just one parameter, a reference to the pane that is to be used for i/o
+	 * @param io the pane to be used for i/o
+	 */
 	Interpreter(JEditorPane io)
 	{
 		this.io = io;
 	}
+	/**
+	 * takes the content of the code editor pane, formats it, and returns the formatted text to the pane
+	 * @param content the current content of the pane used for code editing
+	 * @return content the highlighted code
+	 */
 	public String highlight(String content)
 	{
 		//do stuff to content
 		return content;
 	}
+	/**
+	 * removes the highlighting from content, checks the code for errors line by line, 
+	 * turning each line into a Command object, and iterates through the commands
+	 * @param content the code to be run
+	 */
 	public void run(String content)
 	{
-		//remove highlighting from content
-		//check code to make sure it's ok and turn each line into a Command
-		//run through the commands
-		//replace highlighting
+		
 	}
 }
