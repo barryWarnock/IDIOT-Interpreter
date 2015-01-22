@@ -126,4 +126,34 @@ public class Interpreter
 			return true;
 		}
 	}
+	protected class MUL implements Command
+	{
+		protected String first, second, third;
+		MUL(String first, String second, String third)
+		{
+			this.first = first;
+			this.second = second;
+			this.third = third;
+		}
+		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		{
+			double f = variables.get(first).getValue();
+			double s = variables.get(second).getValue();
+			double t = f * s;
+			variables.get(third).setValue(t);
+			return true;
+		}
+	}
+	protected class PRINT implements Command
+	{
+		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		{
+			
+			return true;
+		}
+	}
+	public static void main (String[] args)
+	{
+		
+	}
 }
