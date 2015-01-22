@@ -1,6 +1,5 @@
 package main;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -15,15 +14,12 @@ import javax.swing.JTextArea;
 /**
  * @author bolster
  * @version 0.0.1
- * TODO implement tabs 
- * TODO implement a compile button
- * TODO implement an output terminal
- * TODO (feature request) Give menu items some icons for cut and paste
+ * This creates a GUI complete with a menubar and a toolbar
+ * <p>
+ * There is no hashCode or equals methods for this class as there are no variables.
  */
-
 public class GUI
 {
-	
 	/**
 	 * This method creates a populated frame 
 	 * @param name is the name of the window that you wish to create
@@ -50,6 +46,9 @@ public class GUI
 	
 
 	//TODO this should take a text file and place it in the text field
+	/**
+	 * @return JPanel with a JEditorPane in a JScrollPane
+	 */
 	public JComponent makeNewTab() {
 		JPanel panel = new JPanel(false);
 		        
@@ -62,8 +61,13 @@ public class GUI
 		panel.add(scroll);
 		return panel;
 	}
-		
-    public Container createPanel(int dividerLocation) {
+	
+	/**
+	 * 
+	 * @param dividerLocation
+	 * @return JPanel filled with toys for all the good girls and boys 
+	 */
+    public JPanel createPanel(int dividerLocation) {
     	
     	Dimension minimumSize=new Dimension(100,100);
     	
@@ -109,6 +113,12 @@ public class GUI
         finalPanel.add(contentPane, BorderLayout.CENTER);
         return finalPanel;
     }
+
+	@Override
+	public String toString() {
+		return "This is a JFrame and a bunch of components";
+	}
+    
 
     
 }

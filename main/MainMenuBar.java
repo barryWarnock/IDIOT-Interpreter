@@ -21,7 +21,8 @@ import javax.swing.KeyStroke;
  * The menuItems are made in the order of: Name, Accelerator (if applicable), Accessible Description, action command,
  * action listener. The action listener method implemented looks for the unique action command of each button before
  * performing the appropriate task. 
- * 
+ * <p>
+ * There is no hashCode or equals methods for this class as there are no variables.
  * 
  */
 @SuppressWarnings({"serial"})
@@ -83,18 +84,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener
         menuItem.getAccessibleContext().setAccessibleDescription("Closes the program");
         menuItem.setActionCommand("Exit");
         menuItem.addActionListener(this);
-        file.add(menuItem);
-        
-        //TODO: add icons 
-        /*ImageIcon icon = createImageIcon("images/middle.gif");
-        menuItem = new JMenuItem("Both text and icon", icon);
-        menuItem.setMnemonic(KeyEvent.VK_B);
-        menu.add(menuItem);
-        menuItem = new JMenuItem(icon);
-        menuItem.setMnemonic(KeyEvent.VK_D);
-        file.add(menuItem);
- 		*/
-         
+        file.add(menuItem);       
 
         //The edit bar 
         edit = new JMenu("Edit");
@@ -193,9 +183,21 @@ public class MainMenuBar extends JMenuBar implements ActionListener
 			
 		} else if ("Exit".equals(action)) 
 		{ 
-			//TODO this should make an attempt to save before just closing down
-			System.exit(0);
 			
+			Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
+	
+			int result = JOptionPane.showOptionDialog(null, "Do you want to save before you close?","Close Dialog",
+			    JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
+			//find what the user clicked 
+			if (result == JOptionPane.YES_OPTION)
+			{
+				//TODO make this save the file then exit
+				//System.exit(0);
+			
+			} else if(result == JOptionPane.NO_OPTION)
+			{
+				System.exit(0);	
+			} 
 		} else if ("Select All".equals(action)) 
 		{ 
 			System.out.println("Select All");
@@ -225,4 +227,12 @@ public class MainMenuBar extends JMenuBar implements ActionListener
 					"About the IDIOT editor",JOptionPane.PLAIN_MESSAGE,icon);	
 		} 
 	}
+
+	//TODO make this into a list of the menu items
+	@Override
+	public String toString() {
+		return "This is a menubar for the application";
+	}
+	
+	
 }

@@ -17,6 +17,8 @@ import javax.swing.JToolBar;
  * The toolbar is floatable by default. This is a simple toolbar, it has one method for making buttons with 
  * names, action listeners, tooltip text and, action command names. The action listener method implemented 
  * looks for the unique action command of each button before performing the appropriate task. 
+ * <p>
+ * There is no hashCode or equals methods for this class as there are no variables.
  * 
  */
 
@@ -34,13 +36,13 @@ public class Toolbar extends JToolBar implements ActionListener
 		setFloatable(floatable);
 		
 		//add buttons 
+		add(makeButton("saveIcon", "Save"));
+		add(makeButton("openIcon", "Open"));
+		add(makeButton("newIcon", "New"));
         add(makeButton("copyIcon", "Copy"));
         add(makeButton("cutIcon", "Cut"));
-        add(makeButton("newIcon", "New"));
-        add(makeButton("openIcon", "Open"));
         add(makeButton("pasteIcon", "Paste"));
         add(makeButton("printIcon", "Print"));
-        add(makeButton("saveIcon", "Save"));
         add(makeButton("compileIcon", "Compile"));
 		
 	}
@@ -123,4 +125,12 @@ public class Toolbar extends JToolBar implements ActionListener
 			System.out.println("Compile");   
 		}
 	}
+	//TODO make this into a list of toolbar items
+	@Override
+	public String toString()
+	{
+		return "This is a toolbar";
+	}
+	
+	
 }
