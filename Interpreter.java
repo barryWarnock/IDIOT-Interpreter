@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JEditorPane;
@@ -116,7 +117,7 @@ public class Interpreter
 				//print "invalid variable passed to ADD command"
 				return false;
 			}
-			if (!variables.get("first").isInitialized() || !variables.get("second").isInitialized()
+			if (!variables.get("first").isInitialized() || !variables.get("second").isInitialized())
 			{
 				//print "uninitialized first or second variable passed to ADD command"
 				return false;
@@ -364,6 +365,7 @@ public class Interpreter
 	protected ArrayList<Command> commands;
 	protected JEditorPane io;
 	protected boolean started = false;
+	
 	/**
 	 * takes just one parameter, a reference to the pane that is to be used for i/o
 	 * @param io the pane to be used for i/o

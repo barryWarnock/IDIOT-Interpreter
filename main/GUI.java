@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Scanner;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +27,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  * @author bolster
@@ -59,8 +63,8 @@ public class GUI implements ActionListener
         JComponent blankPanel=null;
 		try {
 			//The URL is fake but it can't be null otherwise the JEditPane is uneditable
-			blankPanel = makeNewTab(new URL("http://example.com/hello%20world...blablabla"));
-		} catch (MalformedURLException e) {}
+			blankPanel = makeNewTab(new File(""), true);
+		} catch (BadLocationException | FileNotFoundException ex) {}
 		tabbedPane.addTab("New File", null, blankPanel);
 
         
@@ -116,26 +120,37 @@ public class GUI implements ActionListener
 	 * TODO this should take a text file and place it in the text field
 	 * TODO this should have a close button on the edge of the tab
 	 * @return JPanel with a JEditorPane in a JScrollPane
+	 * @throws BadLocationException 
 	 */
-	public JComponent makeNewTab(URL url) {
+	public JComponent makeNewTab(File file, boolean newTab) throws BadLocationException, FileNotFoundException {
+		
 		JPanel panel = new JPanel(false);
-		        
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
-		try {
-			IDIOT_file_content.setPage(url);
-		} catch (IOException e) {
-			//TODO file not found :{
-			//should give a message dialog and tell the user it wasn't found
+			
+		if(!newTab){
+			// scans file into the JEditPane
+			Scanner scan = new Scanner(file);
+			while (scan.hasNextLine()) {
+				String line = scan.nextLine();
+				Document doc = IDIOT_file_content.getDocument();
+				doc.insertString(doc.getLength(), line, null);	
+			}
+			scan.close();
 		}
 		IDIOT_file_content.setEditable(true);
+		
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
 		        
 		panel.setLayout(new BorderLayout());
 		panel.add(scroll);
-		return panel;
-	}
+		return panel;	
+		}
 	
+	/**
+	 * 
+	 * @return JToolBar full of different widgets 
+	 */
 	private JToolBar makeToolbar()
 	{
 		JToolBar toolbar=new JToolBar(JToolBar.HORIZONTAL);
@@ -335,8 +350,8 @@ public class GUI implements ActionListener
 			JComponent blankPanel=null;
 			try {
 				//The URL is fake but it can't be null otherwise the JEditPane is uneditable
-				blankPanel = makeNewTab(new URL("http://example.com/hello%20world...blablabla"));
-			} catch (MalformedURLException ex) {}
+				blankPanel = makeNewTab(new File(""), true);
+			} catch (BadLocationException | FileNotFoundException ex) {}
 			tabbedPane.addTab("New File", null, blankPanel);
 			
 		} else if ("Open".equals(action)) 
