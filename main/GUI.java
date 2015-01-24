@@ -101,26 +101,25 @@ public class GUI implements ActionListener
 	 */
 	public void openNewTab(File file) throws BadLocationException, FileNotFoundException {
 		
-		JPanel panel = new JPanel(false);
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
+		IDIOT_file_content.setEditable(true);
 			
 		// scans file into the JEditPane
 		Scanner scan = new Scanner(file);
 		while (scan.hasNextLine()) {
 			String line = scan.nextLine();
 			Document doc = IDIOT_file_content.getDocument();
+			//TODO This may require \r\n for windows, this should be tested
 			doc.insertString(doc.getLength(), line+"\n", null);
 		}
 		scan.close();
-		IDIOT_file_content.setEditable(true);
-		
+
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		        
+		JPanel panel = new JPanel();     
 		panel.setLayout(new BorderLayout());
 		panel.add(scroll);
-		tabbedPane.add(file.getName(),panel);
-		//return panel;	
+		tabbedPane.add(file.getName(),panel);	
 		}
 	
 	/**
@@ -129,18 +128,17 @@ public class GUI implements ActionListener
 	public void makeNewTab() 
 	{
 		
-		JPanel panel = new JPanel(false);
+		JPanel panel = new JPanel();
+		
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
-			
 		IDIOT_file_content.setEditable(true);
 		
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		        
+		
 		panel.setLayout(new BorderLayout());
 		panel.add(scroll);
 		tabbedPane.add("new file",panel);
-		//return panel;	
 	}
 	
 	/**
