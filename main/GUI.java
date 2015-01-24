@@ -1,4 +1,5 @@
 package main;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -7,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,12 +25,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+
 /**
  * @author bolster
  * @version 0.0.1
  * This creates a GUI complete with a menubar and a toolbar
  * <p>
  * There is no hashCode or equals methods for this class as there are no static variables or objects.
+ * As well there is no constructor because this class does not need to initialize anything.
  */
 public class GUI implements ActionListener
 {
@@ -76,7 +78,7 @@ public class GUI implements ActionListener
 	 * @param dividerLocation
 	 * @return JPanel filled with toys for all the good girls and boys 
 	 */
-    public JPanel createPanel(int dividerLocation) {
+    private JPanel createPanel(int dividerLocation) {
     	
     	Dimension minimumSize=new Dimension(100,100);
     	
@@ -152,6 +154,12 @@ public class GUI implements ActionListener
         return toolbar;
 	}
 	
+	/**
+	 * 
+	 * @param imageName name of the button's icon file 
+	 * @param toolTipText This is not only the tooltip text but also the actionCommand of the button
+	 * @return JButton A nice button 
+	 */
 	private JButton makeButton(String imageName, String toolTipText)
     {
     	//Search for the icon
@@ -173,7 +181,11 @@ public class GUI implements ActionListener
         }
         return button;
     }
-		private JMenuBar makeMenuBar() {
+	
+	/**
+	 * makeMenuBar creates and returns a populated menubar.
+	 */
+	private JMenuBar makeMenuBar() {
 		
         JMenu file, edit, help;
         JMenuItem menuItem;
@@ -182,13 +194,14 @@ public class GUI implements ActionListener
  
         //Build the file menu.
         file = new JMenu("File");
-        file.getAccessibleContext().setAccessibleDescription("Perform operations to do with files");
+        file.getAccessibleContext().setAccessibleDescription("Perform operations on files");
         menubar.add(file);
         
         //menu items for file (6)
         menuItem = new JMenuItem("New");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Creates a new file");
+        menuItem.setToolTipText("Creates a new file");
         menuItem.setActionCommand("New");
         menuItem.addActionListener(this);
         file.add(menuItem);
@@ -196,20 +209,23 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Open");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a file from the disk");
+        menuItem.setToolTipText("Opens a new file from the disk");
         menuItem.setActionCommand("Open");
         menuItem.addActionListener(this);
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription("Saves your current file");
+        menuItem.getAccessibleContext().setAccessibleDescription("Saves current file");
+        menuItem.setToolTipText("Saves current file");
         menuItem.setActionCommand("Save");
         menuItem.addActionListener(this);
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save As");
         //menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription("Saves your current file to any directory");
+        menuItem.getAccessibleContext().setAccessibleDescription("Saves current file to any directory");
+        menuItem.setToolTipText("Saves current file to any directory");
         menuItem.setActionCommand("Save As");
         menuItem.addActionListener(this);
         file.add(menuItem);
@@ -219,12 +235,14 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Print");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Print the current file");
+        menuItem.setToolTipText("Print the current file");
         menuItem.setActionCommand("Print");
         menuItem.addActionListener(this);
         file.add(menuItem);
         
         menuItem = new JMenuItem("Exit");
         menuItem.getAccessibleContext().setAccessibleDescription("Closes the program");
+        menuItem.setToolTipText("Close the program");
         menuItem.setActionCommand("Exit");
         menuItem.addActionListener(this);
         file.add(menuItem);       
@@ -238,6 +256,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Cut");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Removes selected text and copies it to the clipboard");
+        menuItem.setToolTipText("Removes selected text and copies it to the clipboard");
         menuItem.setActionCommand("Cut");
         menuItem.addActionListener(this);
         edit.add(menuItem);
@@ -245,6 +264,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Copy");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Copies selsected text to the clipboard");
+        menuItem.setToolTipText("Copies selected text to the clipboard");
         menuItem.setActionCommand("Copy");
         menuItem.addActionListener(this);
         edit.add(menuItem);
@@ -253,6 +273,7 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
         		"Puts the content of the clipboard to the right of the cursor");
+        menuItem.setToolTipText("Puts the content of the clipboard to the right of the cursor");
         menuItem.setActionCommand("Paste");
         menuItem.addActionListener(this);
         edit.add(menuItem);
@@ -260,6 +281,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Select All");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Highlights all text from the current file");
+        menuItem.setToolTipText("Highlights all text in the current file");
         menuItem.setActionCommand("Select All");
         menuItem.addActionListener(this);
         edit.add(menuItem);
@@ -273,13 +295,15 @@ public class GUI implements ActionListener
         //menu items for help(2)
         menuItem = new JMenuItem("View Help");
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a help window");
+        menuItem.setToolTipText("Opens a help window");
         menuItem.setActionCommand("View Help");
         menuItem.addActionListener(this);
         help.add(menuItem);
         
-        menuItem = new JMenuItem("About My IDE");
+        menuItem = new JMenuItem("About IDIOT IDE");
         menuItem.getAccessibleContext().setAccessibleDescription("Provides information about the IDE");
-        menuItem.setActionCommand("About My IDE");
+        menuItem.setToolTipText("Provides information about the IDE");
+        menuItem.setActionCommand("About IDIOT IDE");
         menuItem.addActionListener(this);
         help.add(menuItem);
         
@@ -293,6 +317,7 @@ public class GUI implements ActionListener
 	 
 	    // See what menuItem was clicked and do the appropriate thing 
 		//TODO find the appropriate thing to do, currently just prints a string
+		//TODO make this a switch to make it simpler 
 		if ("Copy".equals(action)) { 
 	      	System.out.println("Copy");
 	      	
@@ -355,7 +380,7 @@ public class GUI implements ActionListener
 		{ 
 			System.out.println("View Help");
 			
-		} else if ("About My IDE".equals(action)) 
+		} else if ("About IDIOT IDE".equals(action)) 
 		{ 
 			//try to find a nice icon for the dialog box but don't display it if it can't be found
 			ImageIcon icon=null;
