@@ -116,10 +116,7 @@ public class GUI implements ActionListener
 		scan.close();
 
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		JPanel panel = new JPanel();     
-		panel.setLayout(new BorderLayout());
-		panel.add(scroll);
-		tabbedPane.add(file.getName(),panel);	
+		tabbedPane.add(file.getName(),scroll);	
 		}
 	
 	/**
@@ -128,17 +125,12 @@ public class GUI implements ActionListener
 	public void makeNewTab() 
 	{
 		
-		JPanel panel = new JPanel();
-		
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
 		IDIOT_file_content.setEditable(true);
 		
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		
-		panel.setLayout(new BorderLayout());
-		panel.add(scroll);
-		tabbedPane.add("new file",panel);
+		tabbedPane.add("new file",scroll);
 	}
 	
 	/**
@@ -418,7 +410,22 @@ public class GUI implements ActionListener
 				break;
 				
 			} case "Compile":{
-				System.out.println("Compile");  
+				
+				//returns the tab component with focus
+				JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+				if(scroll==null){
+					//TODO make a popup error message
+					System.out.println("null :(");
+				}else{
+					JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
+					if(editor==null){
+						//TODO make a popup error message
+						System.out.println("null :(");
+					}else{
+						//sends a string to the interpreter
+						//Interpreter.interpret(editor.getText());
+					}
+				}
 				break;
 			}
 		}
