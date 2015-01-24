@@ -106,6 +106,21 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (!variables.get("first") || !variables.get("second") || !variables.get("third"))
+			{
+				//print "invalid variable passed to ADD command"
+				return false;
+			}
+			if (!variables.get("first").isInitialized() || !variables.get("second").isInitialized()
+			{
+				//print "uninitialized first or second variable passed to ADD command"
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f + s;
