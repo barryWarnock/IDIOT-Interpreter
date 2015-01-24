@@ -44,9 +44,7 @@ public class GUI implements ActionListener
         frame.setLocationRelativeTo(null);
 
         //Open a tab with a blank window
-        JComponent blankPanel = makeNewTab();
-		tabbedPane.addTab("New File", null, blankPanel);
-
+        makeNewTab();
         
        //Create and set up the content pane (Menu and tabs and output and textfield)
         GUI content = new GUI();
@@ -99,38 +97,36 @@ public class GUI implements ActionListener
 	/**
 	 * TODO this should have a close button on the edge of the tab
 	 * @param file a file that you would like to open in a JEditorPane
-	 * @return JPanel with a JEditorPane in a JScrollPane
 	 * @throws BadLocationException, FileNotFoundException
 	 */
-	public JComponent openNewTab(File file) throws BadLocationException, FileNotFoundException {
+	public void openNewTab(File file) throws BadLocationException, FileNotFoundException {
 		
 		JPanel panel = new JPanel(false);
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
 			
-			// scans file into the JEditPane
-			Scanner scan = new Scanner(file);
-			while (scan.hasNextLine()) {
-				String line = scan.nextLine();
-				Document doc = IDIOT_file_content.getDocument();
-				doc.insertString(doc.getLength(), line, null);	
-			
-			scan.close();
+		// scans file into the JEditPane
+		Scanner scan = new Scanner(file);
+		while (scan.hasNextLine()) {
+			String line = scan.nextLine();
+			Document doc = IDIOT_file_content.getDocument();
+			doc.insertString(doc.getLength(), line+"\n", null);
 		}
+		scan.close();
 		IDIOT_file_content.setEditable(true);
 		
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
 		        
 		panel.setLayout(new BorderLayout());
 		panel.add(scroll);
-		return panel;	
+		tabbedPane.add(file.getName(),panel);
+		//return panel;	
 		}
 	
 	/**
 	 * TODO this should have a close button on the edge of the tab
-	 * @return JPanel with a JEditorPane in a JScrollPane
 	 */
-	public JComponent makeNewTab() 
+	public void makeNewTab() 
 	{
 		
 		JPanel panel = new JPanel(false);
@@ -143,7 +139,8 @@ public class GUI implements ActionListener
 		        
 		panel.setLayout(new BorderLayout());
 		panel.add(scroll);
-		return panel;	
+		tabbedPane.add("new file",panel);
+		//return panel;	
 	}
 	
 	/**
@@ -347,12 +344,17 @@ public class GUI implements ActionListener
 			} case "New":{ 
 				
 				//Open a tab with a blank window
-				JComponent blankPanel= makeNewTab();
-				tabbedPane.addTab("New File", null, blankPanel);
+				makeNewTab();
 				break;
 			
 			} case "Open":{ 
-				System.out.println("Open");
+				
+				try {
+					openNewTab(FileOpen.fileManager());
+				} catch (FileNotFoundException | BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
+				}
+				
 				break;
 				
 			} case "Print":{ 
