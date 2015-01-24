@@ -117,8 +117,9 @@ public class GUI implements ActionListener
 	
 
 	/**
-	 * TODO this should take a text file and place it in the text field
 	 * TODO this should have a close button on the edge of the tab
+	 * @param file a file that you would like to open in a JEditorPane
+	 * @param newTab If making a new tab set this to true 
 	 * @return JPanel with a JEditorPane in a JScrollPane
 	 * @throws BadLocationException 
 	 */

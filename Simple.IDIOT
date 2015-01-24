@@ -1,0 +1,17 @@
+START
+CMT This is a simple IDIOT program
+PRINT Welcome to IDIOT
+VAR x
+VAR y 
+VAR z
+ASSIGN y 10
+CMT Get Value from user
+PRINT (Enter value for x)
+ENTER x
+ADD x y z 
+PRINT z
+SUB x y z 
+PRINT z
+MUL x y z 
+PRINT z
+END
