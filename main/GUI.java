@@ -430,9 +430,7 @@ public class GUI implements ActionListener
 					}else{
 						
 						//sends a string to the interpreter
-<<<<<<< HEAD
 						interpreter.run(editor.getText());
-=======
 						//opens a new thread so infinite loops don't freeze the gui
 						Thread thread = new Thread() {
 					        public void run() {
@@ -440,7 +438,6 @@ public class GUI implements ActionListener
 					        }
 					    };
 					    thread.start();
->>>>>>> origin/master
 					}
 				}
 				break;
