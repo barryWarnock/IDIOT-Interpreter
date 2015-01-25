@@ -6,7 +6,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextArea;
 /**
  * @author Barry Warnock
@@ -88,7 +88,7 @@ public class Interpreter
 		 * @param pane the pane that will be used for io
 		 * @return boolean if there is an error execute will write it to the pane and return false
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane );
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane );
 	}
 	/**
 	 * ADD takes three numbers, adds the first two and assigns that value to the third
@@ -111,7 +111,7 @@ public class Interpreter
 		 * adds the first and second variables and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
@@ -155,7 +155,7 @@ public class Interpreter
 		 * assigns the given value to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			variables.get(var).setValue(val);
 			return true;
@@ -182,7 +182,7 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
@@ -208,7 +208,7 @@ public class Interpreter
 		 * will somehow take input from the user and put it in the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			//variables.get(var).setValue(something);
 			return true;
@@ -231,7 +231,7 @@ public class Interpreter
 		 * adds one to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			variables.get(var).setValue((variables.get(var).getValue() + 1));
 			return true;
@@ -258,7 +258,7 @@ public class Interpreter
 		 * multiplies the first and second numbers and gives that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
@@ -296,15 +296,15 @@ public class Interpreter
 		 * checks what type the value it then prints it
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			if (isVar)
 			{
-				//print val
+				pane.append(variables.get(val).getValue() + "\n");
 			}
 			else if (isString)
 			{
-				//print val
+				pane.append(val + "\n");
 			}
 			else
 			{
@@ -334,7 +334,7 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
@@ -359,7 +359,7 @@ public class Interpreter
 		/**
 		 * creates a new Variable with the given name and adds it to the HashMap 
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			variables.put(name, new Variable(name));
 			return true;
@@ -402,6 +402,8 @@ public class Interpreter
 		String line = null;
 		try 
 		{
+			Command com = new PRINT("hey there", "string");
+			com.execute(variables, io);
 			while((line=reader.readLine()) != null)
 			{
 				line += "\n";
@@ -410,7 +412,7 @@ public class Interpreter
 		} 
 		catch (IOException e) 
 		{
-			//print to io
+			io.append("error sending code to interpreter");
 		}
 	}
 }
