@@ -52,7 +52,7 @@ public class GUI implements ActionListener
         GUI content = new GUI();
         frame.setJMenuBar(makeMenuBar());
         //I added to this line as well
-        frame.setContentPane(content.createPanel(height, interpreter));
+        frame.setContentPane(content.createPanel(height));
         frame.setVisible(true);
         
 	}
@@ -63,8 +63,7 @@ public class GUI implements ActionListener
 	 * @param dividerLocation
 	 * @return JPanel filled with toys for all the good girls and boys 
 	 */
-    //I have added a parameter to this, a reference to an interpreter to pass the output JTextArea to 
-	private JPanel createPanel(int dividerLocation, Interpreter interpreter) {
+	private JPanel createPanel(int dividerLocation) {
     	
     	Dimension minimumSize=new Dimension(100,100);
     	
@@ -428,19 +427,8 @@ public class GUI implements ActionListener
 						//TODO make a popup error message
 						System.out.println("null :(");
 					}else{
-						
 						//sends a string to the interpreter
-<<<<<<< HEAD
 						interpreter.run(editor.getText());
-=======
-						//opens a new thread so infinite loops don't freeze the gui
-						Thread thread = new Thread() {
-					        public void run() {
-								//Interpreter.interpret(editor.getText());
-					        }
-					    };
-					    thread.start();
->>>>>>> origin/master
 					}
 				}
 				break;

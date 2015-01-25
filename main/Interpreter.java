@@ -404,6 +404,7 @@ public class Interpreter
 		{
 			while((line=reader.readLine()) != null)
 			{
+				line += "\n";
 				io.append(line);
 			}
 		} 
