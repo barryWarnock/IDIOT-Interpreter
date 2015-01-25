@@ -77,6 +77,10 @@ public class Interpreter
 			} 
 			return false;
 		}
+		public String toString()
+		{
+			return value + "\n";
+		}
 	}
 	/**
 	 * the Command interface will be used by all of the commands so that a list of them can be built and iterated through
@@ -300,7 +304,7 @@ public class Interpreter
 		{
 			if (isVar)
 			{
-				pane.append(variables.get(val).getValue() + "\n");
+				pane.append(variables.get(val).toString());
 			}
 			else if (isString)
 			{
@@ -400,6 +404,7 @@ public class Interpreter
 		String line = null;
 		boolean started = false;
 		boolean ended = false;
+		boolean error = false;
 		int lineNumber = 1;
 		String errorAt;
 		try 
@@ -417,14 +422,30 @@ public class Interpreter
 				else if (!line.equals("START") && !started)
 				{
 					io.append( errorAt + "IDIOT program must begin with START \n");
+					error = true;
 				}
 				else if (line.equals("START") && started)
 				{
 					io.append(errorAt + "only one START per IDIOT program \n");
+					error = true;
 				}
 				else if (line.equals("END"))
 				{
 					ended = true;
+				}
+				else if (line.startsWith("ADD"))
+				{
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "ADD contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new ADD(splitLine[1], splitLine[2], splitLine[3]));
+					}
 				}
 				else if (line.startsWith("ASSIGN"))
 				{
@@ -433,6 +454,7 @@ public class Interpreter
 					if (splitLine.length > 3 && splitLine[3].trim().length() >= 1)
 					{
 						io.append(errorAt + "ASSIGN contains too many arguments \n");
+						error = true;
 					}
 					else
 					{
@@ -446,15 +468,62 @@ public class Interpreter
 				//print only prints variables right now
 				else if (line.startsWith("PRINT"))
 				{
-					String[] splitLine = line.split("[ ]", 3);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					char[] charArray = line.toCharArray();
+					String toPrint = "";
+					int endOfString = 8;
+					if (charArray[6] == '(')
 					{
-						io.append(errorAt + "PRINT contains too many arguments \n");
+						boolean closed = false;
+						for (int i = 7; i < charArray.length && !closed; i++)
+						{
+							if (charArray[i] != ')')
+							{
+								toPrint += charArray[i];
+							}
+							else 
+							{
+								closed = true;
+							}
+							endOfString++;
+						}
+						if(!closed)
+						{
+							io.append(errorAt + "no closing paren ')\'");
+							error = true;
+						}
+						else
+						{
+							//run through the rest of the charArray to ensure its all whitespace
+							boolean nonWhitespace = false;
+							for (int i = endOfString; i < charArray.length && !nonWhitespace; i++)
+							{
+								if (charArray[i] == ' ')
+								{
+									nonWhitespace = true;
+									io.append(errorAt + "PRINT has too many arguments");
+									error = true;
+								}
+							}
+							if (!nonWhitespace)
+							{
+								commands.add(new PRINT(toPrint, "string"));
+							}
+						}
 					}
+					//if variable
 					else
 					{
-						commands.add(new PRINT(splitLine[1], "variable"));
+						String[] splitLine = line.split("[ ]", 3);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+						{
+							io.append(errorAt + "PRINT contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new PRINT(splitLine[1], "variable"));
+						}
 					}
 				}
 				else if (line.startsWith("VAR"))
@@ -464,12 +533,13 @@ public class Interpreter
 					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
 					{
 						io.append(errorAt + "VAR contains too many arguments \n");
+						error = true;
 					}
 					else
 					{
 						commands.add(new VAR(splitLine[1]));
 					}
-				}
+					}
 				//a blank line
 				else if (line.trim().length() < 1)
 				{
@@ -477,24 +547,28 @@ public class Interpreter
 				else
 				{
 					io.append(errorAt + "Unrecognized keyword \n");
+					error = true;
 				}
 				lineNumber++;
 			}
 			if (!ended)
 			{
-				io.append("IDIOT program must end with END");
+				io.append("IDIOT program must end with END \n");
 			}
 			else
 			{
-				for (Command command : commands)
+				if(!error)
 				{
-					command.execute(variables, io);
+					for (Command command : commands)
+					{
+						command.execute(variables, io);
+					}
 				}
 			}
 		} 
 		catch (IOException e) 
 		{
-			io.append("error sending code to interpreter");
+			io.append("error sending code to interpreter \n");
 		}
 		try 
 		{
@@ -502,7 +576,7 @@ public class Interpreter
 		} 
 		catch (IOException e) 
 		{
-			io.append("Failed to close BufferedReader");
+			io.append("Failed to close BufferedReader \n");
 		}
 	}
 }
