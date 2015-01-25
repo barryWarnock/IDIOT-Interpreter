@@ -428,8 +428,19 @@ public class GUI implements ActionListener
 						//TODO make a popup error message
 						System.out.println("null :(");
 					}else{
+						
 						//sends a string to the interpreter
+<<<<<<< HEAD
 						interpreter.run(editor.getText());
+=======
+						//opens a new thread so infinite loops don't freeze the gui
+						Thread thread = new Thread() {
+					        public void run() {
+								//Interpreter.interpret(editor.getText());
+					        }
+					    };
+					    thread.start();
+>>>>>>> origin/master
 					}
 				}
 				break;
