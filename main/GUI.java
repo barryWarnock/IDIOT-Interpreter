@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -354,7 +355,23 @@ public class GUI implements ActionListener
 				break;
 				
 			} case "Print":{ 
-				System.out.println("Print");
+				JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+				if(scroll==null){
+					//TODO make a popup error message
+					System.out.println("null :(");
+				}else{
+					JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
+					if(editor==null){
+						//TODO make a popup error message
+						System.out.println("null :(");
+					}else{
+						try {
+							editor.print();
+						} catch (PrinterException e1) {
+							// TODO Auto-generated catch block
+						}
+					}
+				}
 				break;
 				
 			} case "Save":{ 
