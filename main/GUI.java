@@ -25,9 +25,8 @@ import javax.swing.text.Document;
  */
 public class GUI implements ActionListener
 {
-	//this allows actionListeners to call tabbedPane.makeNewTab();
+	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
 	private static JTabbedPane tabbedPane = new JTabbedPane();
-	//here I added the reference to the Interpreter
 	private Interpreter interpreter;
 	
 	/**
