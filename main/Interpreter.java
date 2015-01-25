@@ -366,9 +366,6 @@ public class Interpreter
 		}
 	}
 	
-	protected ArrayList<String> variableNames;
-	protected HashMap<String, Variable> variables;
-	protected ArrayList<Command> commands;
 	protected JTextArea io;
 	
 	/**
@@ -397,6 +394,8 @@ public class Interpreter
 	 */
 	public void run(String content)
 	{
+		HashMap<String, Variable> variables = new HashMap<String, Variable>();
+		ArrayList<Command> commands = new ArrayList<Command>();
 		BufferedReader reader = new BufferedReader(new StringReader(content));
 		String line = null;
 		boolean started = false;
@@ -427,6 +426,58 @@ public class Interpreter
 				{
 					ended = true;
 				}
+				else if (line.startsWith("ASSIGN"))
+				{
+					String[] splitLine = line.split("[ ]", 4);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 3 && splitLine[3].trim().length() >= 1)
+					{
+						io.append(errorAt + "ASSIGN contains too many arguments \n");
+					}
+					else
+					{
+						double val = Double.parseDouble(splitLine[2]);
+						commands.add(new ASSIGN(splitLine[1], val));
+					}
+				}
+				else if (line.startsWith("CMT"))
+				{
+				}
+				//print only prints variables right now
+				else if (line.startsWith("PRINT"))
+				{
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "PRINT contains too many arguments \n");
+					}
+					else
+					{
+						commands.add(new PRINT(splitLine[1], "variable"));
+					}
+				}
+				else if (line.startsWith("VAR"))
+				{
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the variable name other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "VAR contains too many arguments \n");
+					}
+					else
+					{
+						commands.add(new VAR(splitLine[1]));
+					}
+				}
+				//a blank line
+				else if (line.trim().length() < 1)
+				{
+				}
+				else
+				{
+					io.append(errorAt + "Unrecognized keyword \n");
+				}
 				lineNumber++;
 			}
 			if (!ended)
@@ -435,13 +486,23 @@ public class Interpreter
 			}
 			else
 			{
-				//iterate through commands
+				for (Command command : commands)
+				{
+					command.execute(variables, io);
+				}
 			}
 		} 
 		catch (IOException e) 
 		{
 			io.append("error sending code to interpreter");
 		}
-		started = false;
+		try 
+		{
+			reader.close();
+		} 
+		catch (IOException e) 
+		{
+			io.append("Failed to close BufferedReader");
+		}
 	}
 }
