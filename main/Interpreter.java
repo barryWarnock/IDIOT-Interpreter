@@ -370,7 +370,6 @@ public class Interpreter
 	protected HashMap<String, Variable> variables;
 	protected ArrayList<Command> commands;
 	protected JTextArea io;
-	protected boolean started = false;
 	
 	/**
 	 * takes just one parameter, a reference to the pane that is to be used for i/o
@@ -400,19 +399,49 @@ public class Interpreter
 	{
 		BufferedReader reader = new BufferedReader(new StringReader(content));
 		String line = null;
+		boolean started = false;
+		boolean ended = false;
+		int lineNumber = 1;
+		String errorAt;
 		try 
 		{
-			Command com = new PRINT("hey there", "string");
-			com.execute(variables, io);
-			while((line=reader.readLine()) != null)
+			
+			while(((line=reader.readLine()) != null) && !ended)
 			{
-				line += "\n";
-				io.append(line);
+				errorAt = "Error at line ";
+				errorAt += lineNumber;
+				errorAt += ": ";
+				if (line.equals("START") && !started)
+				{
+					started = true;
+				}
+				else if (!line.equals("START") && !started)
+				{
+					io.append( errorAt + "IDIOT program must begin with START \n");
+				}
+				else if (line.equals("START") && started)
+				{
+					io.append(errorAt + "only one START per IDIOT program \n");
+				}
+				else if (line.equals("END"))
+				{
+					ended = true;
+				}
+				lineNumber++;
+			}
+			if (!ended)
+			{
+				io.append("IDIOT program must end with END");
+			}
+			else
+			{
+				//iterate through commands
 			}
 		} 
 		catch (IOException e) 
 		{
 			io.append("error sending code to interpreter");
 		}
+		started = false;
 	}
 }
