@@ -497,10 +497,11 @@ public class Interpreter
 							boolean nonWhitespace = false;
 							for (int i = endOfString; i < charArray.length && !nonWhitespace; i++)
 							{
+								//make this like every other whitespace check
 								if (charArray[i] == ' ')
 								{
 									nonWhitespace = true;
-									io.append(errorAt + "PRINT has too many arguments");
+									io.append(errorAt + "PRINT has too many arguments \n");
 									error = true;
 								}
 							}
