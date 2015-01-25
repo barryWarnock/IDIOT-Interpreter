@@ -122,14 +122,14 @@ public class Interpreter
 			* any of the Variables has not been created
 			* or if the first two don't have values
 			*/
-			if (variables.get("first") == null || variables.get("second") == null || variables.get("third") == null)
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
-				//print "invalid variable passed to ADD command"
+				pane.append("invalid variable passed to ADD \n");
 				return false;
 			}
-			if (!variables.get("first").isInitialized() || !variables.get("second").isInitialized())
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
-				//print "uninitialized first or second variable passed to ADD command"
+				pane.append("invalid first or second variable passed to ADD \n");
 				return false;
 			}
 			double f = variables.get(first).getValue();
@@ -493,19 +493,12 @@ public class Interpreter
 						}
 						else
 						{
-							//run through the rest of the charArray to ensure its all whitespace
-							boolean nonWhitespace = false;
-							for (int i = endOfString; i < charArray.length && !nonWhitespace; i++)
+							String[] splitLine = line.split("[)]", 2);
+							if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
 							{
-								//make this like every other whitespace check
-								if (charArray[i] == ' ')
-								{
-									nonWhitespace = true;
-									io.append(errorAt + "PRINT has too many arguments \n");
-									error = true;
-								}
+								io.append(errorAt + "PRINT contains too many arguments");
 							}
-							if (!nonWhitespace)
+							else
 							{
 								commands.add(new PRINT(toPrint, "string"));
 							}
@@ -562,7 +555,10 @@ public class Interpreter
 				{
 					for (Command command : commands)
 					{
-						command.execute(variables, io);
+						if (!command.execute(variables, io))
+						{
+							break;
+						}
 					}
 				}
 			}
