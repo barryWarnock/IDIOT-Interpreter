@@ -1,6 +1,6 @@
 START
 CMT This is a simple IDIOT program
-PRINT Welcome to IDIOT
+PRINT (Welcome to IDIOT)
 VAR x
 VAR y 
 VAR z
