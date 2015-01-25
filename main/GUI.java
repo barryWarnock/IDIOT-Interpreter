@@ -26,6 +26,8 @@ public class GUI implements ActionListener
 {
 	//this allows actionListeners to call tabbedPane.makeNewTab();
 	private static JTabbedPane tabbedPane = new JTabbedPane();
+	//here I added the reference to the Interpreter
+	private Interpreter interpreter;
 	
 	/**
 	 * This method creates a populated frame 
@@ -49,7 +51,8 @@ public class GUI implements ActionListener
        //Create and set up the content pane (Menu and tabs and output and textfield)
         GUI content = new GUI();
         frame.setJMenuBar(makeMenuBar());
-        frame.setContentPane(content.createPanel(height));
+        //I added to this line as well
+        frame.setContentPane(content.createPanel(height, interpreter));
         frame.setVisible(true);
         
 	}
@@ -60,7 +63,8 @@ public class GUI implements ActionListener
 	 * @param dividerLocation
 	 * @return JPanel filled with toys for all the good girls and boys 
 	 */
-    private JPanel createPanel(int dividerLocation) {
+    //I have added a parameter to this, a reference to an interpreter to pass the output JTextArea to 
+	private JPanel createPanel(int dividerLocation, Interpreter interpreter) {
     	
     	Dimension minimumSize=new Dimension(100,100);
     	
@@ -75,6 +79,8 @@ public class GUI implements ActionListener
         JPanel terminalPanel=new JPanel(new BorderLayout());
         terminalPanel.add(output);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
+        //create the interpreter
+        interpreter = new Interpreter(output);
         
 
         //Create the split pane 
@@ -423,7 +429,7 @@ public class GUI implements ActionListener
 						System.out.println("null :(");
 					}else{
 						//sends a string to the interpreter
-						//Interpreter.interpret(editor.getText());
+						interpreter.run(editor.getText());
 					}
 				}
 				break;

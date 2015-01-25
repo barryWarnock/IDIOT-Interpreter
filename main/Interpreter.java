@@ -1,7 +1,13 @@
+package main;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 /**
  * @author Barry Warnock
  * Interpreter handles the syntax highlighting and execution of 
@@ -112,7 +118,7 @@ public class Interpreter
 			* any of the Variables has not been created
 			* or if the first two don't have values
 			*/
-			if (!variables.get("first") || !variables.get("second") || !variables.get("third"))
+			if (variables.get("first") == null || variables.get("second") == null || variables.get("third") == null)
 			{
 				//print "invalid variable passed to ADD command"
 				return false;
@@ -363,14 +369,14 @@ public class Interpreter
 	protected ArrayList<String> variableNames;
 	protected HashMap<String, Variable> variables;
 	protected ArrayList<Command> commands;
-	protected JEditorPane io;
+	protected JTextArea io;
 	protected boolean started = false;
 	
 	/**
 	 * takes just one parameter, a reference to the pane that is to be used for i/o
 	 * @param io the pane to be used for i/o
 	 */
-	Interpreter(JEditorPane io)
+	Interpreter(JTextArea io)
 	{
 		this.io = io;
 	}
@@ -382,6 +388,7 @@ public class Interpreter
 	public String highlight(String content)
 	{
 		//do stuff to content
+		//http://stackoverflow.com/questions/14400946/how-to-change-the-color-of-specific-words-in-a-jtextpane
 		return content;
 	}
 	/**
@@ -391,6 +398,18 @@ public class Interpreter
 	 */
 	public void run(String content)
 	{
-		
+		BufferedReader reader = new BufferedReader(new StringReader(content));
+		String line = null;
+		try 
+		{
+			while((line=reader.readLine()) != null)
+			{
+				io.append(line);
+			}
+		} 
+		catch (IOException e) 
+		{
+			//print to io
+		}
 	}
 }
