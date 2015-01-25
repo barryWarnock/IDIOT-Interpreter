@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JTextArea;
 
-import javax.swing.JTextArea;
-import javax.swing.JTextArea;
 /**
  * @author Barry Warnock
  * Interpreter handles the syntax highlighting and execution of 
@@ -465,12 +464,59 @@ public class Interpreter
 				else if (line.startsWith("CMT"))
 				{
 				}
-				//print only prints variables right now
+				else if (line.startsWith("DIV"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "DIV contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new DIV(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
+				else if (line.startsWith("ENTER"))
+				{
+					//currently not implemented
+				}
+				else if (line.startsWith("INC"))
+				{
+
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "INC contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new INC(splitLine[1]));
+					}
+				}
+				else if (line.startsWith("MUL"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "MUL contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new MUL(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
 				else if (line.startsWith("PRINT"))
 				{
 					char[] charArray = line.toCharArray();
 					String toPrint = "";
-					int endOfString = 8;
 					if (charArray[6] == '(')
 					{
 						boolean closed = false;
@@ -484,7 +530,6 @@ public class Interpreter
 							{
 								closed = true;
 							}
-							endOfString++;
 						}
 						if(!closed)
 						{
@@ -518,6 +563,21 @@ public class Interpreter
 						{
 							commands.add(new PRINT(splitLine[1], "variable"));
 						}
+					}
+				}
+				else if (line.startsWith("SUB"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "SUB contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new SUB(splitLine[1], splitLine[2], splitLine[3]));
 					}
 				}
 				else if (line.startsWith("VAR"))
