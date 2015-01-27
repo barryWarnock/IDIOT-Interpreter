@@ -359,7 +359,7 @@ public class Interpreter
 			if (isVar)
 			{
 				//runtime error if variable does not exist
-				if(variables.get(var) == null)
+				if(variables.get(val) == null)
 	            {
 	                pane.append("Nonexistant variable passed to PRINT \n");
 	                return false;
@@ -455,6 +455,8 @@ public class Interpreter
 	Interpreter(JTextArea io)
 	{
 		this.io = io;
+		//prevent the user from editing the console unless the ENTER command says otherwise
+		io.setEditable(false);
 	}
 
 	/**
@@ -464,6 +466,8 @@ public class Interpreter
 	 */
 	public void run(String content)
 	{
+		//clear the console before running
+		io.setText(null);
 		HashMap<String, Variable> variables = new HashMap<String, Variable>();
 		ArrayList<Command> commands = new ArrayList<Command>();
 		BufferedReader reader = new BufferedReader(new StringReader(content));
