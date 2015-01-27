@@ -78,7 +78,14 @@ public class Interpreter
 		}
 		public String toString()
 		{
-			return value + "\n";
+			if (initialized)
+            {
+                return value + "\n";
+            }
+            else
+            {
+                return (name + " has not been innitialized \n");
+            }
 		}
 	}
 	/**
@@ -160,6 +167,12 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the variable does not exist
+			if(variables.get(var) == null)
+            {
+                pane.append("Nonexistant variable passed to ASSIGN \n");
+                return false;
+            }
 			variables.get(var).setValue(val);
 			return true;
 		}
@@ -187,6 +200,21 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to DIV \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to DIV \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f / s;
@@ -236,6 +264,18 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the Variable does not exist
+			if(variables.get(var) == null)
+            {
+                pane.append("Nonexistant variable passed to INC \n");
+                return false;
+            }
+            //runtime error if the Variable is not initialized
+			if(variables.get(var).isInitialized())
+            {
+                pane.append("Uninitialized variable passed to INC \n");
+                return false;
+            }
 			variables.get(var).setValue((variables.get(var).getValue() + 1));
 			return true;
 		}
@@ -263,6 +303,21 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to MUL \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to MUL \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f * s;
@@ -303,6 +358,12 @@ public class Interpreter
 		{
 			if (isVar)
 			{
+				//runtime error if variable does not exist
+				if(variables.get(var) == null)
+	            {
+	                pane.append("Nonexistant variable passed to PRINT \n");
+	                return false;
+	            }
 				pane.append(variables.get(val).toString());
 			}
 			else if (isString)
@@ -339,6 +400,21 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to SUB \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to SUB \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f - s;
@@ -364,6 +440,7 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the variable name includes '(' or ')'
 			variables.put(name, new Variable(name));
 			return true;
 		}
