@@ -9,12 +9,12 @@ import javax.swing.JTextArea;
 
 /**
  * @author Barry Warnock
- * Interpreter handles the syntax highlighting and execution of 
+ * Interpreter handles the syntax highlighting and execution of
  * the IDIOT code, the Variable and Command classes are
  * defined inside of Interpreter because they will not be
  * used anywhere else.
  */
-public class Interpreter 
+public class Interpreter
 {
 	/**
 	 * Variable is that class that will represent our idiot variables
@@ -73,7 +73,7 @@ public class Interpreter
 			if(this.name == other.name)
 			{
 				return true;
-			} 
+			}
 			return false;
 		}
 		public String toString()
@@ -322,7 +322,7 @@ public class Interpreter
 	protected class SUB implements Command
 	{
 		protected String first, second, third;
-		/** 
+		/**
 		 * @param first
 		 * @param second
 		 * @param third
@@ -360,7 +360,7 @@ public class Interpreter
 			this.name = name;
 		}
 		/**
-		 * creates a new Variable with the given name and adds it to the HashMap 
+		 * creates a new Variable with the given name and adds it to the HashMap
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
@@ -368,9 +368,9 @@ public class Interpreter
 			return true;
 		}
 	}
-	
+
 	protected JTextArea io;
-	
+
 	/**
 	 * takes just one parameter, a reference to the pane that is to be used for i/o
 	 * @param io the pane to be used for i/o
@@ -379,19 +379,9 @@ public class Interpreter
 	{
 		this.io = io;
 	}
+
 	/**
-	 * takes the content of the code editor pane, formats it, and returns the formatted text to the pane
-	 * @param content the current content of the pane used for code editing
-	 * @return content the highlighted code
-	 */
-	public String highlight(String content)
-	{
-		//do stuff to content
-		//http://stackoverflow.com/questions/14400946/how-to-change-the-color-of-specific-words-in-a-jtextpane
-		return content;
-	}
-	/**
-	 * removes the highlighting from content, checks the code for errors line by line, 
+	 * removes the highlighting from content, checks the code for errors line by line,
 	 * turning each line into a Command object, and iterates through the commands
 	 * @param content the code to be run
 	 */
@@ -406,9 +396,9 @@ public class Interpreter
 		boolean error = false;
 		int lineNumber = 1;
 		String errorAt;
-		try 
+		try
 		{
-			
+
 			while(((line=reader.readLine()) != null) && !ended)
 			{
 				errorAt = "Error at line ";
@@ -526,7 +516,7 @@ public class Interpreter
 							{
 								toPrint += charArray[i];
 							}
-							else 
+							else
 							{
 								closed = true;
 							}
@@ -622,16 +612,16 @@ public class Interpreter
 					}
 				}
 			}
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			io.append("error sending code to interpreter \n");
 		}
-		try 
+		try
 		{
 			reader.close();
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			io.append("Failed to close BufferedReader \n");
 		}
