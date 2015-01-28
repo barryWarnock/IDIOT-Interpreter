@@ -485,22 +485,39 @@ public class Interpreter
 				errorAt = "Error at line ";
 				errorAt += lineNumber;
 				errorAt += ": ";
-				if (line.equals("START") && !started)
+				if (line.startsWith("START") && !started)
 				{
-					started = true;
+					String[] splitLine = line.split("[ ]", 2);
+					//if there is anything after the Command other than whitespace
+					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+					{
+						io.append(errorAt + "START contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						started = true;
+					}
 				}
-				else if (!line.equals("START") && !started)
+				else if (!line.startsWith("START") && !started)
 				{
 					io.append( errorAt + "IDIOT program must begin with START \n");
 					error = true;
 				}
-				else if (line.equals("START") && started)
+				else if (line.startsWith("START") && started)
 				{
 					io.append(errorAt + "only one START per IDIOT program \n");
 					error = true;
 				}
-				else if (line.equals("END"))
+				else if (line.startsWith("END"))
 				{
+					String[] splitLine = line.split("[ ]", 2);
+					//if there is anything after the Command other than whitespace
+					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+					{
+						io.append(errorAt + "END contains too many arguments \n");
+						error = true;
+					}
 					ended = true;
 				}
 				else if (line.startsWith("ADD"))
