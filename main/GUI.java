@@ -10,12 +10,15 @@ import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * @author bolster
@@ -374,11 +377,12 @@ public class GUI implements ActionListener
 			
 			} case "Open":{ 
 				
+				//opens a new tab from a file
 				try {
 					openNewTab(FileOpen.fileManager());
 				} catch (FileNotFoundException | BadLocationException e1) {
 					JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
-				}
+				} catch(Exception e2){}//this is only throw if the user selects cancel 
 				
 				break;
 				
@@ -403,11 +407,23 @@ public class GUI implements ActionListener
 				break;
 				
 			} case "Save":{ 
-				System.out.println("Save");
+				try {
+					FileOpen.fileSaveAlpha(tabbedPane);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					//cry????
+					e1.printStackTrace();
+				}
 				break;
 			
 			} case "Save As":{
-				System.out.println("Save As");
+				try {
+					FileOpen.fileSaveAlpha(tabbedPane);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					//cry????
+					e1.printStackTrace();
+				}
 				break;
 			
 			} case "Exit":{
@@ -420,8 +436,12 @@ public class GUI implements ActionListener
 				//find what the user clicked 
 				if (result == JOptionPane.YES_OPTION)
 				{
-					//TODO make this save the file then exit
-					//System.exit(0);
+					try {
+						FileOpen.fileSaveAlpha(tabbedPane);
+						System.exit(0);
+					} catch (IOException e1) {
+						// TODO tell the user that the file didn't save :(
+					}
 				
 				} else if(result == JOptionPane.NO_OPTION)
 				{
