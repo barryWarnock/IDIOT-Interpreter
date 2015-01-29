@@ -18,7 +18,6 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.apache.commons.io.FileUtils;
 
 /**
  * @author bolster
@@ -110,8 +109,9 @@ public class GUI implements ActionListener
 	 * @param file a file that you would like to open in a JEditorPane
 	 * @throws BadLocationException, FileNotFoundException
 	 */
-	public void openNewTab(File file) throws BadLocationException, FileNotFoundException {
-		
+	public void openTab(File file) throws BadLocationException, FileNotFoundException 
+	{
+		System.out.println("test");/////////////////
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
 		IDIOT_file_content.setEditable(true);
@@ -123,11 +123,40 @@ public class GUI implements ActionListener
 			Document doc = IDIOT_file_content.getDocument();
 			//TODO This may require \r\n for windows saves and open in textedit, this should be tested
 			doc.insertString(doc.getLength(), line+"\n", null);
+			
 		}
 		scan.close();
-
+		
+		System.out.println("test");//////////////////////
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		tabbedPane.add(file.getName(),scroll);	
+		tabbedPane.add(file.getName(),scroll);
+		
+		//newest tabs spawn to the right, find the newest's index
+		int index = (tabbedPane.getTabCount() - 1);
+		System.out.println(index);/////////////////////////
+		
+		//create a panel for the button and label
+		JPanel nameAndButton = new JPanel(new GridBagLayout());
+		nameAndButton.setOpaque(false);
+				
+		//make the label and button 
+		JLabel tabTitle = new JLabel("new file");
+		JButton closeButton = new TabButton(tabbedPane);
+
+		//Do some funky stuff with the layout manager to make everything appear nice
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+				
+		nameAndButton.add(tabTitle, gbc);
+		//after adding the label adjust the location so the button is put in the right place	
+		gbc.gridx++;
+		gbc.weightx = 0;
+		nameAndButton.add(closeButton, gbc);
+		//put the fancy pane on the right tab
+		tabbedPane.setTabComponentAt(index, nameAndButton);
+		
 		}
 	
 	/**
@@ -168,6 +197,7 @@ public class GUI implements ActionListener
 		nameAndButton.add(closeButton, gbc);
 		//put the fancy pane on the right tab
 		tabbedPane.setTabComponentAt(index, nameAndButton);
+		
 		
 	}
 	
@@ -379,7 +409,7 @@ public class GUI implements ActionListener
 				
 				//opens a new tab from a file
 				try {
-					openNewTab(FileOpen.fileManager());
+					openTab(FileOpen.fileManager());
 				} catch (FileNotFoundException | BadLocationException e1) {
 					JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
 				} catch(Exception e2){}//this is only throw if the user selects cancel 
@@ -438,7 +468,7 @@ public class GUI implements ActionListener
 				if (result == JOptionPane.YES_OPTION)
 				{
 					try {
-						FileOpen.fileSaveAlpha(tabbedPane);
+						FileOpen.fileSaveBeta(tabbedPane);
 						System.exit(0);
 					} catch (IOException e1) {
 						// TODO tell the user that the file didn't save :(
