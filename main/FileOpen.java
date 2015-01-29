@@ -1,7 +1,9 @@
 package main;
 
 /** This opens the file through the file manager
- * 1-26-15
+ * saves files differently depending on which save was used
+ * appends .IDIOT to the end of files
+ * 1-28-15
  */
 
 import javax.swing.JEditorPane;
@@ -11,15 +13,16 @@ import javax.swing.JTabbedPane;
 
 import org.apache.commons.io.FileUtils;
 
+
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 public class FileOpen {
 	
 	// Stores the name of the file for use of the save function
-	static String fileName;
+	static String FILENAME;
 	//static JEditorPane paneName = GUI.getPaneName();
 
 	public static File fileManager() throws Exception
@@ -33,11 +36,13 @@ public class FileOpen {
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			// user selects file,return the selected file to whatever called
-			// this method
 			File selectedFile = fileChooser.getSelectedFile();
-			fileName = (selectedFile.getName());
-			System.out.println(fileName);
-			// paneName = fileName;
+			FILENAME = (selectedFile.toString());
+			
+			
+			
+
+			
 			return selectedFile;
 		} else {
 			final  Exception e = new Exception();
@@ -46,35 +51,6 @@ public class FileOpen {
 
 	}
 
-	// This probably wont work.
-	public static File fileSave() throws IOException {
-		FileWriter text = new FileWriter(fileName);
-		System.out.println("file " + fileName);
-		System.out.println("pane " + paneName);
-		text.write(paneName.getText());
-		text.close();
-		return null;
-
-	}
-
-	// This has a better chance of working
-	// I think...
-	public static void fileSaveOmega() {
-		FileWriter out;
-		try {
-			out = new FileWriter(fileName);
-			// paneName is wrong i think
-			// fuck
-
-			out.write(paneName.getText());
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-	
 	/**
 	 * Works as a file saving method. Just send the tabbedPane into it. 
 	 * @param tabbedPane just the tabbedPane from the GUI
@@ -89,15 +65,43 @@ public class FileOpen {
 			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
 			if(editor==null){
 			}else{
-				//TODO append the file name with .IDIOT
 				//choose a filename
 				JFileChooser fileChooser = new JFileChooser();
 				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				  File file = fileChooser.getSelectedFile();
+					FILENAME= fileChooser.getSelectedFile().toString(); 
+					//adds .IDIOT if it is not there. 
+						if(!FILENAME.endsWith(".IDIOT"))
+							FILENAME+=".IDIOT"; 
+				  File file = new File( FILENAME);
 				  //save the open file 
 				  FileUtils.writeStringToFile(file, editor.getText());			
 				}
 			}
 		}
 	}
-}
+	
+	
+	public static void fileSaveBeta(JTabbedPane tabbedPane) throws IOException{
+		//Automatically saves the file where it was, doesn't open the file chooser window.
+		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		if(scroll==null){
+		}else{
+			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
+			if(editor==null){
+			}else{
+			}if(FILENAME==null){
+				FileOpen.fileSaveAlpha(tabbedPane); 
+			}else{
+				//adds .IDIOT if it is not there. 
+				File file = new File(FILENAME); 
+				if(!FILENAME.endsWith(".IDIOT"))
+					FILENAME+=".IDIOT";
+				  FileUtils.writeStringToFile(file, editor.getText());
+				  
+				}
+			}
+		}
+		
+	}
+	
+
