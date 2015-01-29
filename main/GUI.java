@@ -408,12 +408,13 @@ public class GUI implements ActionListener
 				
 			} case "Save":{ 
 				try {
-					FileOpen.fileSaveAlpha(tabbedPane);
+					FileOpen.fileSaveBeta(tabbedPane);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					//cry????
 					e1.printStackTrace();
 				}
+				
 				break;
 			
 			} case "Save As":{
