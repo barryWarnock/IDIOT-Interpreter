@@ -8,15 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
+
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+
 
 
 /**
@@ -31,8 +28,8 @@ import javax.swing.text.Document;
 public class GUI implements ActionListener
 {
 	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
-	private static JTabbedPane tabbedPane = new JTabbedPane();
-	private Interpreter interpreter;
+	public static JTabbedPane tabbedPane = new JTabbedPane();
+	public static Interpreter interpreter;
 	
 	/**
 	 * This method creates a populated frame 
@@ -101,63 +98,7 @@ public class GUI implements ActionListener
         finalPanel.add(makeToolbar(), BorderLayout.NORTH);
         finalPanel.add(contentPane, BorderLayout.CENTER);
         return finalPanel;
-    }
-	
-
-	/**
-	 * TODO this should have a close button on the edge of the tab
-	 * @param file a file that you would like to open in a JEditorPane
-	 * @throws BadLocationException, FileNotFoundException
-	 */
-	public void openTab(File file) throws BadLocationException, FileNotFoundException 
-	{
-		System.out.println("test");/////////////////
-		//Create a scrolled text area to type into
-		JEditorPane IDIOT_file_content = new JEditorPane();
-		IDIOT_file_content.setEditable(true);
-			
-		// scans file into the JEditPane
-		Scanner scan = new Scanner(file);
-		while (scan.hasNextLine()) {
-			String line = scan.nextLine();
-			Document doc = IDIOT_file_content.getDocument();
-			//TODO This may require \r\n for windows saves and open in textedit, this should be tested
-			doc.insertString(doc.getLength(), line+"\n", null);
-			
-		}
-		scan.close();
-		
-		System.out.println("test");//////////////////////
-		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		tabbedPane.add(file.getName(),scroll);
-		
-		//newest tabs spawn to the right, find the newest's index
-		int index = (tabbedPane.getTabCount() - 1);
-		System.out.println(index);/////////////////////////
-		
-		//create a panel for the button and label
-		JPanel nameAndButton = new JPanel(new GridBagLayout());
-		nameAndButton.setOpaque(false);
-				
-		//make the label and button 
-		JLabel tabTitle = new JLabel("new file");
-		JButton closeButton = new TabButton(tabbedPane);
-
-		//Do some funky stuff with the layout manager to make everything appear nice
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-				
-		nameAndButton.add(tabTitle, gbc);
-		//after adding the label adjust the location so the button is put in the right place	
-		gbc.gridx++;
-		gbc.weightx = 0;
-		nameAndButton.add(closeButton, gbc);
-		//put the fancy pane on the right tab
-		tabbedPane.setTabComponentAt(index, nameAndButton);
-		
-		}
+    }	
 	
 	/**
 	 * TODO this should have a close button on the edge of the tab
@@ -210,15 +151,27 @@ public class GUI implements ActionListener
 		JToolBar toolbar=new JToolBar(JToolBar.HORIZONTAL);
 		toolbar.setFloatable(true);
 		
+		JButton tempButton;
+		
 		//add buttons 
+		//TODO give buttons actionListeners
 		toolbar.add(makeButton("saveIcon", "Save"));
-		toolbar.add(makeButton("openIcon", "Open"));
+		
+		tempButton = makeButton("openIcon", "Open");
+		tempButton.addActionListener(new actions.OpenAction());
+		toolbar.add(tempButton);
+		
 		toolbar.add(makeButton("newIcon", "New"));
         toolbar.add(makeButton("copyIcon", "Copy"));
         toolbar.add(makeButton("cutIcon", "Cut"));
         toolbar.add(makeButton("pasteIcon", "Paste"));
         toolbar.add(makeButton("printIcon", "Print"));
-        toolbar.add(makeButton("compileIcon", "Compile"));
+        
+        
+        
+        tempButton = makeButton("compileIcon", "Compile");
+        tempButton.addActionListener(new actions.CompileAction());
+        toolbar.add(tempButton);
         
         return toolbar;
 	}
@@ -237,12 +190,8 @@ public class GUI implements ActionListener
 
         //Create and initialize the button.
         JButton button = new JButton();
-        
-        //allows one action listener to listen for all buttons
-        button.setActionCommand(toolTipText);
         button.setToolTipText(toolTipText);
-        button.addActionListener(this);
-
+        
         if (imageURL != null) { //if image is found make a nice button                  
             button.setIcon(new ImageIcon(imageURL, imageName));
         } else { 
@@ -279,8 +228,7 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a file from the disk");
         menuItem.setToolTipText("Opens a new file from the disk");
-        menuItem.setActionCommand("Open");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new actions.OpenAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save");
@@ -312,8 +260,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("Exit");
         menuItem.getAccessibleContext().setAccessibleDescription("Closes the program");
         menuItem.setToolTipText("Close the program");
-        menuItem.setActionCommand("Exit");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new actions.ExitAction());
         file.add(menuItem);       
 
         //The edit bar 
@@ -405,17 +352,6 @@ public class GUI implements ActionListener
 				makeNewTab();
 				break;
 			
-			} case "Open":{ 
-				
-				//opens a new tab from a file
-				try {
-					openTab(FileOpen.fileManager());
-				} catch (FileNotFoundException | BadLocationException e1) {
-					JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
-				} catch(Exception e2){}//this is only throw if the user selects cancel 
-				
-				break;
-				
 			} case "Print":{ 
 				JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 				if(scroll==null){
@@ -449,7 +385,7 @@ public class GUI implements ActionListener
 			
 			} case "Save As":{
 				try {
-					FileOpen.fileSaveAlpha(tabbedPane);
+					FileOpen.fileSaveBeta(tabbedPane);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					//cry????
@@ -457,30 +393,6 @@ public class GUI implements ActionListener
 				}
 				break;
 			
-			} case "Exit":{
-
-				//ask the user to save before closing 
-				Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
-		
-				int result = JOptionPane.showOptionDialog(null, "Do you want to save before you close?","Close Dialog",
-				    JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
-				//find what the user clicked 
-				if (result == JOptionPane.YES_OPTION)
-				{
-					try {
-						FileOpen.fileSaveBeta(tabbedPane);
-						System.exit(0);
-					} catch (IOException e1) {
-						// TODO tell the user that the file didn't save :(
-					}
-				
-				} else if(result == JOptionPane.NO_OPTION)
-				{
-					System.exit(0);	
-				} 
-				
-				break;
-				
 			} case "Select All":{ 
 				System.out.println("Select All");
 				break;
@@ -511,33 +423,7 @@ public class GUI implements ActionListener
 				
 				break;
 				
-			} case "Compile":{
-				
-				//returns the tab component with focus
-				JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-				if(scroll==null){
-					//TODO make a popup error message
-					System.out.println("null :(");
-				}else{
-					JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
-					if(editor==null){
-						//TODO make a popup error message
-						System.out.println("null :(");
-					}else{
-						
-						//sends a string to the interpreter
-						interpreter.run(editor.getText());
-						//opens a new thread so infinite loops don't freeze the gui
-						Thread thread = new Thread() {
-					        public void run() {
-								//Interpreter.interpret(editor.getText());
-					        }
-					    };
-					    thread.start();
-					}
-				}
-				break;
-			}
+			} 
 		}
 	}
 

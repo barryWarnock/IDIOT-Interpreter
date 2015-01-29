@@ -2,12 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/bolster/Desktop/commons-io-2.4/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/Users/bolster/Desktop/commons-io-2.4/commons-io-2.4-javadoc.jar"/>
-	<classpathentry kind="lib" path="/Users/bolster/Desktop/commons-io-2.4/commons-io-2.4-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/bolster/Desktop/commons-io-2.4/commons-io-2.4-test-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/bolster/Desktop/commons-io-2.4/commons-io-2.4-tests.jar"/>
 	<classpathentry kind="lib" path="/Users/bolster/Documents/workspace/libraries/commons-io-2.4/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/Users/bolster/Documents/workspace/libraries/new.jar;*.jar;*.zip"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
