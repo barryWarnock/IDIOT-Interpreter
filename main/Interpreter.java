@@ -241,7 +241,16 @@ public class Interpreter
 		 */
 		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
-			//variables.get(var).setValue(something);
+			int initial = io.getText().lastIndexOf('\n');
+			io.setEditable(true);
+			//wait until a new newline is detected
+			while(initial == (io.getText().lastIndexOf('\n')));
+			{
+			}
+			io.setEditable(false);
+			String input = io.getText().substring(initial);
+			double val = Double.parseDouble(input);
+			variables.get(var).setValue(val);
 			return true;
 		}
 	}
@@ -569,7 +578,17 @@ public class Interpreter
 				}
 				else if (line.startsWith("ENTER"))
 				{
-					//currently not implemented
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the command name other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "ENTER contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new ENTER(splitLine[1]));
+					}
 				}
 				else if (line.startsWith("INC"))
 				{
@@ -681,7 +700,7 @@ public class Interpreter
 					{
 						commands.add(new VAR(splitLine[1]));
 					}
-					}
+				}
 				//a blank line
 				else if (line.trim().length() < 1)
 				{
