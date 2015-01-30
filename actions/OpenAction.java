@@ -1,5 +1,5 @@
 package actions;
-
+import main.GUI;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ import main.TabButton;
 @SuppressWarnings("serial")
 public class OpenAction extends AbstractAction {
 
-	private static JTabbedPane tabbedPane = main.GUI.tabbedPane;
+	private JTabbedPane tabbedPane = GUI.getTabbedPane();
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -47,7 +47,6 @@ public class OpenAction extends AbstractAction {
 	 */
 	public void openTab(File file) throws BadLocationException, FileNotFoundException 
 	{
-		System.out.println("test");/////////////////
 		//Create a scrolled text area to type into
 		JEditorPane IDIOT_file_content = new JEditorPane();
 		IDIOT_file_content.setEditable(true);
@@ -62,13 +61,11 @@ public class OpenAction extends AbstractAction {
 		}
 		scan.close();
 		
-		System.out.println("test");//////////////////////
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
 		tabbedPane.add(file.getName(),scroll);
 		
 		//newest tabs spawn to the right, find the newest's index
 		int index = (tabbedPane.getTabCount() - 1);
-		System.out.println(index);/////////////////////////
 		
 		//create a panel for the button and label
 		JPanel nameAndButton = new JPanel(new GridBagLayout());

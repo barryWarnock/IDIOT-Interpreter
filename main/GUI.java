@@ -7,10 +7,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.net.URL;
-
+import actions.*;
 
 import javax.swing.*;
 
@@ -23,13 +22,13 @@ import javax.swing.*;
  * <p>
  * There is no hashCode or equals methods for this class as there are no static variables or objects.
  * As well there is no constructor because this class does not need to initialize anything.
- * TODO make all actions into abstract actions and then try to move menubar and toolbar and tab making out of this class
+ * TODO make all actions into abstract actions and then try to move menubar and toolbar and 
+ * tab making out of this class
  */
 public class GUI implements ActionListener
 {
 	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
-	public static JTabbedPane tabbedPane = new JTabbedPane();
-	public static Interpreter interpreter;
+	private static JTabbedPane tabbedPane = new JTabbedPane();
 	
 	/**
 	 * This method creates a populated frame 
@@ -81,7 +80,8 @@ public class GUI implements ActionListener
         terminalPanel.add(output);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
         //create the interpreter
-        interpreter = new Interpreter(output);
+        //TODO make this method in the interpreter
+        //MainRun.getInterpreter().setOutputPanel(output);
         
 
         //Create the split pane 
@@ -158,19 +158,20 @@ public class GUI implements ActionListener
 		toolbar.add(makeButton("saveIcon", "Save"));
 		
 		tempButton = makeButton("openIcon", "Open");
-		tempButton.addActionListener(new actions.OpenAction());
+		tempButton.addActionListener(new OpenAction());
 		toolbar.add(tempButton);
 		
 		toolbar.add(makeButton("newIcon", "New"));
         toolbar.add(makeButton("copyIcon", "Copy"));
         toolbar.add(makeButton("cutIcon", "Cut"));
         toolbar.add(makeButton("pasteIcon", "Paste"));
-        toolbar.add(makeButton("printIcon", "Print"));
         
-        
+        tempButton = makeButton("printIcon", "Print");
+        tempButton.addActionListener(new PrintAction());
+        toolbar.add(tempButton);
         
         tempButton = makeButton("compileIcon", "Compile");
-        tempButton.addActionListener(new actions.CompileAction());
+        tempButton.addActionListener(new CompileAction());
         toolbar.add(tempButton);
         
         return toolbar;
@@ -253,14 +254,13 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Print the current file");
         menuItem.setToolTipText("Print the current file");
-        menuItem.setActionCommand("Print");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new PrintAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Exit");
         menuItem.getAccessibleContext().setAccessibleDescription("Closes the program");
         menuItem.setToolTipText("Close the program");
-        menuItem.addActionListener(new actions.ExitAction());
+        menuItem.addActionListener(new ExitAction());
         file.add(menuItem);       
 
         //The edit bar 
@@ -352,26 +352,6 @@ public class GUI implements ActionListener
 				makeNewTab();
 				break;
 			
-			} case "Print":{ 
-				JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-				if(scroll==null){
-					//TODO make a popup error message
-					System.out.println("null :(");
-				}else{
-					JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
-					if(editor==null){
-						//TODO make a popup error message
-						System.out.println("null :(");
-					}else{
-						try {
-							editor.print();
-						} catch (PrinterException e1) {
-							// TODO Auto-generated catch block
-						}
-					}
-				}
-				break;
-				
 			} case "Save":{ 
 				try {
 					FileOpen.fileSaveBeta(tabbedPane);
@@ -426,6 +406,11 @@ public class GUI implements ActionListener
 		}
 	}
 
+	public static JTabbedPane getTabbedPane()
+	{
+		return tabbedPane;
+	}
+	
 	@Override
 	public String toString() {
 		return "This is a JFrame and a bunch of components";

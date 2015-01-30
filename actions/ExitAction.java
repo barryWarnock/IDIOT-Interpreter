@@ -22,9 +22,11 @@ public class ExitAction extends AbstractAction {
 		//find what the user clicked 
 		if (result == JOptionPane.YES_OPTION)
 		{
+			//TODO just make this call the save action
+			
 			try {
 				//save the users file
-				FileOpen.fileSaveBeta(main.GUI.tabbedPane);
+				FileOpen.fileSaveBeta(main.GUI.getTabbedPane());
 				System.exit(0);
 			} catch (IOException e1) {
 				// TODO tell the user that the file didn't save :(
