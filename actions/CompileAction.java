@@ -22,7 +22,7 @@ public class CompileAction extends AbstractAction {
 			//TODO make a popup error message
 			System.out.println("null :(");
 		}else{
-			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
+			final JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
 			if(editor==null){
 				//TODO make a popup error message
 				System.out.println("null :(");
