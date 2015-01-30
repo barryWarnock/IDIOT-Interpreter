@@ -5,17 +5,16 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
+
 /**
  * @author Barry Warnock
- * Interpreter handles the syntax highlighting and execution of 
+ * Interpreter handles the syntax highlighting and execution of
  * the IDIOT code, the Variable and Command classes are
  * defined inside of Interpreter because they will not be
  * used anywhere else.
  */
-public class Interpreter 
+public class Interpreter
 {
 	/**
 	 * Variable is that class that will represent our idiot variables
@@ -74,8 +73,19 @@ public class Interpreter
 			if(this.name == other.name)
 			{
 				return true;
-			} 
+			}
 			return false;
+		}
+		public String toString()
+		{
+			if (initialized)
+            {
+                return value + "\n";
+            }
+            else
+            {
+                return (name + " has not been innitialized \n");
+            }
 		}
 	}
 	/**
@@ -88,7 +98,7 @@ public class Interpreter
 		 * @param pane the pane that will be used for io
 		 * @return boolean if there is an error execute will write it to the pane and return false
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane );
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane );
 	}
 	/**
 	 * ADD takes three numbers, adds the first two and assigns that value to the third
@@ -111,21 +121,21 @@ public class Interpreter
 		 * adds the first and second variables and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
 			* any of the Variables has not been created
 			* or if the first two don't have values
 			*/
-			if (variables.get("first") == null || variables.get("second") == null || variables.get("third") == null)
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
-				//print "invalid variable passed to ADD command"
+				pane.append("invalid variable passed to ADD \n");
 				return false;
 			}
-			if (!variables.get("first").isInitialized() || !variables.get("second").isInitialized())
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
-				//print "uninitialized first or second variable passed to ADD command"
+				pane.append("invalid first or second variable passed to ADD \n");
 				return false;
 			}
 			double f = variables.get(first).getValue();
@@ -155,8 +165,14 @@ public class Interpreter
 		 * assigns the given value to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the variable does not exist
+			if(variables.get(var) == null)
+            {
+                pane.append("Nonexistant variable passed to ASSIGN \n");
+                return false;
+            }
 			variables.get(var).setValue(val);
 			return true;
 		}
@@ -182,8 +198,23 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to DIV \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to DIV \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f / s;
@@ -208,7 +239,7 @@ public class Interpreter
 		 * will somehow take input from the user and put it in the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			//variables.get(var).setValue(something);
 			return true;
@@ -231,8 +262,20 @@ public class Interpreter
 		 * adds one to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the Variable does not exist
+			if(variables.get(var) == null)
+            {
+                pane.append("Nonexistant variable passed to INC \n");
+                return false;
+            }
+            //runtime error if the Variable is not initialized
+			if(variables.get(var).isInitialized())
+            {
+                pane.append("Uninitialized variable passed to INC \n");
+                return false;
+            }
 			variables.get(var).setValue((variables.get(var).getValue() + 1));
 			return true;
 		}
@@ -258,8 +301,23 @@ public class Interpreter
 		 * multiplies the first and second numbers and gives that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to MUL \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to MUL \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f * s;
@@ -296,15 +354,21 @@ public class Interpreter
 		 * checks what type the value it then prints it
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			if (isVar)
 			{
-				//print val
+				//runtime error if variable does not exist
+				if(variables.get(val) == null)
+	            {
+	                pane.append("Nonexistant variable passed to PRINT \n");
+	                return false;
+	            }
+				pane.append(variables.get(val).toString());
 			}
 			else if (isString)
 			{
-				//print val
+				pane.append(val + "\n");
 			}
 			else
 			{
@@ -319,7 +383,7 @@ public class Interpreter
 	protected class SUB implements Command
 	{
 		protected String first, second, third;
-		/** 
+		/**
 		 * @param first
 		 * @param second
 		 * @param third
@@ -334,8 +398,23 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			/*
+			* there will be a runtime error if:
+			* any of the Variables has not been created
+			* or if the first two don't have values
+			*/
+			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+			{
+				pane.append("invalid variable passed to SUB \n");
+				return false;
+			}
+			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+			{
+				pane.append("invalid first or second variable passed to SUB \n");
+				return false;
+			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f - s;
@@ -357,21 +436,18 @@ public class Interpreter
 			this.name = name;
 		}
 		/**
-		 * creates a new Variable with the given name and adds it to the HashMap 
+		 * creates a new Variable with the given name and adds it to the HashMap
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JEditorPane pane )
+		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
+			//runtime error if the variable name includes '(' or ')'
 			variables.put(name, new Variable(name));
 			return true;
 		}
 	}
-	
-	protected ArrayList<String> variableNames;
-	protected HashMap<String, Variable> variables;
-	protected ArrayList<Command> commands;
+
 	protected JTextArea io;
-	protected boolean started = false;
-	
+
 	/**
 	 * takes just one parameter, a reference to the pane that is to be used for i/o
 	 * @param io the pane to be used for i/o
@@ -379,37 +455,273 @@ public class Interpreter
 	Interpreter(JTextArea io)
 	{
 		this.io = io;
+		//prevent the user from editing the console unless the ENTER command says otherwise
+		io.setEditable(false);
 	}
+
 	/**
-	 * takes the content of the code editor pane, formats it, and returns the formatted text to the pane
-	 * @param content the current content of the pane used for code editing
-	 * @return content the highlighted code
-	 */
-	public String highlight(String content)
-	{
-		//do stuff to content
-		//http://stackoverflow.com/questions/14400946/how-to-change-the-color-of-specific-words-in-a-jtextpane
-		return content;
-	}
-	/**
-	 * removes the highlighting from content, checks the code for errors line by line, 
+	 * removes the highlighting from content, checks the code for errors line by line,
 	 * turning each line into a Command object, and iterates through the commands
 	 * @param content the code to be run
 	 */
 	public void run(String content)
 	{
+		//clear the console before running
+		io.setText(null);
+		HashMap<String, Variable> variables = new HashMap<String, Variable>();
+		ArrayList<Command> commands = new ArrayList<Command>();
 		BufferedReader reader = new BufferedReader(new StringReader(content));
 		String line = null;
-		try 
+		boolean started = false;
+		boolean ended = false;
+		boolean error = false;
+		int lineNumber = 1;
+		String errorAt;
+		try
 		{
-			while((line=reader.readLine()) != null)
+
+			while(((line=reader.readLine()) != null) && !ended)
 			{
-				io.append(line);
+				errorAt = "Error at line ";
+				errorAt += lineNumber;
+				errorAt += ": ";
+				if (line.startsWith("START") && !started)
+				{
+					String[] splitLine = line.split("[ ]", 2);
+					//if there is anything after the Command other than whitespace
+					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+					{
+						io.append(errorAt + "START contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						started = true;
+					}
+				}
+				else if (!line.startsWith("START") && !started)
+				{
+					io.append( errorAt + "IDIOT program must begin with START \n");
+					error = true;
+				}
+				else if (line.startsWith("START") && started)
+				{
+					io.append(errorAt + "only one START per IDIOT program \n");
+					error = true;
+				}
+				else if (line.startsWith("END"))
+				{
+					String[] splitLine = line.split("[ ]", 2);
+					//if there is anything after the Command other than whitespace
+					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+					{
+						io.append(errorAt + "END contains too many arguments \n");
+						error = true;
+					}
+					ended = true;
+				}
+				else if (line.startsWith("ADD"))
+				{
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "ADD contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new ADD(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
+				else if (line.startsWith("ASSIGN"))
+				{
+					String[] splitLine = line.split("[ ]", 4);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 3 && splitLine[3].trim().length() >= 1)
+					{
+						io.append(errorAt + "ASSIGN contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						double val = Double.parseDouble(splitLine[2]);
+						commands.add(new ASSIGN(splitLine[1], val));
+					}
+				}
+				else if (line.startsWith("CMT"))
+				{
+				}
+				else if (line.startsWith("DIV"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "DIV contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new DIV(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
+				else if (line.startsWith("ENTER"))
+				{
+					//currently not implemented
+				}
+				else if (line.startsWith("INC"))
+				{
+
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "INC contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new INC(splitLine[1]));
+					}
+				}
+				else if (line.startsWith("MUL"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "MUL contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new MUL(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
+				else if (line.startsWith("PRINT"))
+				{
+					char[] charArray = line.toCharArray();
+					String toPrint = "";
+					if (charArray[6] == '(')
+					{
+						boolean closed = false;
+						for (int i = 7; i < charArray.length && !closed; i++)
+						{
+							if (charArray[i] != ')')
+							{
+								toPrint += charArray[i];
+							}
+							else
+							{
+								closed = true;
+							}
+						}
+						if(!closed)
+						{
+							io.append(errorAt + "no closing paren ')\'");
+							error = true;
+						}
+						else
+						{
+							String[] splitLine = line.split("[)]", 2);
+							if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+							{
+								io.append(errorAt + "PRINT contains too many arguments");
+							}
+							else
+							{
+								commands.add(new PRINT(toPrint, "string"));
+							}
+						}
+					}
+					//if variable
+					else
+					{
+						String[] splitLine = line.split("[ ]", 3);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+						{
+							io.append(errorAt + "PRINT contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new PRINT(splitLine[1], "variable"));
+						}
+					}
+				}
+				else if (line.startsWith("SUB"))
+				{
+
+					String[] splitLine = line.split("[ ]", 5);
+					//if there is anything after the command other than whitespace
+					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					{
+						io.append(errorAt + "SUB contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new SUB(splitLine[1], splitLine[2], splitLine[3]));
+					}
+				}
+				else if (line.startsWith("VAR"))
+				{
+					String[] splitLine = line.split("[ ]", 3);
+					//if there is anything after the variable name other than whitespace
+					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+					{
+						io.append(errorAt + "VAR contains too many arguments \n");
+						error = true;
+					}
+					else
+					{
+						commands.add(new VAR(splitLine[1]));
+					}
+					}
+				//a blank line
+				else if (line.trim().length() < 1)
+				{
+				}
+				else
+				{
+					io.append(errorAt + "Unrecognized keyword \n");
+					error = true;
+				}
+				lineNumber++;
 			}
-		} 
-		catch (IOException e) 
+			if (!ended)
+			{
+				io.append("IDIOT program must end with END \n");
+			}
+			else
+			{
+				if(!error)
+				{
+					for (Command command : commands)
+					{
+						if (!command.execute(variables, io))
+						{
+							break;
+						}
+					}
+				}
+			}
+		}
+		catch (IOException e)
 		{
-			//print to io
+			io.append("error sending code to interpreter \n");
+		}
+		try
+		{
+			reader.close();
+		}
+		catch (IOException e)
+		{
+			io.append("Failed to close BufferedReader \n");
 		}
 	}
 }

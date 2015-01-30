@@ -422,8 +422,7 @@ public class GUI implements ActionListener
 						"About the IDIOT editor",JOptionPane.PLAIN_MESSAGE,icon);
 				
 				break;
-				
-			} 
+			}
 		}
 	}
 
