@@ -72,7 +72,9 @@ public class OpenAction extends AbstractAction {
 		nameAndButton.setOpaque(false);
 				
 		//make the label and button 
-		JLabel tabTitle = new JLabel("new file");
+		String name=file.getName().substring(0, file.getName().indexOf(".IDIOT"));
+		
+		JLabel tabTitle = new JLabel(name);
 		JButton closeButton = new TabButton(tabbedPane);
 
 		//Do some funky stuff with the layout manager to make everything appear nice

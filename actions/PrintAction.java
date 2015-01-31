@@ -9,6 +9,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+@SuppressWarnings("serial")
 public class PrintAction extends AbstractAction {
 
 	private JTabbedPane tabbedPane = GUI.getTabbedPane();
