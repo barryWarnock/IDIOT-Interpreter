@@ -26,7 +26,7 @@ public class ExitAction extends AbstractAction {
 			
 			try {
 				//save the users file
-				FileOpen.fileSaveBeta(main.GUI.getTabbedPane());
+				FileOpen.fileSave(main.GUI.getTabbedPane());
 				System.exit(0);
 			} catch (IOException e1) {
 				// TODO tell the user that the file didn't save :(
