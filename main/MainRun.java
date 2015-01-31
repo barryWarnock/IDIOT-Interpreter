@@ -1,9 +1,5 @@
 package main;
 
-import javax.swing.JTextArea;
-
-
-
 public class MainRun {
 
 	private static Interpreter interpreter=null;
@@ -20,7 +16,7 @@ public class MainRun {
 			public void run() {
 				//TODO make the interpreter's constructor not need a textarea
 				//make it build without it but fail to interpret without one being added
-				interpreter = new Interpreter(new JTextArea());
+				interpreter = new Interpreter();
 			}
 		});
 	}

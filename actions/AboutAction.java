@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+@SuppressWarnings("serial")
 public class AboutAction extends AbstractAction {
 
 	@Override

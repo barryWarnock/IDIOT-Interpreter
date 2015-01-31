@@ -28,15 +28,16 @@ public class CompileAction extends AbstractAction {
 				System.out.println("null :(");
 			}else{
 				
-				//TODO this doesn't need to be in a thread because interpreter is already it's own thread
-				//opens a new thread so infinite loops don't freeze the gui
-				Thread thread = new Thread() {
-			        public void run() {
-			        	//sends a string to the interpreter
-						MainRun.getInterpreter().run(editor.getText());
-			        }
-			    };
-			    thread.start();
+			    //sends a string to the interpreter
+				
+				try {
+					MainRun.getInterpreter().run(editor.getText());
+				} catch (Exception e1) {
+					//TODO error message pop-up
+					e1.printStackTrace();
+				}
+				
+			    
 			}
 		}
 	}
