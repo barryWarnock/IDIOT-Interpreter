@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.swing.JTextArea;
 
 /**
@@ -471,275 +472,283 @@ public class Interpreter
 	 * removes the highlighting from content, checks the code for errors line by line,
 	 * turning each line into a Command object, and iterates through the commands
 	 * @param content the code to be run
+	 * @throws Exception 
 	 */
-	public void run(String content)
+	public void run(String content) throws Exception
 	{
-		//clear the console before running
-		io.setText(null);
-		HashMap<String, Variable> variables = new HashMap<String, Variable>();
-		ArrayList<Command> commands = new ArrayList<Command>();
-		BufferedReader reader = new BufferedReader(new StringReader(content));
-		String line = null;
-		boolean started = false;
-		boolean ended = false;
-		boolean error = false;
-		int lineNumber = 1;
-		String errorAt;
-		try
+		if (io == null)
 		{
-
-			while(((line=reader.readLine()) != null) && !ended)
+			throw new Exception("No io Text Area set");
+		}
+		else
+		{
+			//clear the console before running
+			io.setText(null);
+			HashMap<String, Variable> variables = new HashMap<String, Variable>();
+			ArrayList<Command> commands = new ArrayList<Command>();
+			BufferedReader reader = new BufferedReader(new StringReader(content));
+			String line = null;
+			boolean started = false;
+			boolean ended = false;
+			boolean error = false;
+			int lineNumber = 1;
+			String errorAt;
+			try
 			{
-				errorAt = "Error at line ";
-				errorAt += lineNumber;
-				errorAt += ": ";
-				if (line.startsWith("START") && !started)
+	
+				while(((line=reader.readLine()) != null) && !ended)
 				{
-					String[] splitLine = line.split("[ ]", 2);
-					//if there is anything after the Command other than whitespace
-					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+					errorAt = "Error at line ";
+					errorAt += lineNumber;
+					errorAt += ": ";
+					if (line.startsWith("START") && !started)
 					{
-						io.append(errorAt + "START contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						started = true;
-					}
-				}
-				else if (!line.startsWith("START") && !started)
-				{
-					io.append( errorAt + "IDIOT program must begin with START \n");
-					error = true;
-				}
-				else if (line.startsWith("START") && started)
-				{
-					io.append(errorAt + "only one START per IDIOT program \n");
-					error = true;
-				}
-				else if (line.startsWith("END"))
-				{
-					String[] splitLine = line.split("[ ]", 2);
-					//if there is anything after the Command other than whitespace
-					if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
-					{
-						io.append(errorAt + "END contains too many arguments \n");
-						error = true;
-					}
-					ended = true;
-				}
-				else if (line.startsWith("ADD"))
-				{
-					String[] splitLine = line.split("[ ]", 5);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
-					{
-						io.append(errorAt + "ADD contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						commands.add(new ADD(splitLine[1], splitLine[2], splitLine[3]));
-					}
-				}
-				else if (line.startsWith("ASSIGN"))
-				{
-					String[] splitLine = line.split("[ ]", 4);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 3 && splitLine[3].trim().length() >= 1)
-					{
-						io.append(errorAt + "ASSIGN contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						double val = Double.parseDouble(splitLine[2]);
-						commands.add(new ASSIGN(splitLine[1], val));
-					}
-				}
-				else if (line.startsWith("CMT"))
-				{
-				}
-				else if (line.startsWith("DIV"))
-				{
-
-					String[] splitLine = line.split("[ ]", 5);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
-					{
-						io.append(errorAt + "DIV contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						commands.add(new DIV(splitLine[1], splitLine[2], splitLine[3]));
-					}
-				}
-				else if (line.startsWith("ENTER"))
-				{
-					String[] splitLine = line.split("[ ]", 3);
-					//if there is anything after the command name other than whitespace
-					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
-					{
-						io.append(errorAt + "ENTER contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						commands.add(new ENTER(splitLine[1]));
-					}
-				}
-				else if (line.startsWith("INC"))
-				{
-
-					String[] splitLine = line.split("[ ]", 3);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
-					{
-						io.append(errorAt + "INC contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						commands.add(new INC(splitLine[1]));
-					}
-				}
-				else if (line.startsWith("MUL"))
-				{
-
-					String[] splitLine = line.split("[ ]", 5);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
-					{
-						io.append(errorAt + "MUL contains too many arguments \n");
-						error = true;
-					}
-					else
-					{
-						commands.add(new MUL(splitLine[1], splitLine[2], splitLine[3]));
-					}
-				}
-				else if (line.startsWith("PRINT"))
-				{
-					char[] charArray = line.toCharArray();
-					String toPrint = "";
-					if (charArray[6] == '(')
-					{
-						boolean closed = false;
-						for (int i = 7; i < charArray.length && !closed; i++)
+						String[] splitLine = line.split("[ ]", 2);
+						//if there is anything after the Command other than whitespace
+						if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
 						{
-							if (charArray[i] != ')')
-							{
-								toPrint += charArray[i];
-							}
-							else
-							{
-								closed = true;
-							}
-						}
-						if(!closed)
-						{
-							io.append(errorAt + "no closing paren ')\'");
+							io.append(errorAt + "START contains too many arguments \n");
 							error = true;
 						}
 						else
 						{
-							String[] splitLine = line.split("[)]", 2);
-							if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
-							{
-								io.append(errorAt + "PRINT contains too many arguments");
-							}
-							else
-							{
-								commands.add(new PRINT(toPrint, "string"));
-							}
+							started = true;
 						}
 					}
-					//if variable
-					else
+					else if (!line.startsWith("START") && !started)
 					{
+						io.append( errorAt + "IDIOT program must begin with START \n");
+						error = true;
+					}
+					else if (line.startsWith("START") && started)
+					{
+						io.append(errorAt + "only one START per IDIOT program \n");
+						error = true;
+					}
+					else if (line.startsWith("END"))
+					{
+						String[] splitLine = line.split("[ ]", 2);
+						//if there is anything after the Command other than whitespace
+						if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+						{
+							io.append(errorAt + "END contains too many arguments \n");
+							error = true;
+						}
+						ended = true;
+					}
+					else if (line.startsWith("ADD"))
+					{
+						String[] splitLine = line.split("[ ]", 5);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+						{
+							io.append(errorAt + "ADD contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new ADD(splitLine[1], splitLine[2], splitLine[3]));
+						}
+					}
+					else if (line.startsWith("ASSIGN"))
+					{
+						String[] splitLine = line.split("[ ]", 4);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 3 && splitLine[3].trim().length() >= 1)
+						{
+							io.append(errorAt + "ASSIGN contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							double val = Double.parseDouble(splitLine[2]);
+							commands.add(new ASSIGN(splitLine[1], val));
+						}
+					}
+					else if (line.startsWith("CMT"))
+					{
+					}
+					else if (line.startsWith("DIV"))
+					{
+	
+						String[] splitLine = line.split("[ ]", 5);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+						{
+							io.append(errorAt + "DIV contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new DIV(splitLine[1], splitLine[2], splitLine[3]));
+						}
+					}
+					else if (line.startsWith("ENTER"))
+					{
+						String[] splitLine = line.split("[ ]", 3);
+						//if there is anything after the command name other than whitespace
+						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+						{
+							io.append(errorAt + "ENTER contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new ENTER(splitLine[1]));
+						}
+					}
+					else if (line.startsWith("INC"))
+					{
+	
 						String[] splitLine = line.split("[ ]", 3);
 						//if there is anything after the command other than whitespace
 						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
 						{
-							io.append(errorAt + "PRINT contains too many arguments \n");
+							io.append(errorAt + "INC contains too many arguments \n");
 							error = true;
 						}
 						else
 						{
-							commands.add(new PRINT(splitLine[1], "variable"));
+							commands.add(new INC(splitLine[1]));
 						}
 					}
-				}
-				else if (line.startsWith("SUB"))
-				{
-
-					String[] splitLine = line.split("[ ]", 5);
-					//if there is anything after the command other than whitespace
-					if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+					else if (line.startsWith("MUL"))
 					{
-						io.append(errorAt + "SUB contains too many arguments \n");
-						error = true;
+	
+						String[] splitLine = line.split("[ ]", 5);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+						{
+							io.append(errorAt + "MUL contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new MUL(splitLine[1], splitLine[2], splitLine[3]));
+						}
+					}
+					else if (line.startsWith("PRINT"))
+					{
+						char[] charArray = line.toCharArray();
+						String toPrint = "";
+						if (charArray[6] == '(')
+						{
+							boolean closed = false;
+							for (int i = 7; i < charArray.length && !closed; i++)
+							{
+								if (charArray[i] != ')')
+								{
+									toPrint += charArray[i];
+								}
+								else
+								{
+									closed = true;
+								}
+							}
+							if(!closed)
+							{
+								io.append(errorAt + "no closing paren ')\'");
+								error = true;
+							}
+							else
+							{
+								String[] splitLine = line.split("[)]", 2);
+								if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+								{
+									io.append(errorAt + "PRINT contains too many arguments");
+								}
+								else
+								{
+									commands.add(new PRINT(toPrint, "string"));
+								}
+							}
+						}
+						//if variable
+						else
+						{
+							String[] splitLine = line.split("[ ]", 3);
+							//if there is anything after the command other than whitespace
+							if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+							{
+								io.append(errorAt + "PRINT contains too many arguments \n");
+								error = true;
+							}
+							else
+							{
+								commands.add(new PRINT(splitLine[1], "variable"));
+							}
+						}
+					}
+					else if (line.startsWith("SUB"))
+					{
+	
+						String[] splitLine = line.split("[ ]", 5);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+						{
+							io.append(errorAt + "SUB contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new SUB(splitLine[1], splitLine[2], splitLine[3]));
+						}
+					}
+					else if (line.startsWith("VAR"))
+					{
+						String[] splitLine = line.split("[ ]", 3);
+						//if there is anything after the variable name other than whitespace
+						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+						{
+							io.append(errorAt + "VAR contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							commands.add(new VAR(splitLine[1]));
+						}
+					}
+					//a blank line
+					else if (line.trim().length() < 1)
+					{
 					}
 					else
 					{
-						commands.add(new SUB(splitLine[1], splitLine[2], splitLine[3]));
-					}
-				}
-				else if (line.startsWith("VAR"))
-				{
-					String[] splitLine = line.split("[ ]", 3);
-					//if there is anything after the variable name other than whitespace
-					if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
-					{
-						io.append(errorAt + "VAR contains too many arguments \n");
+						io.append(errorAt + "Unrecognized keyword \n");
 						error = true;
 					}
-					else
-					{
-						commands.add(new VAR(splitLine[1]));
-					}
+					lineNumber++;
 				}
-				//a blank line
-				else if (line.trim().length() < 1)
+				if (!ended)
 				{
+					io.append("IDIOT program must end with END \n");
 				}
 				else
 				{
-					io.append(errorAt + "Unrecognized keyword \n");
-					error = true;
-				}
-				lineNumber++;
-			}
-			if (!ended)
-			{
-				io.append("IDIOT program must end with END \n");
-			}
-			else
-			{
-				if(!error)
-				{
-					for (Command command : commands)
+					if(!error)
 					{
-						if (!command.execute(variables, io))
+						for (Command command : commands)
 						{
-							break;
+							if (!command.execute(variables, io))
+							{
+								break;
+							}
 						}
 					}
 				}
 			}
-		}
-		catch (IOException e)
-		{
-			io.append("error sending code to interpreter \n");
-		}
-		try
-		{
-			reader.close();
-		}
-		catch (IOException e)
-		{
-			io.append("Failed to close BufferedReader \n");
+			catch (IOException e)
+			{
+				io.append("error sending code to interpreter \n");
+			}
+			try
+			{
+				reader.close();
+			}
+			catch (IOException e)
+			{
+				io.append("Failed to close BufferedReader \n");
+			}
 		}
 	}
 }
