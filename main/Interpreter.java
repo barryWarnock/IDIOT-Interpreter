@@ -457,17 +457,16 @@ public class Interpreter
 
 	protected JTextArea io;
 
-	/**
-	 * takes just one parameter, a reference to the pane that is to be used for i/o
-	 * @param io the pane to be used for i/o
-	 */
-	Interpreter(JTextArea io)
+	Interpreter()
 	{
-		this.io = io;
-		//prevent the user from editing the console unless the ENTER command says otherwise
-		io.setEditable(false);
+		io = null;
 	}
 
+	public void setIo(JTextArea io)
+	{
+		this.io = io;
+	}
+	
 	/**
 	 * removes the highlighting from content, checks the code for errors line by line,
 	 * turning each line into a Command object, and iterates through the commands
