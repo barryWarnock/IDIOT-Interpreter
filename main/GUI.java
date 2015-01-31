@@ -354,7 +354,7 @@ public class GUI implements ActionListener
 			
 			} case "Save":{ 
 				try {
-					FileOpen.fileSaveBeta(tabbedPane);
+					FileOpen.fileSave(tabbedPane);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					//cry????
@@ -365,7 +365,7 @@ public class GUI implements ActionListener
 			
 			} case "Save As":{
 				try {
-					FileOpen.fileSaveBeta(tabbedPane);
+					FileOpen.fileSaveAs(tabbedPane);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					//cry????
