@@ -47,7 +47,7 @@ public class FileOpen {
 	 * @param tabbedPane just the tabbedPane from the GUI
 	 * @throws IOException if the file can't be saved for some reason 
 	 */
-	public static void fileSaveAlpha(JTabbedPane tabbedPane) throws IOException
+	public static void fileSaveAs(JTabbedPane tabbedPane) throws IOException
 	{
 		//returns the tab component with focus
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
@@ -72,7 +72,7 @@ public class FileOpen {
 	}
 	
 	
-	public static void fileSaveBeta(JTabbedPane tabbedPane) throws IOException{
+	public static void fileSave(JTabbedPane tabbedPane) throws IOException{
 		//Automatically saves the file where it was, doesn't open the file chooser window.
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		if(scroll==null){
