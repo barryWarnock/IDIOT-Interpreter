@@ -79,9 +79,8 @@ public class GUI implements ActionListener
         JPanel terminalPanel=new JPanel(new BorderLayout());
         terminalPanel.add(output);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
-        //create the interpreter
-        //TODO make this method in the interpreter
-        //MainRun.getInterpreter().setOutputPanel(output);
+        //add output to interpreter
+        MainRun.getInterpreter().setIo(output);
         
 
         //Create the split pane 

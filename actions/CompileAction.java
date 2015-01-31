@@ -28,14 +28,18 @@ public class CompileAction extends AbstractAction {
 				System.out.println("null :(");
 			}else{
 				
-			    //sends a string to the interpreter
-				
-				try {
-					MainRun.getInterpreter().run(editor.getText());
-				} catch (Exception e1) {
-					//TODO error message pop-up
-					e1.printStackTrace();
-				}
+				Thread thread = new Thread() {
+			        public void run() {
+			        	//sends a string to the interpreter
+			        	try {
+							MainRun.getInterpreter().run(editor.getText());
+						} catch (Exception e1) {
+							//TODO error message pop-up
+							e1.printStackTrace();
+						}
+			        }
+			    };
+			    thread.start();
 				
 			    
 			}

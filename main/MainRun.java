@@ -8,17 +8,16 @@ public class MainRun {
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				GUI main=new GUI();
-        		main.createFrame("IDIOT IDE", 500, 500);
+				interpreter = new Interpreter();
 			}
 		});
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				//TODO make the interpreter's constructor not need a textarea
-				//make it build without it but fail to interpret without one being added
-				interpreter = new Interpreter();
+				GUI main=new GUI();
+        		main.createFrame("IDIOT IDE", 500, 500);
 			}
 		});
+		
 	}
 	
 	public static Interpreter getInterpreter()
