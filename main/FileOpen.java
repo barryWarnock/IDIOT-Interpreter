@@ -81,7 +81,7 @@ public class FileOpen {
 			if(editor==null){
 			}else{
 			}if(FILENAME==null){
-				FileOpen.fileSaveAlpha(tabbedPane); 
+				FileOpen.fileSaveAs(tabbedPane); 
 			}else{
 				//adds .IDIOT if it is not there. 
 				File file = new File(FILENAME); 
