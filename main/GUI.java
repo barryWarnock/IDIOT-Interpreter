@@ -319,8 +319,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("About IDIOT IDE");
         menuItem.getAccessibleContext().setAccessibleDescription("Provides information about the IDE");
         menuItem.setToolTipText("Provides information about the IDE");
-        menuItem.setActionCommand("About IDIOT IDE");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new AboutAction());
         help.add(menuItem);
         
         return menubar;
@@ -381,28 +380,7 @@ public class GUI implements ActionListener
 				System.out.println("View Help");
 				break;
 				
-			} case "About IDIOT IDE":{ 
-				
-				//try to find a nice icon for the dialog box but don't display it if it can't be found
-				ImageIcon icon=null;
-				URL imageURL = this.getClass().getResource("/images/infoIcon.png");
-				if (imageURL != null) {                   
-					icon=new ImageIcon(imageURL,"Info");
-		        } 
-				
-				JOptionPane.showMessageDialog(null, "The IDIOT editor was made by:\n\n" 
-						+ "Jeremy Bolster,\n"
-						+ "Travis Kurucz,\n"
-						+ "Timothy Hillier,\n"
-						+ "Dean Kution,\n"
-						+ "Barry Warnock\n\n"
-						+ "Thanks to Visual Pharm for the icons which were released under\n"
-						+ "Creative Commons Attribution-No Derivative Works 3.0 Unported\n"
-						+ "They can be viewed at https://www.iconfinder.com/icons/27860/",
-						"About the IDIOT editor",JOptionPane.PLAIN_MESSAGE,icon);
-				
-				break;
-			}
+			} 
 		}
 	}
 
