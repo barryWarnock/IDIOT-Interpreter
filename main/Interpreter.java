@@ -313,7 +313,7 @@ public class Interpreter
                 return null;
             }
             //runtime error if the Variable is not initialized
-			if(variables.get(var).isInitialized())
+			if(!variables.get(var).isInitialized())
             {
                 pane.append("Uninitialized variable passed to INC \n");
                 return null;
@@ -552,6 +552,7 @@ public class Interpreter
 		{
 			//clear the console before running
 			io.setText(null);
+			io.setEditable(false);
 			HashMap<String, Variable> variables = new HashMap<String, Variable>();
 			Command head = null;
 			Command tail = null;
