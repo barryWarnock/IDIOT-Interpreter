@@ -92,19 +92,41 @@ public class Interpreter
 	/**
 	 * the Command interface will be used by all of the commands so that a list of them can be built and iterated through
 	 */
-	protected interface Command
+	protected abstract class Command
 	{
 		/**
 		 * @param variables a list of variables the command needs access to
 		 * @param pane the pane that will be used for io
-		 * @return boolean if there is an error execute will write it to the pane and return false
+		 * @return Command program will end when execute returns null
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane );
+		public abstract Command execute(HashMap<String, Variable> variables, JTextArea pane );
+		protected Command previous = null;
+		public void setPrevious(Command previous)
+		{
+			this.previous = previous;
+		}
+		protected Command next = null;
+		protected int lineNumber;
+		public void setLine(int line)
+		{
+			lineNumber = line;
+		}
+		public Command add(Command next, int lineNumber)
+		{
+			this.next = next;
+			next.setPrevious(this);
+			next.setLine(lineNumber);
+			return next;
+		}
+		public int getLine()
+		{
+			return lineNumber;
+		}
 	}
 	/**
 	 * ADD takes three numbers, adds the first two and assigns that value to the third
 	 */
-	protected class ADD implements Command
+	protected class ADD extends Command
 	{
 		protected String first, second, third;
 		/**
@@ -122,7 +144,7 @@ public class Interpreter
 		 * adds the first and second variables and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
@@ -132,24 +154,24 @@ public class Interpreter
 			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
 				pane.append("invalid variable passed to ADD \n");
-				return false;
+				return null;
 			}
 			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
 				pane.append("invalid first or second variable passed to ADD \n");
-				return false;
+				return null;
 			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f + s;
 			variables.get(third).setValue(t);
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * ASSIGN assigns the given value to the given Variable
 	 */
-	protected class ASSIGN implements Command
+	protected class ASSIGN extends Command
 	{
 		protected String var;
 		protected double val;
@@ -166,22 +188,32 @@ public class Interpreter
 		 * assigns the given value to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			//runtime error if the variable does not exist
 			if(variables.get(var) == null)
             {
                 pane.append("Nonexistant variable passed to ASSIGN \n");
-                return false;
+                return null;
             }
 			variables.get(var).setValue(val);
-			return true;
+			return this.next;
+		}
+	}
+	/**
+	 * BLANK is used to represent empty lines in the linked list of Commands
+	 */
+	protected class BLANK extends Command
+	{
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+		{
+			return this.next;
 		}
 	}
 	/**
 	 * DIV takes three numbers, divides the first by the second and assigns that value to the third
 	 */
-	protected class DIV implements Command
+	protected class DIV extends Command
 	{
 		protected String first, second, third;
 		/**
@@ -199,7 +231,7 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
@@ -209,24 +241,24 @@ public class Interpreter
 			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
 				pane.append("invalid variable passed to DIV \n");
-				return false;
+				return null;
 			}
 			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
 				pane.append("invalid first or second variable passed to DIV \n");
-				return false;
+				return null;
 			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f / s;
 			variables.get(third).setValue(t);
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * ENTER takes input from the user and assigns it to the given Variable
 	 */
-	protected class ENTER implements Command
+	protected class ENTER extends Command
 	{
 		protected String var;
 		/**
@@ -240,7 +272,7 @@ public class Interpreter
 		 * will somehow take input from the user and put it in the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			int initial = io.getText().lastIndexOf('\n');
 			io.setEditable(true);
@@ -252,13 +284,13 @@ public class Interpreter
 			String input = io.getText().substring(initial);
 			double val = Double.parseDouble(input);
 			variables.get(var).setValue(val);
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * INC adds one to the given variable
 	 */
-	protected class INC implements Command
+	protected class INC extends Command
 	{
 		protected String var;
 		/**
@@ -272,28 +304,28 @@ public class Interpreter
 		 * adds one to the given Variable
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			//runtime error if the Variable does not exist
 			if(variables.get(var) == null)
             {
                 pane.append("Nonexistant variable passed to INC \n");
-                return false;
+                return null;
             }
             //runtime error if the Variable is not initialized
 			if(variables.get(var).isInitialized())
             {
                 pane.append("Uninitialized variable passed to INC \n");
-                return false;
+                return null;
             }
 			variables.get(var).setValue((variables.get(var).getValue() + 1));
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 *MUL takes three numbers, multiplies the first two and gives that variable to the third
 	 */
-	protected class MUL implements Command
+	protected class MUL extends Command
 	{
 		protected String first, second, third;
 		/**
@@ -311,7 +343,7 @@ public class Interpreter
 		 * multiplies the first and second numbers and gives that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
@@ -321,24 +353,24 @@ public class Interpreter
 			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
 				pane.append("invalid variable passed to MUL \n");
-				return false;
+				return null;
 			}
 			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
 				pane.append("invalid first or second variable passed to MUL \n");
-				return false;
+				return null;
 			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f * s;
 			variables.get(third).setValue(t);
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * PRINT takes a variable or string and outputs its value
 	 */
-	protected class PRINT implements Command
+	protected class PRINT extends Command
 	{
 		protected String val;
 		protected boolean isVar = false;
@@ -364,7 +396,7 @@ public class Interpreter
 		 * checks what type the value it then prints it
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			if (isVar)
 			{
@@ -372,7 +404,7 @@ public class Interpreter
 				if(variables.get(val) == null)
 	            {
 	                pane.append("Nonexistant variable passed to PRINT \n");
-	                return false;
+	                return null;
 	            }
 				pane.append(variables.get(val).toString());
 			}
@@ -382,15 +414,15 @@ public class Interpreter
 			}
 			else
 			{
-				return false;
+				return null;
 			}
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * SUB takes three values subtracts the second from the first then assigns that value to the third
 	 */
-	protected class SUB implements Command
+	protected class SUB extends Command
 	{
 		protected String first, second, third;
 		/**
@@ -408,7 +440,7 @@ public class Interpreter
 		 * divides the first number by the second and assigns that value to the third
 		 * {@inheritDoc}
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			/*
 			* there will be a runtime error if:
@@ -418,24 +450,24 @@ public class Interpreter
 			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 			{
 				pane.append("invalid variable passed to SUB \n");
-				return false;
+				return null;
 			}
 			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 			{
 				pane.append("invalid first or second variable passed to SUB \n");
-				return false;
+				return null;
 			}
 			double f = variables.get(first).getValue();
 			double s = variables.get(second).getValue();
 			double t = f - s;
 			variables.get(third).setValue(t);
-			return true;
+			return this.next;
 		}
 	}
 	/**
 	 * VAR creates a Variable and adds it to the HashMap
 	 */
-	protected class VAR implements Command
+	protected class VAR extends Command
 	{
 		protected String name;
 		/**
@@ -448,11 +480,11 @@ public class Interpreter
 		/**
 		 * creates a new Variable with the given name and adds it to the HashMap
 		 */
-		public boolean execute(HashMap<String, Variable> variables, JTextArea pane )
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 		{
 			//runtime error if the variable name includes '(' or ')'
 			variables.put(name, new Variable(name));
-			return true;
+			return this.next;
 		}
 	}
 
@@ -486,6 +518,8 @@ public class Interpreter
 			io.setText(null);
 			HashMap<String, Variable> variables = new HashMap<String, Variable>();
 			ArrayList<Command> commands = new ArrayList<Command>();
+			Command head = null;
+			Command tail = null;
 			BufferedReader reader = new BufferedReader(new StringReader(content));
 			String line = null;
 			boolean started = false;
@@ -513,6 +547,9 @@ public class Interpreter
 						else
 						{
 							started = true;
+							head = new BLANK();
+							head.setLine(lineNumber);
+							tail = head;
 						}
 					}
 					else if (!line.startsWith("START") && !started)
@@ -547,7 +584,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new ADD(splitLine[1], splitLine[2], splitLine[3]));
+							tail = tail.add(new ADD(splitLine[1], splitLine[2], splitLine[3]), lineNumber);
 						}
 					}
 					else if (line.startsWith("ASSIGN"))
@@ -562,11 +599,12 @@ public class Interpreter
 						else
 						{
 							double val = Double.parseDouble(splitLine[2]);
-							commands.add(new ASSIGN(splitLine[1], val));
+							tail = tail.add(new ASSIGN(splitLine[1], val), lineNumber);
 						}
 					}
 					else if (line.startsWith("CMT"))
 					{
+						tail = tail.add(new BLANK(), lineNumber);
 					}
 					else if (line.startsWith("DIV"))
 					{
@@ -580,7 +618,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new DIV(splitLine[1], splitLine[2], splitLine[3]));
+							tail = tail.add(new DIV(splitLine[1], splitLine[2], splitLine[3]), lineNumber);
 						}
 					}
 					else if (line.startsWith("ENTER"))
@@ -594,7 +632,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new ENTER(splitLine[1]));
+							tail = tail.add(new ENTER(splitLine[1]), lineNumber);
 						}
 					}
 					else if (line.startsWith("INC"))
@@ -609,7 +647,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new INC(splitLine[1]));
+							tail = tail.add(new INC(splitLine[1]), lineNumber);
 						}
 					}
 					else if (line.startsWith("MUL"))
@@ -624,7 +662,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new MUL(splitLine[1], splitLine[2], splitLine[3]));
+							tail = tail.add(new MUL(splitLine[1], splitLine[2], splitLine[3]), lineNumber);
 						}
 					}
 					else if (line.startsWith("PRINT"))
@@ -659,7 +697,7 @@ public class Interpreter
 								}
 								else
 								{
-									commands.add(new PRINT(toPrint, "string"));
+									tail = tail.add(new PRINT(toPrint, "string"), lineNumber);
 								}
 							}
 						}
@@ -675,7 +713,7 @@ public class Interpreter
 							}
 							else
 							{
-								commands.add(new PRINT(splitLine[1], "variable"));
+								tail = tail.add(new PRINT(splitLine[1], "variable"), lineNumber);
 							}
 						}
 					}
@@ -691,7 +729,7 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new SUB(splitLine[1], splitLine[2], splitLine[3]));
+							tail = tail.add(new SUB(splitLine[1], splitLine[2], splitLine[3]), lineNumber);
 						}
 					}
 					else if (line.startsWith("VAR"))
@@ -705,12 +743,13 @@ public class Interpreter
 						}
 						else
 						{
-							commands.add(new VAR(splitLine[1]));
+							tail = tail.add(new VAR(splitLine[1]), lineNumber);
 						}
 					}
 					//a blank line
 					else if (line.trim().length() < 1)
 					{
+						tail = tail.add(new BLANK(), lineNumber);
 					}
 					else
 					{
@@ -725,14 +764,13 @@ public class Interpreter
 				}
 				else
 				{
+					Command current = head;
 					if(!error)
 					{
-						for (Command command : commands)
+						while(current != null)
 						{
-							if (!command.execute(variables, io))
-							{
-								break;
-							}
+							System.out.println(current.getLine());
+							current = current.execute(variables, io);
 						}
 					}
 				}
