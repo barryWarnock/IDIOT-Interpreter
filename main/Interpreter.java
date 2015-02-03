@@ -523,6 +523,64 @@ public class Interpreter
 			return toReturn;
 		}
 	}
+	protected class IF extends Command
+	{
+		//link to the closing ENDIF
+		public Command else = null;
+		//contains a static list of unclosed IFs
+		public static ArrayList<IF> IFs = new ArrayList<IF>();
+		String var, cond;
+		double val;
+		//variable, condition, value
+		IF(String variable,String condition, double value)
+		{
+			var = variable;
+			cond = condition;
+			val = value;
+		}
+		//returns the next command if true otherwise returns else
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+		{
+			Command toReturn = else;
+			if (cond == "equals")
+			{
+				if (variables.get(var).getValue() == val)
+				{
+					toReturn = next;
+				}
+			}
+			if (cond == "greater")
+			{
+				if (variables.get(var).getValue() > val)
+				{
+					toReturn = next;
+				}
+			}
+			if (cond == "less")
+			{
+				if (variables.get(var).getValue() < val)
+				{
+					toReturn = next;
+				}
+			}
+			if (cond == "not")
+			{
+				if (variables.get(var).getValue() != val)
+				{
+					toReturn = next;
+				}
+			}
+			return toReturn;
+		}
+	}
+	
+	protected class ENDIF extends Command
+	{
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+		{
+			IF.IFs.remove(IFs.size()-1).else = this;
+		}
+	}
 
 	protected JTextArea io;
 
