@@ -1,0 +1,25 @@
+START
+VAR secret
+VAR gueses
+VAR input
+ASSIGN gueses 0
+IF gueses < 3
+PRINT (Guess a number between one and 10)
+ENTER input
+IF input > 7
+PRINT (too big)
+INC gueses
+GOTO 6
+ENDIF
+IF input < 7
+PRINT (too small)
+INC gueses
+GOTO 6
+ENDIF
+IF input = 7
+PRINT (you win!)
+GOTO 25
+ENDIF
+ENDIF
+PRINT (you loose)
+END
