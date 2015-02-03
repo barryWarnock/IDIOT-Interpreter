@@ -964,7 +964,6 @@ class ENDIF extends Command
 {
 	ENDIF()
 	{
-		System.out.println(IF.IFs.get(IF.IFs.size()-1).getLine());
 		IF.IFs.remove(IF.IFs.size()-1).elseIF = this;
 	}
 	public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
