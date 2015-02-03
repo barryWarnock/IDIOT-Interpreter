@@ -487,6 +487,42 @@ public class Interpreter
 			return this.next;
 		}
 	}
+	
+	
+	//The following commands were not in the handout
+	protected class GOTO extends Command
+	{
+		int line;
+		GOTO(int line)
+		{
+			this.line = line;
+		}
+		public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+		{
+			Command toReturn = this;
+			boolean searching = true;
+			while (searching)
+			{
+				if (toReturn == null)
+				{
+					searching = false;
+				}
+				else if (line > toReturn.getLine())
+				{
+					toReturn = toReturn.next;
+				}
+				else if (line < toReturn.getLine())
+				{
+					toReturn = toReturn.previous;
+				}
+				else if (line == toReturn.getLine())
+				{
+					searching = false;
+				}
+			}
+			return toReturn;
+		}
+	}
 
 	protected JTextArea io;
 
@@ -517,7 +553,6 @@ public class Interpreter
 			//clear the console before running
 			io.setText(null);
 			HashMap<String, Variable> variables = new HashMap<String, Variable>();
-			ArrayList<Command> commands = new ArrayList<Command>();
 			Command head = null;
 			Command tail = null;
 			BufferedReader reader = new BufferedReader(new StringReader(content));
@@ -746,6 +781,23 @@ public class Interpreter
 							tail = tail.add(new VAR(splitLine[1]), lineNumber);
 						}
 					}
+					
+					else if (line.startsWith("GOTO"))
+					{
+						String[] splitLine = line.split("[ ]", 3);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 2 && splitLine[2].trim().length() >= 1)
+						{
+							io.append(errorAt + "GOTO contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							int gotoLine = Integer.parseInt(splitLine[1]); 
+							tail = tail.add(new GOTO(gotoLine), lineNumber);
+						}
+					}
+					
 					//a blank line
 					else if (line.trim().length() < 1)
 					{
@@ -769,7 +821,6 @@ public class Interpreter
 					{
 						while(current != null)
 						{
-							System.out.println(current.getLine());
 							current = current.execute(variables, io);
 						}
 					}
