@@ -281,7 +281,7 @@ public class Interpreter
 			{
 			}
 			io.setEditable(false);
-			String input = io.getText().substring(initial);
+			String input = io.getText().substring(initial, io.getText().lastIndexOf('\n'));
 			double val = Double.parseDouble(input);
 			variables.get(var).setValue(val);
 			return this.next;
