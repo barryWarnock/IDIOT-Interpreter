@@ -79,10 +79,10 @@ public class GUI implements ActionListener
         JPanel terminalPanel=new JPanel(new BorderLayout());
         terminalPanel.add(output);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
+        
         //add output to interpreter
         MainRun.getInterpreter().setIo(output);
         
-
         //Create the split pane 
     	JSplitPane contentPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     	contentPane.setOneTouchExpandable(true);
@@ -154,7 +154,10 @@ public class GUI implements ActionListener
 		
 		//add buttons 
 		//TODO give buttons actionListeners
-		toolbar.add(makeButton("saveIcon", "Save"));
+		
+		tempButton = makeButton("saveIcon", "Save");
+		tempButton.addActionListener(new SaveAction());
+		toolbar.add(tempButton);
 		
 		tempButton = makeButton("openIcon", "Open");
 		tempButton.addActionListener(new OpenAction());
@@ -235,8 +238,7 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Saves current file");
         menuItem.setToolTipText("Saves current file");
-        menuItem.setActionCommand("Save");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new SaveAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save As");
@@ -348,17 +350,6 @@ public class GUI implements ActionListener
 				
 				//Open a tab with a blank window
 				makeNewTab();
-				break;
-			
-			} case "Save":{ 
-				try {
-					FileOpen.fileSave(tabbedPane);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					//cry????
-					e1.printStackTrace();
-				}
-				
 				break;
 			
 			} case "Save As":{
