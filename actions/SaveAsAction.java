@@ -5,26 +5,26 @@ import java.io.IOException;
 
 import javax.swing.AbstractAction;
 
-import main.*;
+import main.FileOpen;
+import main.GUI;
 
-/**TODO this should NOT ask where to save if the file already has a previous
- * save
+/**
  * TODO move parts of file open to this class 
+ * @author bolster
+ *
  */
 @SuppressWarnings("serial")
-public class SaveAction extends AbstractAction {
+public class SaveAsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		try {
-			FileOpen.fileSave(GUI.getTabbedPane());
+			FileOpen.fileSaveAs(GUI.getTabbedPane());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			//cry????
 			e1.printStackTrace();
 		}
-
 	}
-
 }
