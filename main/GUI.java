@@ -3,7 +3,9 @@ package main;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+
 import actions.*;
+
 import javax.swing.*;
 
 
@@ -40,7 +42,8 @@ public class GUI implements ActionListener
         frame.setLocationRelativeTo(null);
 
         //Open a tab with a blank window
-        makeNewTab();
+        NewAction tab1 = new NewAction();
+        tab1.actionPerformed(new ActionEvent(tab1, 1, ""));
         
        //Create and set up the content pane (Menu and tabs and output and textfield)
         GUI content = new GUI();
@@ -92,47 +95,7 @@ public class GUI implements ActionListener
         return finalPanel;
     }	
 	
-	/**
-	 * TODO this should have a close button on the edge of the tab
-	 */
-	public void makeNewTab() 
-	{
-		
-		//Create a scrolled text area to type into
-		JEditorPane IDIOT_file_content = new JEditorPane();
-		IDIOT_file_content.setEditable(true);
-		
-		//add a scrollPane to tabbedPane
-		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
-		tabbedPane.add("new file",scroll);
-		
-		//newest tabs spawn to the right, find the newest's index
-		int index = (tabbedPane.getTabCount() - 1);
-		
-		//create a panel for the button and label
-		JPanel nameAndButton = new JPanel(new GridBagLayout());
-		nameAndButton.setOpaque(false);
-		
-		//make the label and button 
-		JLabel tabTitle = new JLabel("new file");
-		JButton closeButton = new TabButton(tabbedPane);
-
-		//Do some funky stuff with the layout manager to make everything appear nice
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		
-		nameAndButton.add(tabTitle, gbc);
-		//after adding the label adjust the location so the button is put in the right place	
-		gbc.gridx++;
-		gbc.weightx = 0;
-		nameAndButton.add(closeButton, gbc);
-		//put the fancy pane on the right tab
-		tabbedPane.setTabComponentAt(index, nameAndButton);
-		
-		
-	}
+	
 	
 	/**
 	 * 
@@ -156,7 +119,10 @@ public class GUI implements ActionListener
 		tempButton.addActionListener(new OpenAction());
 		toolbar.add(tempButton);
 		
-		toolbar.add(makeButton("newIcon", "New"));
+		tempButton = makeButton("newIcon", "New");
+		tempButton.addActionListener(new NewAction());
+		toolbar.add(tempButton);
+		
         toolbar.add(makeButton("copyIcon", "Copy"));
         toolbar.add(makeButton("cutIcon", "Cut"));
         toolbar.add(makeButton("pasteIcon", "Paste"));
@@ -216,8 +182,7 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Creates a new file");
         menuItem.setToolTipText("Creates a new file");
-        menuItem.setActionCommand("New");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new NewAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Open");
@@ -291,8 +256,7 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Highlights all text from the current file");
         menuItem.setToolTipText("Highlights all text in the current file");
-        menuItem.setActionCommand("Select All");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new SelectAllAction());
         edit.add(menuItem);
  
         //The help bar
@@ -305,8 +269,7 @@ public class GUI implements ActionListener
         menuItem = new JMenuItem("View Help");
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a help window");
         menuItem.setToolTipText("Opens a help window");
-        menuItem.setActionCommand("View Help");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new HelpAction());
         help.add(menuItem);
         
         menuItem = new JMenuItem("About IDIOT IDE");
@@ -338,21 +301,7 @@ public class GUI implements ActionListener
 				System.out.println("Paste");
 				break;
 				
-			} case "New":{ 
-				
-				//Open a tab with a blank window
-				makeNewTab();
-				break;
-			
-			} case "Select All":{ 
-				System.out.println("Select All");
-				break;
-			
-			} case "View Help":{ 
-				System.out.println("View Help");
-				break;
-				
-			} 
+			}
 		}
 	}
 	
@@ -362,6 +311,27 @@ public class GUI implements ActionListener
 	public static JTabbedPane getTabbedPane()
 	{
 		return tabbedPane;
+	}
+	
+	/**
+	 * @return JEditorPane of the in-focus tab
+	 */
+	public static JEditorPane getFocusEditorPane(){
+		//returns the tab component with focus
+		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		if(scroll==null){
+			//TODO throw a custom exception
+			return null;
+		}else{
+			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
+			if(editor==null){
+				return null;
+				//TODO throw a custom exception not return null
+			}else{
+				return editor;
+			}
+		}
+		
 	}
 	
 	@Override
