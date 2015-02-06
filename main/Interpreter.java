@@ -17,513 +17,6 @@ import javax.swing.JTextArea;
  */
 public class Interpreter
 {
-	/**
-	 * Variable is that class that will represent our idiot variables
-	 */
-	protected class Variable
-	{
-		protected String name;
-		protected double value;
-		protected boolean initialized = false;
-		/**
-		 * Variables constructor simply gives a Variable a name
-		 * @param name the name of the new interpreter
-		 */
-		Variable(String name)
-		{
-			this.name = name;
-		}
-		/**
-		 * @return name the Variables name
-		 */
-		public String getName()
-		{
-			return name;
-		}
-		/**
-		 * @return value the current value of the Variable
-		 */
-		public double getValue()
-		{
-			return value;
-		}
-		/**
-		 * @param value the new value of the Variable
-		 */
-		public void setValue(double value)
-		{
-			this.value = value;
-			if (!initialized)
-			{
-				initialized = true;
-			}
-		}
-		/**
-		 * @return initialized true if the variable has been initialized false if it has not
-		 */
-		public boolean isInitialized()
-		{
-			return initialized;
-		}
-		public int hashCode()
-		{
-			return name.hashCode();
-		}
-		public boolean equals(Variable other)
-		{
-			if(this.name == other.name)
-			{
-				return true;
-			}
-			return false;
-		}
-		public String toString()
-		{
-			if (initialized)
-            {
-                return value + "\n";
-            }
-            else
-            {
-                return (name + " has not been innitialized \n");
-            }
-		}
-	}
-	/**
-	 * the Command interface will be used by all of the commands so that a list of them can be built and iterated through
-	 */
-	protected abstract class Command
-	{
-		/**
-		 * @param variables a list of variables the command needs access to
-		 * @param pane the pane that will be used for io
-		 * @return Command program will end when execute returns null
-		 */
-		public abstract Command execute(HashMap<String, Variable> variables, JTextArea pane );
-		protected Command previous = null;
-		public void setPrevious(Command previous)
-		{
-			this.previous = previous;
-		}
-		protected Command next = null;
-		protected int lineNumber;
-		public void setLine(int line)
-		{
-			lineNumber = line;
-		}
-		public Command add(Command next, int lineNumber)
-		{
-			this.next = next;
-			next.setPrevious(this);
-			next.setLine(lineNumber);
-			return next;
-		}
-		public int getLine()
-		{
-			return lineNumber;
-		}
-	}
-	/**
-	 * ADD takes three numbers, adds the first two and assigns that value to the third
-	 */
-	protected class ADD extends Command
-	{
-		protected String first, second, third;
-		/**
-		 * @param first the first variable
-		 * @param second the second variable
-		 * @param third the variable that is to receive the sum of the others
-		 */
-		ADD(String first, String second, String third)
-		{
-			this.first = first;
-			this.second = second;
-			this.third = third;
-		}
-		/**
-		 * adds the first and second variables and assigns that value to the third
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			/*
-			* there will be a runtime error if:
-			* any of the Variables has not been created
-			* or if the first two don't have values
-			*/
-			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
-			{
-				pane.append("invalid variable passed to ADD \n");
-				return null;
-			}
-			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
-			{
-				pane.append("invalid first or second variable passed to ADD \n");
-				return null;
-			}
-			double f = variables.get(first).getValue();
-			double s = variables.get(second).getValue();
-			double t = f + s;
-			variables.get(third).setValue(t);
-			return this.next;
-		}
-	}
-	/**
-	 * ASSIGN assigns the given value to the given Variable
-	 */
-	protected class ASSIGN extends Command
-	{
-		protected String var;
-		protected double val;
-		/**
-		 * @param var the name of the variable to be filled
-		 * @param val the value to place in var
-		 */
-		ASSIGN(String var, double val)
-		{
-			this.var = var;
-			this.val = val;
-		}
-		/**
-		 * assigns the given value to the given Variable
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			//runtime error if the variable does not exist
-			if(variables.get(var) == null)
-            {
-                pane.append("Nonexistant variable passed to ASSIGN \n");
-                return null;
-            }
-			variables.get(var).setValue(val);
-			return this.next;
-		}
-	}
-	/**
-	 * BLANK is used to represent empty lines in the linked list of Commands
-	 */
-	protected class BLANK extends Command
-	{
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			return this.next;
-		}
-	}
-	/**
-	 * DIV takes three numbers, divides the first by the second and assigns that value to the third
-	 */
-	protected class DIV extends Command
-	{
-		protected String first, second, third;
-		/**
-		 * @param first the first variable
-		 * @param second the second variable
-		 * @param third the variable that is to receive the sum of the others
-		 */
-		DIV(String first, String second, String third)
-		{
-			this.first = first;
-			this.second = second;
-			this.third = third;
-		}
-		/**
-		 * divides the first number by the second and assigns that value to the third
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			/*
-			* there will be a runtime error if:
-			* any of the Variables has not been created
-			* or if the first two don't have values
-			*/
-			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
-			{
-				pane.append("invalid variable passed to DIV \n");
-				return null;
-			}
-			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
-			{
-				pane.append("invalid first or second variable passed to DIV \n");
-				return null;
-			}
-			double f = variables.get(first).getValue();
-			double s = variables.get(second).getValue();
-			double t = f / s;
-			variables.get(third).setValue(t);
-			return this.next;
-		}
-	}
-	/**
-	 * ENTER takes input from the user and assigns it to the given Variable
-	 */
-	protected class ENTER extends Command
-	{
-		protected String var;
-		/**
-		 * @param var the variable to fill with the user input value
-		 */
-		ENTER(String var)
-		{
-			this.var = var;
-		}
-		/**
-		 * will somehow take input from the user and put it in the given Variable
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			int initial = io.getText().lastIndexOf('\n');
-			io.setEditable(true);
-			//wait until a new newline is detected
-			while(initial == (io.getText().lastIndexOf('\n')));
-			{
-			}
-			io.setEditable(false);
-			String input = io.getText().substring(initial, io.getText().lastIndexOf('\n'));
-			double val = Double.parseDouble(input);
-			variables.get(var).setValue(val);
-			return this.next;
-		}
-	}
-	/**
-	 * INC adds one to the given variable
-	 */
-	protected class INC extends Command
-	{
-		protected String var;
-		/**
-		 * @param var the variable to add one to
-		 */
-		INC(String var)
-		{
-			this.var = var;
-		}
-		/**
-		 * adds one to the given Variable
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			//runtime error if the Variable does not exist
-			if(variables.get(var) == null)
-            {
-                pane.append("Nonexistant variable passed to INC \n");
-                return null;
-            }
-            //runtime error if the Variable is not initialized
-			if(!variables.get(var).isInitialized())
-            {
-                pane.append("Uninitialized variable passed to INC \n");
-                return null;
-            }
-			variables.get(var).setValue((variables.get(var).getValue() + 1));
-			return this.next;
-		}
-	}
-	/**
-	 *MUL takes three numbers, multiplies the first two and gives that variable to the third
-	 */
-	protected class MUL extends Command
-	{
-		protected String first, second, third;
-		/**
-		 * @param first
-		 * @param second
-		 * @param third
-		 */
-		MUL(String first, String second, String third)
-		{
-			this.first = first;
-			this.second = second;
-			this.third = third;
-		}
-		/**
-		 * multiplies the first and second numbers and gives that value to the third
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			/*
-			* there will be a runtime error if:
-			* any of the Variables has not been created
-			* or if the first two don't have values
-			*/
-			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
-			{
-				pane.append("invalid variable passed to MUL \n");
-				return null;
-			}
-			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
-			{
-				pane.append("invalid first or second variable passed to MUL \n");
-				return null;
-			}
-			double f = variables.get(first).getValue();
-			double s = variables.get(second).getValue();
-			double t = f * s;
-			variables.get(third).setValue(t);
-			return this.next;
-		}
-	}
-	/**
-	 * PRINT takes a variable or string and outputs its value
-	 */
-	protected class PRINT extends Command
-	{
-		protected String val;
-		protected boolean isVar = false;
-		protected boolean isString = false;
-		/**
-		 * takes the value to be output and its type
-		 * @param val the Variable or string to output
-		 * @param type 'string' if the value is a string or 'variable' if it is a variable
-		 */
-		PRINT(String val, String type)
-		{
-			if (type == "variable")
-			{
-				isVar = true;
-			}
-			else if (type == "string")
-			{
-				isString = true;
-			}
-			this.val = val;
-		}
-		/**
-		 * checks what type the value it then prints it
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			if (isVar)
-			{
-				//runtime error if variable does not exist
-				if(variables.get(val) == null)
-	            {
-	                pane.append("Nonexistant variable passed to PRINT \n");
-	                return null;
-	            }
-				pane.append(variables.get(val).toString());
-			}
-			else if (isString)
-			{
-				pane.append(val + "\n");
-			}
-			else
-			{
-				return null;
-			}
-			return this.next;
-		}
-	}
-	/**
-	 * SUB takes three values subtracts the second from the first then assigns that value to the third
-	 */
-	protected class SUB extends Command
-	{
-		protected String first, second, third;
-		/**
-		 * @param first
-		 * @param second
-		 * @param third
-		 */
-		SUB(String first, String second, String third)
-		{
-			this.first = first;
-			this.second = second;
-			this.third = third;
-		}
-		/**
-		 * divides the first number by the second and assigns that value to the third
-		 * {@inheritDoc}
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			/*
-			* there will be a runtime error if:
-			* any of the Variables has not been created
-			* or if the first two don't have values
-			*/
-			if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
-			{
-				pane.append("invalid variable passed to SUB \n");
-				return null;
-			}
-			if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
-			{
-				pane.append("invalid first or second variable passed to SUB \n");
-				return null;
-			}
-			double f = variables.get(first).getValue();
-			double s = variables.get(second).getValue();
-			double t = f - s;
-			variables.get(third).setValue(t);
-			return this.next;
-		}
-	}
-	/**
-	 * VAR creates a Variable and adds it to the HashMap
-	 */
-	protected class VAR extends Command
-	{
-		protected String name;
-		/**
-		 * @param name
-		 */
-		VAR(String name)
-		{
-			this.name = name;
-		}
-		/**
-		 * creates a new Variable with the given name and adds it to the HashMap
-		 */
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane )
-		{
-			//runtime error if the variable name includes '(' or ')'
-			variables.put(name, new Variable(name));
-			return this.next;
-		}
-	}
-	
-	
-	//The following commands were not in the handout
-	protected class GOTO extends Command
-	{
-		int line;
-		GOTO(int line)
-		{
-			this.line = line;
-		}
-		public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
-		{
-			Command toReturn = this;
-			boolean searching = true;
-			while (searching)
-			{
-				if (toReturn == null)
-				{
-					searching = false;
-				}
-				else if (line > toReturn.getLine())
-				{
-					toReturn = toReturn.next;
-				}
-				else if (line < toReturn.getLine())
-				{
-					toReturn = toReturn.previous;
-				}
-				else if (line == toReturn.getLine())
-				{
-					searching = false;
-				}
-			}
-			return toReturn;
-		}
-	}
-
 	protected JTextArea io;
 
 	Interpreter()
@@ -598,7 +91,7 @@ public class Interpreter
 						io.append(errorAt + "only one START per IDIOT program \n");
 						error = true;
 					}
-					else if (line.startsWith("END"))
+					else if (line.startsWith("END") && !line.startsWith("ENDIF"))
 					{
 						String[] splitLine = line.split("[ ]", 2);
 						//if there is anything after the Command other than whitespace
@@ -798,6 +291,57 @@ public class Interpreter
 							tail = tail.add(new GOTO(gotoLine), lineNumber);
 						}
 					}
+					else if (line.startsWith("IF"))
+					{
+						String[] splitLine = line.split("[ ]", 5);
+						//if there is anything after the command other than whitespace
+						if (splitLine.length > 4 && splitLine[4].trim().length() >= 1)
+						{
+							io.append(errorAt + "IF contains too many arguments \n");
+							error = true;
+						}
+						else
+						{
+							String condition = null;
+							if (splitLine[2].equals("="))
+							{
+								condition = "equals";
+							}
+							else if (splitLine[2].equals(">"))
+							{
+								condition = "greater";
+							}
+							else if (splitLine[2].equals("<"))
+							{
+								condition = "less";
+							}
+							else if (splitLine[2].equals("!"))
+							{
+								condition = "not";
+							}
+							else 
+							{
+								io.append(errorAt + "unrecognized condition passed to if \n");
+								error = true;
+							}
+							double val = Double.parseDouble(splitLine[3]);
+							tail = tail.add(new IF(splitLine[1], condition, val), lineNumber);
+						}
+					}
+						else if (line.startsWith("ENDIF"))
+						{
+							String[] splitLine = line.split("[ ]", 2);
+							//if there is anything after the command other than whitespace
+							if (splitLine.length > 1 && splitLine[1].trim().length() >= 1)
+							{
+								io.append(errorAt + "ENDIF contains too many arguments \n");
+								error = true;
+							}
+							else
+							{
+								tail = tail.add(new ENDIF(), lineNumber);
+							}
+						}
 					
 					//a blank line
 					else if (line.trim().length() < 1)
@@ -814,6 +358,10 @@ public class Interpreter
 				if (!ended)
 				{
 					io.append("IDIOT program must end with END \n");
+				}
+				else if (IF.IFs.size() > 0)
+				{
+					io.append("error at line " + IF.IFs.get(0).getLine() + " unclosed IF");
 				}
 				else
 				{
@@ -840,5 +388,587 @@ public class Interpreter
 				io.append("Failed to close BufferedReader \n");
 			}
 		}
+	}
+}
+
+/**
+ * Variable is that class that will represent our idiot variables
+ */
+class Variable
+{
+	protected String name;
+	protected double value;
+	protected boolean initialized = false;
+	/**
+	 * Variables constructor simply gives a Variable a name
+	 * @param name the name of the new interpreter
+	 */
+	Variable(String name)
+	{
+		this.name = name;
+	}
+	/**
+	 * @return name the Variables name
+	 */
+	public String getName()
+	{
+		return name;
+	}
+	/**
+	 * @return value the current value of the Variable
+	 */
+	public double getValue()
+	{
+		return value;
+	}
+	/**
+	 * @param value the new value of the Variable
+	 */
+	public void setValue(double value)
+	{
+		this.value = value;
+		if (!initialized)
+		{
+			initialized = true;
+		}
+	}
+	/**
+	 * @return initialized true if the variable has been initialized false if it has not
+	 */
+	public boolean isInitialized()
+	{
+		return initialized;
+	}
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
+	public boolean equals(Variable other)
+	{
+		if(this.name == other.name)
+		{
+			return true;
+		}
+		return false;
+	}
+	public String toString()
+	{
+		if (initialized)
+        {
+            return value + "\n";
+        }
+        else
+        {
+            return (name + " has not been innitialized \n");
+        }
+	}
+}
+/**
+ * the Command interface will be used by all of the commands so that a list of them can be built and iterated through
+ */
+abstract class Command
+{
+	/**
+	 * @param variables a list of variables the command needs access to
+	 * @param pane the pane that will be used for io
+	 * @return Command program will end when execute returns null
+	 */
+	public abstract Command execute(HashMap<String, Variable> variables, JTextArea pane );
+	protected Command previous = null;
+	public void setPrevious(Command previous)
+	{
+		this.previous = previous;
+	}
+	protected Command next = null;
+	protected int lineNumber;
+	public void setLine(int line)
+	{
+		lineNumber = line;
+	}
+	public Command add(Command next, int lineNumber)
+	{
+		this.next = next;
+		next.setPrevious(this);
+		next.setLine(lineNumber);
+		return next;
+	}
+	public int getLine()
+	{
+		return lineNumber;
+	}
+}
+/**
+ * ADD takes three numbers, adds the first two and assigns that value to the third
+ */
+class ADD extends Command
+{
+	protected String first, second, third;
+	/**
+	 * @param first the first variable
+	 * @param second the second variable
+	 * @param third the variable that is to receive the sum of the others
+	 */
+	ADD(String first, String second, String third)
+	{
+		this.first = first;
+		this.second = second;
+		this.third = third;
+	}
+	/**
+	 * adds the first and second variables and assigns that value to the third
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		/*
+		* there will be a runtime error if:
+		* any of the Variables has not been created
+		* or if the first two don't have values
+		*/
+		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		{
+			pane.append("invalid variable passed to ADD \n");
+			return null;
+		}
+		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		{
+			pane.append("invalid first or second variable passed to ADD \n");
+			return null;
+		}
+		double f = variables.get(first).getValue();
+		double s = variables.get(second).getValue();
+		double t = f + s;
+		variables.get(third).setValue(t);
+		return this.next;
+	}
+}
+/**
+ * ASSIGN assigns the given value to the given Variable
+ */
+class ASSIGN extends Command
+{
+	protected String var;
+	protected double val;
+	/**
+	 * @param var the name of the variable to be filled
+	 * @param val the value to place in var
+	 */
+	ASSIGN(String var, double val)
+	{
+		this.var = var;
+		this.val = val;
+	}
+	/**
+	 * assigns the given value to the given Variable
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		//runtime error if the variable does not exist
+		if(variables.get(var) == null)
+        {
+            pane.append("Nonexistant variable passed to ASSIGN \n");
+            return null;
+        }
+		variables.get(var).setValue(val);
+		return this.next;
+	}
+}
+/**
+ * BLANK is used to represent empty lines in the linked list of Commands
+ */
+class BLANK extends Command
+{
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		return this.next;
+	}
+}
+/**
+ * DIV takes three numbers, divides the first by the second and assigns that value to the third
+ */
+class DIV extends Command
+{
+	protected String first, second, third;
+	/**
+	 * @param first the first variable
+	 * @param second the second variable
+	 * @param third the variable that is to receive the sum of the others
+	 */
+	DIV(String first, String second, String third)
+	{
+		this.first = first;
+		this.second = second;
+		this.third = third;
+	}
+	/**
+	 * divides the first number by the second and assigns that value to the third
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		/*
+		* there will be a runtime error if:
+		* any of the Variables has not been created
+		* or if the first two don't have values
+		*/
+		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		{
+			pane.append("invalid variable passed to DIV \n");
+			return null;
+		}
+		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		{
+			pane.append("invalid first or second variable passed to DIV \n");
+			return null;
+		}
+		double f = variables.get(first).getValue();
+		double s = variables.get(second).getValue();
+		double t = f / s;
+		variables.get(third).setValue(t);
+		return this.next;
+	}
+}
+/**
+ * ENTER takes input from the user and assigns it to the given Variable
+ */
+class ENTER extends Command
+{
+	protected String var;
+	/**
+	 * @param var the variable to fill with the user input value
+	 */
+	ENTER(String var)
+	{
+		this.var = var;
+	}
+	/**
+	 * will somehow take input from the user and put it in the given Variable
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		int initial = pane.getText().lastIndexOf('\n');
+		pane.setEditable(true);
+		//wait until a new newline is detected
+		while(initial == (pane.getText().lastIndexOf('\n')));
+		{
+		}
+		pane.setEditable(false);
+		String input = pane.getText().substring(initial, pane.getText().lastIndexOf('\n'));
+		double val = Double.parseDouble(input);
+		variables.get(var).setValue(val);
+		return this.next;
+	}
+}
+/**
+ * INC adds one to the given variable
+ */
+class INC extends Command
+{
+	protected String var;
+	/**
+	 * @param var the variable to add one to
+	 */
+	INC(String var)
+	{
+		this.var = var;
+	}
+	/**
+	 * adds one to the given Variable
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		//runtime error if the Variable does not exist
+		if(variables.get(var) == null)
+        {
+            pane.append("Nonexistant variable passed to INC \n");
+            return null;
+        }
+        //runtime error if the Variable is not initialized
+		if(!variables.get(var).isInitialized())
+        {
+            pane.append("Uninitialized variable passed to INC \n");
+            return null;
+        }
+		variables.get(var).setValue((variables.get(var).getValue() + 1));
+		return this.next;
+	}
+}
+/**
+ *MUL takes three numbers, multiplies the first two and gives that variable to the third
+ */
+class MUL extends Command
+{
+	protected String first, second, third;
+	/**
+	 * @param first
+	 * @param second
+	 * @param third
+	 */
+	MUL(String first, String second, String third)
+	{
+		this.first = first;
+		this.second = second;
+		this.third = third;
+	}
+	/**
+	 * multiplies the first and second numbers and gives that value to the third
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		/*
+		* there will be a runtime error if:
+		* any of the Variables has not been created
+		* or if the first two don't have values
+		*/
+		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		{
+			pane.append("invalid variable passed to MUL \n");
+			return null;
+		}
+		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		{
+			pane.append("invalid first or second variable passed to MUL \n");
+			return null;
+		}
+		double f = variables.get(first).getValue();
+		double s = variables.get(second).getValue();
+		double t = f * s;
+		variables.get(third).setValue(t);
+		return this.next;
+	}
+}
+/**
+ * PRINT takes a variable or string and outputs its value
+ */
+class PRINT extends Command
+{
+	protected String val;
+	protected boolean isVar = false;
+	protected boolean isString = false;
+	/**
+	 * takes the value to be output and its type
+	 * @param val the Variable or string to output
+	 * @param type 'string' if the value is a string or 'variable' if it is a variable
+	 */
+	PRINT(String val, String type)
+	{
+		if (type == "variable")
+		{
+			isVar = true;
+		}
+		else if (type == "string")
+		{
+			isString = true;
+		}
+		this.val = val;
+	}
+	/**
+	 * checks what type the value it then prints it
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		if (isVar)
+		{
+			//runtime error if variable does not exist
+			if(variables.get(val) == null)
+            {
+                pane.append("Nonexistant variable passed to PRINT \n");
+                return null;
+            }
+			pane.append(variables.get(val).toString());
+		}
+		else if (isString)
+		{
+			pane.append(val + "\n");
+		}
+		else
+		{
+			return null;
+		}
+		return this.next;
+	}
+}
+/**
+ * SUB takes three values subtracts the second from the first then assigns that value to the third
+ */
+class SUB extends Command
+{
+	protected String first, second, third;
+	/**
+	 * @param first
+	 * @param second
+	 * @param third
+	 */
+	SUB(String first, String second, String third)
+	{
+		this.first = first;
+		this.second = second;
+		this.third = third;
+	}
+	/**
+	 * divides the first number by the second and assigns that value to the third
+	 * {@inheritDoc}
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		/*
+		* there will be a runtime error if:
+		* any of the Variables has not been created
+		* or if the first two don't have values
+		*/
+		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		{
+			pane.append("invalid variable passed to SUB \n");
+			return null;
+		}
+		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		{
+			pane.append("invalid first or second variable passed to SUB \n");
+			return null;
+		}
+		double f = variables.get(first).getValue();
+		double s = variables.get(second).getValue();
+		double t = f - s;
+		variables.get(third).setValue(t);
+		return this.next;
+	}
+}
+/**
+ * VAR creates a Variable and adds it to the HashMap
+ */
+class VAR extends Command
+{
+	protected String name;
+	/**
+	 * @param name
+	 */
+	VAR(String name)
+	{
+		this.name = name;
+	}
+	/**
+	 * creates a new Variable with the given name and adds it to the HashMap
+	 */
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
+	{
+		//runtime error if the variable name includes '(' or ')'
+		variables.put(name, new Variable(name));
+		return this.next;
+	}
+}
+
+
+//The following commands were not in the handout
+class GOTO extends Command
+{
+	int line;
+	GOTO(int line)
+	{
+		this.line = line;
+	}
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+	{
+		Command toReturn = this;
+		boolean searching = true;
+		while (searching)
+		{
+			if (toReturn == null)
+			{
+				searching = false;
+			}
+			else if (line > toReturn.getLine())
+			{
+				toReturn = toReturn.next;
+			}
+			else if (line < toReturn.getLine())
+			{
+				toReturn = toReturn.previous;
+			}
+			else if (line == toReturn.getLine())
+			{
+				searching = false;
+			}
+		}
+		return toReturn;
+	}
+}
+class IF extends Command
+{
+	//link to the closing ENDIF
+	public Command elseIF = null;
+	//contains a static list of unclosed IFs
+	public static ArrayList<IF> IFs = new ArrayList<IF>();
+	String var, cond;
+	double val;
+	//variable, condition, value
+	IF(String variable,String condition, double value)
+	{
+		var = variable;
+		cond = condition;
+		val = value;
+		IFs.add(this);
+	}
+	//returns the next command if true otherwise returns else
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+	{
+		//runtime error if the Variable does not exist
+		if(variables.get(var) == null)
+		{
+			pane.append("Nonexistant variable passed to IF \n");
+		    return null;
+		}
+		//runtime error if the Variable is not initialized
+		if(!variables.get(var).isInitialized())
+		{
+		pane.append("Uninitialized variable passed to IF \n");
+		return null;
+		}
+		Command toReturn = elseIF;
+		if (cond == "equals")
+		{
+			if (variables.get(var).getValue() == val)
+			{
+				toReturn = next;
+			}
+		}
+		if (cond == "greater")
+		{
+			if (variables.get(var).getValue() > val)
+			{
+				toReturn = next;
+			}
+		}
+		if (cond == "less")
+		{
+			if (variables.get(var).getValue() < val)
+			{
+				toReturn = next;
+			}
+		}
+		if (cond == "not")
+		{
+			if (variables.get(var).getValue() != val)
+			{
+				toReturn = next;
+			}
+		}
+		return toReturn;
+	}
+}
+
+class ENDIF extends Command
+{
+	ENDIF()
+	{
+		IF.IFs.remove(IF.IFs.size()-1).elseIF = this;
+	}
+	public Command execute(HashMap<String, Variable> variables, JTextArea pane) 
+	{
+		return next;
 	}
 }
