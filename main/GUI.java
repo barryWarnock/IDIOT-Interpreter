@@ -12,7 +12,7 @@ import javax.swing.*;
 
 /**
  * @author bolster
- * @version 0.0.1
+ * @version 0.1.0
  * This creates a GUI complete with a menubar and a toolbar
  * <p>
  * There is no hashCode or equals methods for this class as there are no static variables or objects.
@@ -20,8 +20,8 @@ import javax.swing.*;
  * TODO make all actions into abstract actions and then try to move menubar and toolbar and 
  * tab making out of this class
  */
-public class GUI implements ActionListener
-{
+public class GUI {
+	
 	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
 	private static JTabbedPane tabbedPane = new JTabbedPane();
 	
@@ -109,7 +109,6 @@ public class GUI implements ActionListener
 		JButton tempButton;
 		
 		//add buttons 
-		//TODO give buttons actionListeners
 		
 		tempButton = makeButton("saveIcon", "Save");
 		tempButton.addActionListener(new SaveAction());
@@ -123,9 +122,17 @@ public class GUI implements ActionListener
 		tempButton.addActionListener(new NewAction());
 		toolbar.add(tempButton);
 		
-        toolbar.add(makeButton("copyIcon", "Copy"));
-        toolbar.add(makeButton("cutIcon", "Cut"));
-        toolbar.add(makeButton("pasteIcon", "Paste"));
+        tempButton = makeButton("copyIcon", "Copy");
+        tempButton.addActionListener(new CopyAction());
+        toolbar.add(tempButton);
+        
+        tempButton = makeButton("cutIcon", "Cut");
+        tempButton.addActionListener(new CutAction());
+        toolbar.add(tempButton);
+        
+        tempButton = makeButton("pasteIcon", "Paste");
+        tempButton.addActionListener(new PasteAction());
+        toolbar.add(tempButton);
         
         tempButton = makeButton("printIcon", "Print");
         tempButton.addActionListener(new PrintAction());
@@ -231,16 +238,14 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Removes selected text and copies it to the clipboard");
         menuItem.setToolTipText("Removes selected text and copies it to the clipboard");
-        menuItem.setActionCommand("Cut");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new CutAction());
         edit.add(menuItem);
         
         menuItem = new JMenuItem("Copy");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Copies selsected text to the clipboard");
         menuItem.setToolTipText("Copies selected text to the clipboard");
-        menuItem.setActionCommand("Copy");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new CopyAction());
         edit.add(menuItem);
         
         menuItem = new JMenuItem("Paste");
@@ -248,8 +253,7 @@ public class GUI implements ActionListener
         menuItem.getAccessibleContext().setAccessibleDescription(
         		"Puts the content of the clipboard to the right of the cursor");
         menuItem.setToolTipText("Puts the content of the clipboard to the right of the cursor");
-        menuItem.setActionCommand("Paste");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new PasteAction());
         edit.add(menuItem);
         
         menuItem = new JMenuItem("Select All");
@@ -281,30 +285,6 @@ public class GUI implements ActionListener
         return menubar;
     }
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-		String action = e.getActionCommand();
-	 
-	    // See what menuItem was clicked and do the appropriate thing 
-		//TODO find the appropriate thing to do, currently just prints a string
-		switch(action){
-			case "Copy":{ 
-				System.out.println("Copy");
-				break;
-				
-			}case "Cut":{
-				System.out.println("Cut");
-				break;
-				
-			} case "Paste":{ 
-				System.out.println("Paste");
-				break;
-				
-			}
-		}
-	}
-	
 	/**
 	 * @return JTabbedPane containing the content tabs
 	 */
@@ -320,7 +300,7 @@ public class GUI implements ActionListener
 		//returns the tab component with focus
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		if(scroll==null){
-			//TODO throw a custom exception
+			//TODO throw a custom exception not return null
 			return null;
 		}else{
 			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
