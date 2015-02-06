@@ -1,12 +1,10 @@
 package actions;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import main.FileOpen;
 
 @SuppressWarnings("serial")
 public class ExitAction extends AbstractAction {
@@ -22,15 +20,12 @@ public class ExitAction extends AbstractAction {
 		//find what the user clicked 
 		if (result == JOptionPane.YES_OPTION)
 		{
-			//TODO just make this call the save action
+			//call the save action
+			SaveAction save = new SaveAction();
+			save.actionPerformed(new ActionEvent(save, 1, ""));
 			
-			try {
-				//save the users file
-				FileOpen.fileSave(main.GUI.getTabbedPane());
-				System.exit(0);
-			} catch (IOException e1) {
-				// TODO tell the user that the file didn't save :(
-			} 
+			//TODO make sure that it actually saves before closing 
+			System.exit(0);
 		
 		} else if(result == JOptionPane.NO_OPTION)
 		{

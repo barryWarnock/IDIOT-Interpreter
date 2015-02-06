@@ -1,22 +1,14 @@
 package main;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+
 /** This opens the file through the file manager
  * saves files differently depending on which save was used
  * appends .IDIOT to the end of files
  * 1-28-15
  * TODO merge this class into the action classes and eliminate this class
  */
-
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-
 public class FileOpen {
 	
 	// Stores the name of the file for use of the save function
@@ -42,58 +34,4 @@ public class FileOpen {
 			throw e;
 		}
 	}
-
-	/**
-	 * Works as a file saving method. Just send the tabbedPane into it. 
-	 * @param tabbedPane just the tabbedPane from the GUI
-	 * @throws IOException if the file can't be saved for some reason 
-	 */
-	public static void fileSaveAs(JTabbedPane tabbedPane) throws IOException
-	{
-		//returns the tab component with focus
-		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-		if(scroll==null){
-		}else{
-			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
-			if(editor==null){
-			}else{
-				//choose a filename
-				JFileChooser fileChooser = new JFileChooser();
-				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-					FILENAME= fileChooser.getSelectedFile().toString(); 
-					//adds .IDIOT if it is not there. 
-						if(!FILENAME.endsWith(".IDIOT"))
-							FILENAME+=".IDIOT"; 
-				  File file = new File( FILENAME);
-				  //save the open file 
-				  FileUtils.writeStringToFile(file, editor.getText());			
-				}
-			}
-		}
-	}
-	
-	
-	public static void fileSave(JTabbedPane tabbedPane) throws IOException{
-		//Automatically saves the file where it was, doesn't open the file chooser window.
-		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-		if(scroll==null){
-		}else{
-			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
-			if(editor==null){
-			}else{
-			}if(FILENAME==null){
-				FileOpen.fileSaveAs(tabbedPane); 
-			}else{
-				//adds .IDIOT if it is not there. 
-				File file = new File(FILENAME); 
-				if(!FILENAME.endsWith(".IDIOT"))
-					FILENAME+=".IDIOT";
-				  FileUtils.writeStringToFile(file, editor.getText());
-				  
-				}
-			}
-		}
-		
-	}
-	
-
+}
