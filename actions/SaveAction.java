@@ -22,6 +22,7 @@ public class SaveAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		//TODO set filename to last name that the file had 
 		String FILENAME=null;
 		
 		try {
