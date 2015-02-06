@@ -4,6 +4,7 @@ package main;
  * saves files differently depending on which save was used
  * appends .IDIOT to the end of files
  * 1-28-15
+ * TODO merge this class into the action classes and eliminate this class
  */
 
 import javax.swing.JEditorPane;

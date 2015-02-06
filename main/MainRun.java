@@ -11,6 +11,7 @@ public class MainRun {
 				interpreter = new Interpreter();
 			}
 		});
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				GUI main=new GUI();

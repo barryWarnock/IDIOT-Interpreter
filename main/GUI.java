@@ -1,16 +1,9 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.event.*;
 import java.net.URL;
 import actions.*;
-
 import javax.swing.*;
 
 
@@ -79,10 +72,10 @@ public class GUI implements ActionListener
         JPanel terminalPanel=new JPanel(new BorderLayout());
         terminalPanel.add(output);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
+        
         //add output to interpreter
         MainRun.getInterpreter().setIo(output);
         
-
         //Create the split pane 
     	JSplitPane contentPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     	contentPane.setOneTouchExpandable(true);
@@ -154,7 +147,10 @@ public class GUI implements ActionListener
 		
 		//add buttons 
 		//TODO give buttons actionListeners
-		toolbar.add(makeButton("saveIcon", "Save"));
+		
+		tempButton = makeButton("saveIcon", "Save");
+		tempButton.addActionListener(new SaveAction());
+		toolbar.add(tempButton);
 		
 		tempButton = makeButton("openIcon", "Open");
 		tempButton.addActionListener(new OpenAction());
@@ -228,23 +224,21 @@ public class GUI implements ActionListener
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a file from the disk");
         menuItem.setToolTipText("Opens a new file from the disk");
-        menuItem.addActionListener(new actions.OpenAction());
+        menuItem.addActionListener(new OpenAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Saves current file");
         menuItem.setToolTipText("Saves current file");
-        menuItem.setActionCommand("Save");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new SaveAction());
         file.add(menuItem);
         
         menuItem = new JMenuItem("Save As");
         //menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Saves current file to any directory");
         menuItem.setToolTipText("Saves current file to any directory");
-        menuItem.setActionCommand("Save As");
-        menuItem.addActionListener(this);
+        menuItem.addActionListener(new SaveAsAction());
         file.add(menuItem);
         
         file.addSeparator(); // nice line separating different things
@@ -350,27 +344,6 @@ public class GUI implements ActionListener
 				makeNewTab();
 				break;
 			
-			} case "Save":{ 
-				try {
-					FileOpen.fileSave(tabbedPane);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					//cry????
-					e1.printStackTrace();
-				}
-				
-				break;
-			
-			} case "Save As":{
-				try {
-					FileOpen.fileSaveAs(tabbedPane);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					//cry????
-					e1.printStackTrace();
-				}
-				break;
-			
 			} case "Select All":{ 
 				System.out.println("Select All");
 				break;
@@ -382,7 +355,10 @@ public class GUI implements ActionListener
 			} 
 		}
 	}
-
+	
+	/**
+	 * @return JTabbedPane containing the content tabs
+	 */
 	public static JTabbedPane getTabbedPane()
 	{
 		return tabbedPane;
