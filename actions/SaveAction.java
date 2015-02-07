@@ -42,7 +42,7 @@ public class SaveAction extends AbstractAction {
 				FileUtils.writeStringToFile(file, editor.getText());
 					  
 			}
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			//cry????
 			e1.printStackTrace();

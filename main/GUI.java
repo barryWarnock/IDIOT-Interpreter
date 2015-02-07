@@ -296,17 +296,15 @@ public class GUI {
 	/**
 	 * @return JEditorPane of the in-focus tab
 	 */
-	public static JEditorPane getFocusEditorPane(){
+	public static JEditorPane getFocusEditorPane() throws Exception{
 		//returns the tab component with focus
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		if(scroll==null){
-			//TODO throw a custom exception not return null
-			return null;
+			throw new Exception();
 		}else{
 			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
 			if(editor==null){
-				return null;
-				//TODO throw a custom exception not return null
+				throw new Exception();
 			}else{
 				return editor;
 			}
