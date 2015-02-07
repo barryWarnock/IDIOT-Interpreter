@@ -13,12 +13,13 @@ public class CompileAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		JEditorPane editor = GUI.getFocusEditorPane();
+		
 
 		Thread thread = new Thread() {
 			public void run() {
 				//sends a string to the interpreter
 				try {
+					JEditorPane editor = GUI.getFocusEditorPane();
 					MainRun.getInterpreter().run(editor.getText());
 				} catch (Exception e1) {
 					//TODO error message pop-up

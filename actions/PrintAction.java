@@ -14,11 +14,12 @@ public class PrintAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		JEditorPane editor = GUI.getFocusEditorPane();
+		
 		
 		try {
+			JEditorPane editor = GUI.getFocusEditorPane();
 			editor.print();	
-		} catch (PrinterException e1) {
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 		}
 	}
