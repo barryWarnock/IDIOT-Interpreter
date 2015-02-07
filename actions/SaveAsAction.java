@@ -22,7 +22,7 @@ public class SaveAsAction extends AbstractAction {
 		
 		String FileName=null;
 		
-			JEditorPane editor = GUI.getFocusEditorPane();
+			
 			
 			//choose a filename
 			JFileChooser fileChooser = new JFileChooser();
@@ -36,8 +36,9 @@ public class SaveAsAction extends AbstractAction {
 			  
 			  //save the open file 
 			  try {
-				FileUtils.writeStringToFile(file, editor.getText());
-			} catch (IOException e1) {
+				  JEditorPane editor = GUI.getFocusEditorPane();
+				  FileUtils.writeStringToFile(file, editor.getText());
+			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				//cry
 				e1.printStackTrace();

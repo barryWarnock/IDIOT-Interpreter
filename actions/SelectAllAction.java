@@ -19,7 +19,13 @@ public class SelectAllAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		JEditorPane editor = GUI.getFocusEditorPane();
+		JEditorPane editor=null;
+		try {
+			editor = GUI.getFocusEditorPane();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//select the text
 	    editor.selectAll();
 		

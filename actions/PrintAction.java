@@ -2,7 +2,6 @@ package actions;
 import main.GUI;
 
 import java.awt.event.ActionEvent;
-import java.awt.print.PrinterException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JEditorPane;
