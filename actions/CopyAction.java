@@ -3,13 +3,22 @@ package actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JEditorPane;
+
+import main.GUI;
 
 @SuppressWarnings("serial")
 public class CopyAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
+		try {
+			JEditorPane editor = GUI.getFocusEditorPane();
+			editor.copy();
+		} catch (Exception e1) {
+			//cry??
+		}
 		
 	}
 
