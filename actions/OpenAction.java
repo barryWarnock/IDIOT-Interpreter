@@ -108,5 +108,8 @@ public class OpenAction extends AbstractAction {
 		nameAndButton.add(closeButton, gbc);
 		//put the fancy pane on the right tab
 		tabbedPane.setTabComponentAt(index, nameAndButton);
+		
+		//add the file path to a list for use when saving 
+		GUI.getFilePathList().add(file.getAbsolutePath());
 	}
 }

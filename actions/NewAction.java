@@ -61,5 +61,8 @@ public class NewAction extends AbstractAction {
 		nameAndButton.add(closeButton, gbc);
 		//put the fancy pane on the right tab
 		tabbedPane.setTabComponentAt(index, nameAndButton);
+		
+		//add null to the file path list, preventing save from working; only allow saveAs 
+		GUI.getFilePathList().add(null);
 	}
 }

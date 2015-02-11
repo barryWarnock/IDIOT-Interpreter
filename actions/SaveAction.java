@@ -21,32 +21,37 @@ public class SaveAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		//TODO set filename to last name that the file had 
-		String FILENAME=null;
-		
 		try {
+			//find the path of the previous save file
 			JEditorPane editor = GUI.getFocusEditorPane();
+			int index = GUI.getTabbedPane().indexOfComponent(editor);
+			String filePath = null;
+			try {
+				
+				filePath = GUI.getFilePathList().get(index+2);
+			} catch (ArrayIndexOutOfBoundsException e2){}//do nothing :(
+			
+			
+			
+			System.out.println(GUI.getFilePathList().toString());
 			
 			//if there is no previous save direct the user to SaveAs 
-			if(FILENAME==null){
+			if(filePath==null){
 					
 				SaveAsAction saveAs = new SaveAsAction();
 				saveAs.actionPerformed(new ActionEvent(saveAs, 1, ""));
 			        
 			}else{
+				
 				//adds .IDIOT if it is not there. 
-				File file = new File(FILENAME); 
-				if(!FILENAME.endsWith(".IDIOT"))
-				FILENAME+=".IDIOT";
-				FileUtils.writeStringToFile(file, editor.getText());
-					  
+				if(!filePath.endsWith(".IDIOT"))
+					filePath+=".IDIOT";
+				File file = new File(filePath);
+				FileUtils.writeStringToFile(file, editor.getText());	
+				System.out.println("test5");
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			//cry????
-			e1.printStackTrace();
 		}
-
 	}
-
 }

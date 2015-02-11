@@ -19,19 +19,19 @@ public class SaveAsAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
-		String FileName=null;
+		String fileName=null;
 		
 			
 			
 			//choose a filename
 			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				FileName= fileChooser.getSelectedFile().toString();
+				fileName= fileChooser.getSelectedFile().toString();
 				
 				//adds .IDIOT if it is not there. 
-				if(!FileName.endsWith(".IDIOT"))
-					FileName+=".IDIOT"; 
-				File file = new File(FileName);
+				if(!fileName.endsWith(".IDIOT"))
+					fileName+=".IDIOT"; 
+				File file = new File(fileName);
 			  
 			  //save the open file 
 			  try {

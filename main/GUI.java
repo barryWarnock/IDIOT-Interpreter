@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 import actions.*;
 
@@ -24,6 +25,7 @@ public class GUI {
 	
 	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
 	private static JTabbedPane tabbedPane = new JTabbedPane();
+	private static ArrayList<String> tabFilePath = new ArrayList<String>(20);
 	
 	/**
 	 * This method creates a populated frame 
@@ -291,6 +293,15 @@ public class GUI {
 	public static JTabbedPane getTabbedPane()
 	{
 		return tabbedPane;
+	}
+	
+	/**
+	 * @return ArrayList<String> an arrayList of the absolute file paths of the 
+	 * files stored in different tabs
+	 */
+	public static ArrayList<String> getFilePathList()
+	{
+		return tabFilePath;
 	}
 	
 	/**
