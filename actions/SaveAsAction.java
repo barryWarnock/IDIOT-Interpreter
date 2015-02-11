@@ -37,12 +37,13 @@ public class SaveAsAction extends AbstractAction {
 			  try {
 				  JEditorPane editor = GUI.getFocusEditorPane();
 				  FileUtils.writeStringToFile(file, editor.getText());
+				  e.getID();
+				  GUI.getFilePathList().set(e.getID(), fileName);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				//cry
 				e1.printStackTrace();
 			}	
-			}
-		
+		}
 	}
 }

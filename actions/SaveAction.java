@@ -38,7 +38,7 @@ public class SaveAction extends AbstractAction {
 			if(filePath==null){
 					
 				SaveAsAction saveAs = new SaveAsAction();
-				saveAs.actionPerformed(new ActionEvent(saveAs, 1, ""));
+				saveAs.actionPerformed(new ActionEvent(saveAs, index, ""));
 			        
 			}else{
 				
