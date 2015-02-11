@@ -89,7 +89,9 @@ public class OpenAction extends AbstractAction {
 		nameAndButton.setOpaque(false);
 		
 		//make the label and button 
-		String name=file.getName().substring(0, file.getName().indexOf(".IDIOT"));
+		String name = file.getName();
+		if(name.endsWith(".IDIOT"))
+			name.substring(0, file.getName().indexOf(".IDIOT"));
 		
 		//make the label and button 
 		JLabel tabTitle = new JLabel(name);

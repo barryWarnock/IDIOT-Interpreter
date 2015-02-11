@@ -5,6 +5,7 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.apache.commons.io.FileUtils;
 
@@ -22,18 +23,16 @@ public class SaveAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		
 		try {
-			//find the path of the previous save file
 			JEditorPane editor = GUI.getFocusEditorPane();
-			int index = GUI.getTabbedPane().indexOfComponent(editor);
+			
+			//find the path of the previous save file
+			JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
+			int index = GUI.getTabbedPane().indexOfComponent(scroll);
 			String filePath = null;
 			try {
 				
-				filePath = GUI.getFilePathList().get(index+2);
+				filePath = GUI.getFilePathList().get(index);
 			} catch (ArrayIndexOutOfBoundsException e2){}//do nothing :(
-			
-			
-			
-			System.out.println(GUI.getFilePathList().toString());
 			
 			//if there is no previous save direct the user to SaveAs 
 			if(filePath==null){
@@ -47,8 +46,7 @@ public class SaveAction extends AbstractAction {
 				if(!filePath.endsWith(".IDIOT"))
 					filePath+=".IDIOT";
 				File file = new File(filePath);
-				FileUtils.writeStringToFile(file, editor.getText());	
-				System.out.println("test5");
+				FileUtils.writeStringToFile(file, editor.getText());
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

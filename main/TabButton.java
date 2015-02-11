@@ -64,6 +64,7 @@ public class TabButton extends JButton implements ActionListener
         int i = pane.indexOfTabComponent(this.getParent());
         if (i != -1) {
             pane.remove(i);
+            GUI.getFilePathList().remove(i);
             //TODO ask the user to save the tab before closing 
         }
     }
