@@ -18,8 +18,6 @@ import javax.swing.*;
  * <p>
  * There is no hashCode or equals methods for this class as there are no static variables or objects.
  * As well there is no constructor because this class does not need to initialize anything.
- * TODO make all actions into abstract actions and then try to move menubar and toolbar and 
- * tab making out of this class
  */
 public class GUI {
 	
