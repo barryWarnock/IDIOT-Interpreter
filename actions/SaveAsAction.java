@@ -36,6 +36,7 @@ public class SaveAsAction extends AbstractAction {
 			  //save the open file 
 			  try {
 				  JEditorPane editor = GUI.getFocusEditorPane();
+				  //TODO this should be using utf-8
 				  FileUtils.writeStringToFile(file, editor.getText());
 				  e.getID();
 				  GUI.getFilePathList().set(e.getID(), fileName);
