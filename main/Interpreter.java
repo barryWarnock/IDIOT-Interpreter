@@ -339,7 +339,14 @@ public class Interpreter
 							}
 							else
 							{
-								tail = tail.add(new ENDIF(), lineNumber);
+								if (IF.IFs.size() == 0)
+								{
+									io.append(errorAt + "No unclosed IF to close \n");
+								}
+								else
+								{
+									tail = tail.add(new ENDIF(), lineNumber);
+								}
 							}
 						}
 					
@@ -496,6 +503,10 @@ abstract class Command
 	{
 		return lineNumber;
 	}
+	protected void logError(String errMsg, JTextArea pane)
+	{
+		pane.append("Error at line " + lineNumber +": " + errMsg + "\n");
+	}
 }
 /**
  * ADD takes three numbers, adds the first two and assigns that value to the third
@@ -527,12 +538,12 @@ class ADD extends Command
 		*/
 		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 		{
-			pane.append("invalid variable passed to ADD \n");
+			logError("invalid variable passed to ADD", pane);
 			return null;
 		}
 		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 		{
-			pane.append("invalid first or second variable passed to ADD \n");
+			logError("invalid first or second variable passed to ADD", pane);
 			return null;
 		}
 		double f = variables.get(first).getValue();
@@ -567,7 +578,7 @@ class ASSIGN extends Command
 		//runtime error if the variable does not exist
 		if(variables.get(var) == null)
         {
-            pane.append("Nonexistant variable passed to ASSIGN \n");
+            logError("Nonexistant variable passed to ASSIGN", pane);
             return null;
         }
 		variables.get(var).setValue(val);
@@ -575,7 +586,7 @@ class ASSIGN extends Command
 	}
 }
 /**
- * BLANK is used to represent empty lines in the linked list of Commands
+ * BLANK is used to represent empty lines or comments in the linked list of Commands
  */
 class BLANK extends Command
 {
@@ -614,12 +625,12 @@ class DIV extends Command
 		*/
 		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 		{
-			pane.append("invalid variable passed to DIV \n");
+			logError("invalid variable passed to DIV", pane);
 			return null;
 		}
 		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 		{
-			pane.append("invalid first or second variable passed to DIV \n");
+			logError("invalid first or second variable passed to DIV", pane);
 			return null;
 		}
 		double f = variables.get(first).getValue();
@@ -648,15 +659,42 @@ class ENTER extends Command
 	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 	{
+		//runtime error if the variable does not exist
+		if (variables.get(var) == null)
+		{
+			logError("invalid variable passed to ENTER", pane);
+		}
 		int initial = pane.getText().lastIndexOf('\n');
+		if (initial == -1)
+		{
+			initial = 0;
+		}
 		pane.setEditable(true);
 		//wait until a new newline is detected
-		while(initial == (pane.getText().lastIndexOf('\n')));
+		if (pane.getText().lastIndexOf('\n') == -1)
 		{
+			while (pane.getText().lastIndexOf('\n') == -1)
+			{
+			}
+		}
+		else
+		{
+			while(initial == (pane.getText().lastIndexOf('\n')));
+			{
+			}
 		}
 		pane.setEditable(false);
 		String input = pane.getText().substring(initial, pane.getText().lastIndexOf('\n'));
-		double val = Double.parseDouble(input);
+		double val = 0;
+		try
+		{
+			val = Double.parseDouble(input);
+		}
+		catch (java.lang.NumberFormatException e)
+		{
+			logError("Input was not a number", pane);
+			return null;
+		}
 		variables.get(var).setValue(val);
 		return this.next;
 	}
@@ -683,13 +721,13 @@ class INC extends Command
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
         {
-            pane.append("Nonexistant variable passed to INC \n");
+			logError("Nonexistant variable passed to INC", pane);
             return null;
         }
         //runtime error if the Variable is not initialized
 		if(!variables.get(var).isInitialized())
         {
-            pane.append("Uninitialized variable passed to INC \n");
+			logError("Uninitialized variable passed to INC", pane);
             return null;
         }
 		variables.get(var).setValue((variables.get(var).getValue() + 1));
@@ -726,12 +764,12 @@ class MUL extends Command
 		*/
 		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 		{
-			pane.append("invalid variable passed to MUL \n");
+			logError("invalid variable passed to MUL", pane);
 			return null;
 		}
 		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 		{
-			pane.append("invalid first or second variable passed to MUL \n");
+			logError("invalid first or second variable passed to MUL", pane);
 			return null;
 		}
 		double f = variables.get(first).getValue();
@@ -777,9 +815,14 @@ class PRINT extends Command
 			//runtime error if variable does not exist
 			if(variables.get(val) == null)
             {
-                pane.append("Nonexistant variable passed to PRINT \n");
+				logError("Nonexistant variable passed to PRINT", pane);
                 return null;
             }
+			//runtime error if variable is not initialized
+			if (variables.get(val).isInitialized() == false)
+			{
+				logError("Uninitialized variable passed to PRINT", pane);
+			}
 			pane.append(variables.get(val).toString());
 		}
 		else if (isString)
@@ -823,12 +866,12 @@ class SUB extends Command
 		*/
 		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
 		{
-			pane.append("invalid variable passed to SUB \n");
+			logError("invalid variable passed to SUB", pane);
 			return null;
 		}
 		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
 		{
-			pane.append("invalid first or second variable passed to SUB \n");
+			logError("invalid first or second variable passed to SUB", pane);
 			return null;
 		}
 		double f = variables.get(first).getValue();
@@ -857,6 +900,17 @@ class VAR extends Command
 	public Command execute(HashMap<String, Variable> variables, JTextArea pane )
 	{
 		//runtime error if the variable name includes '(' or ')'
+		if (name.contains("(") || name.contains(")"))
+		{
+			logError("Variable name contains illegal characters", pane);
+			return null;
+		}
+		//runtime error if a variable with this name already exists
+		if (variables.get(name) != null)
+		{
+			logError("Variable with that name already exists", pane);
+			return null;
+		}
 		variables.put(name, new Variable(name));
 		return this.next;
 	}
@@ -880,6 +934,7 @@ class GOTO extends Command
 			if (toReturn == null)
 			{
 				searching = false;
+				logError("GOTO was given an invalid line", pane);
 			}
 			else if (line > toReturn.getLine())
 			{
@@ -919,13 +974,13 @@ class IF extends Command
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
 		{
-			pane.append("Nonexistant variable passed to IF \n");
+			logError("Nonexistant variable passed to IF", pane);
 		    return null;
 		}
 		//runtime error if the Variable is not initialized
 		if(!variables.get(var).isInitialized())
 		{
-		pane.append("Uninitialized variable passed to IF \n");
+			logError("Uninitialized variable passed to IF", pane);
 		return null;
 		}
 		Command toReturn = elseIF;
