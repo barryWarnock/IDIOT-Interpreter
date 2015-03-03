@@ -23,20 +23,20 @@ public class SaveAsAction extends AbstractAction {
 		
 			
 			
-			//choose a filename
+			//choose a filename to save the file under. 
 			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
 				fileName= fileChooser.getSelectedFile().toString();
 				
-				//adds .IDIOT if it is not there. 
+				//adds .IDIOT extension to the file if it is not there. 
 				if(!fileName.endsWith(".IDIOT"))
 					fileName+=".IDIOT"; 
 				File file = new File(fileName);
 			  
-			  //save the open file 
+			  //saves the current file open in the JPane.  
 			  try {
 				  JEditorPane editor = GUI.getFocusEditorPane();
-				  //TODO this should be using utf-8
+				  
 				  FileUtils.writeStringToFile(file, editor.getText(),"UTF-8");
 				  e.getID();
 				  GUI.getFilePathList().set(e.getID(), fileName);
