@@ -69,7 +69,7 @@ public class OpenAction extends AbstractAction {
 		IDIOT_file_content.setEditable(true);
 			
 		// scans file into the JEditPane
-		Scanner scan = new Scanner(file);
+		Scanner scan = new Scanner(file,"UTF-8");
 		while (scan.hasNextLine()) {
 			String line = scan.nextLine();
 			Document doc = IDIOT_file_content.getDocument();

@@ -26,7 +26,6 @@ public class MainRun {
 		
 	}
 	/**
-	 * 
 	 * @return Interpreter that is in its own thread so 
 	 * that it may be called by whatever needs it
 	 */

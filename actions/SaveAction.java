@@ -46,8 +46,7 @@ public class SaveAction extends AbstractAction {
 				if(!filePath.endsWith(".IDIOT"))
 					filePath+=".IDIOT";
 				File file = new File(filePath);
-				//TODO this should be using utf-8
-				FileUtils.writeStringToFile(file, editor.getText());
+				FileUtils.writeStringToFile(file, editor.getText(),"UTF-8");
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
