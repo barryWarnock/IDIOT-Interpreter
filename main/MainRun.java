@@ -1,4 +1,5 @@
 package main;
+
 /**
  * 
  * @author bolster
@@ -11,6 +12,7 @@ public class MainRun {
 	
 	public static void main(String[] args) {
 		
+		HintRun.hintthing();
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				interpreter = new Interpreter();
