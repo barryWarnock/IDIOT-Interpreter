@@ -73,7 +73,8 @@ public class GUI {
         JTextArea output=new JTextArea();
         output.setMinimumSize(minimumSize);
         JPanel terminalPanel=new JPanel(new BorderLayout());
-        terminalPanel.add(output);
+        JScrollPane outputScroll = new JScrollPane(output);
+        terminalPanel.add(outputScroll);
         output.setBorder(BorderFactory.createTitledBorder(null, "console"));
         
         //add output to interpreter
