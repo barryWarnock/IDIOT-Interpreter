@@ -90,7 +90,7 @@ public class GUI {
         contentPane.add(terminalPanel);
         contentPane.setDividerLocation(dividerLocation);
         
-        //add the split pane and toolbar to the panel
+        //add the split pane and tool bar to the panel
         finalPanel.add(makeToolbar(), BorderLayout.NORTH);
         finalPanel.add(contentPane, BorderLayout.CENTER);
         return finalPanel;

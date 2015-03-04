@@ -7,12 +7,12 @@ package main;
  * the main method. 
  */
 public class MainRun {
-
+ 
 	private static Interpreter interpreter=null;
 	
 	public static void main(String[] args) {
 		
-		HintRun.hintthing();
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				interpreter = new Interpreter();
@@ -23,6 +23,11 @@ public class MainRun {
 			public void run() {
 				GUI main=new GUI();
         		main.createFrame("IDIOT IDE", 500, 500);
+			}
+		});
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+			public void run() {
+				HintRun hints = new HintRun();
 			}
 		});
 		
