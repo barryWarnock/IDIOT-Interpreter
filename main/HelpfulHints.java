@@ -4,7 +4,9 @@ package main;
  */
 
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 
 
+@SuppressWarnings("serial")
 public class HelpfulHints extends JFrame{
 
     private JTextArea area; //This is my textarea to display hints
@@ -102,6 +105,7 @@ public class HelpfulHints extends JFrame{
                 next.setEnabled(true);
             }
             if (e.getSource() == close) {
+            	//TODO da fuk?
                 System.exit(0);
             }
         }
