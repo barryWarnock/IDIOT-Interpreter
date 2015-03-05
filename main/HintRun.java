@@ -9,8 +9,7 @@ public class HintRun {
     /**
      * @author bolster
      * @deprecated 
-     * TODO move to helpful hints 
-     * TODO open in the center of the IDE
+     * TODO move to helpful hints
      */
     public HintRun()
     {
@@ -18,5 +17,6 @@ public class HintRun {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400,400);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 }

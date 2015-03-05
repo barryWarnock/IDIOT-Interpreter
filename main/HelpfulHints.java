@@ -98,7 +98,7 @@ public class HelpfulHints extends JFrame{
                 displayedTipIndex--;
                 area.setText(tips.get(displayedTipIndex));
                 /// disable the previous button if no more tips
-                if (displayedTipIndex < 0) {
+                if (displayedTipIndex < 1) {
                     previous.setEnabled(false);
                 }
                 // re-enable next button

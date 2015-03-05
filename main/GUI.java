@@ -31,7 +31,9 @@ public class GUI {
 	 * @param x is the minimum width of the window
 	 * @param y is the minimum height of the window
 	 */
-	public void createFrame(String name, int width, int height)
+	private GUI (){}
+	
+	public GUI (String name, int width, int height)
 	{
         JFrame frame = new JFrame(name);
         
@@ -46,10 +48,9 @@ public class GUI {
         tab1.actionPerformed(new ActionEvent(tab1, 1, ""));
         
        //Create and set up the content pane (Menu and tabs and output and textfield)
-        GUI content = new GUI();
         frame.setJMenuBar(makeMenuBar());
         //I added to this line as well
-        frame.setContentPane(content.createPanel(height));
+        frame.setContentPane(createPanel(height));
         frame.setVisible(true);
         
 	}

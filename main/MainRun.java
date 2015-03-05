@@ -21,13 +21,13 @@ public class MainRun {
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				GUI main=new GUI();
-        		main.createFrame("IDIOT IDE", 500, 500);
+				new GUI("IDIOT IDE", 500, 500);
 			}
 		});
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				HintRun hints = new HintRun();
+				new HintRun();
 			}
 		});
 		
