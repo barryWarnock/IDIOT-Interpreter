@@ -2,6 +2,9 @@
 Thumbs.db
 ehthumbs.db
 
+# NO DOT CLASS FILES DARN IT!!!
+*.class
+
 # NO png s as the license wont allow us to share them on github… I think
 *.png
 
@@ -37,6 +40,7 @@ $RECYCLE.BIN/
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+.project
 
 # Directories potentially created on remote AFP share
 .AppleDB
@@ -44,3 +48,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/Interpreter$ADD.class
+/Interpreter$ASSIGN.class
+/Interpreter$Command.class
+/Interpreter$DIV.class
+/Interpreter$ENTER.class
+/Interpreter$INC.class
+/Interpreter$Variable.class
+/Interpreter.class

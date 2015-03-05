@@ -1,7 +1,6 @@
 package main;
 
-/** 
- * 
+/**
  * 
  * @author bolster
  * This class creates two threads for the application and contains
