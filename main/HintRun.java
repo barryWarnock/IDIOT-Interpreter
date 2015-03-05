@@ -2,13 +2,13 @@ package main;
 import javax.swing.*;
 
 /**
- * Created by Dean Kutin
+ * @author Dean Kutin
  */
 public class HintRun {
 
     /**
      * @author bolster
-     * @deprecated move to helpfulhints
+     * @deprecated 
      * TODO move to helpful hints 
      * TODO open in the center of the IDE
      */

@@ -1,6 +1,6 @@
 package main;
 /**
- * Created by Dean Kutin
+ * @author Dean Kutin
  */
 
 import java.awt.*;
