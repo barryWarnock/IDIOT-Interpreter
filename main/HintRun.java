@@ -14,7 +14,7 @@ public class HintRun {
     public HintRun()
     {
     	HelpfulHints frame = new HelpfulHints();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400,400);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
