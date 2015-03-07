@@ -4,6 +4,7 @@ ehthumbs.db
 
 # NO DOT CLASS FILES DARN IT!!!
 *.class
+*.classpath
 
 # NO png s as the license wont allow us to share them on github… I think
 *.png
