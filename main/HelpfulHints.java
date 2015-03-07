@@ -106,7 +106,7 @@ public class HelpfulHints extends JFrame{
             }
             if (e.getSource() == close) {
             	//TODO da fuk?
-                System.exit(0);
+            	dispose();
             }
         }
     }
