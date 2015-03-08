@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 import org.apache.commons.io.FileUtils;
 
@@ -23,7 +23,7 @@ public class SaveAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		
 		try {
-			JEditorPane editor = GUI.getFocusEditorPane();
+			JTextPane txt = GUI.getFocusTextPane();
 			
 			//find the path of the previous save file
 			JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
@@ -46,10 +46,10 @@ public class SaveAction extends AbstractAction {
 				if(!filePath.endsWith(".IDIOT"))
 					filePath+=".IDIOT";
 				File file = new File(filePath);
-				FileUtils.writeStringToFile(file, editor.getText(),"UTF-8");
+				FileUtils.writeStringToFile(file, txt.getText(),"UTF-8");
 			}
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			//cry?
 		}
 	}
 }

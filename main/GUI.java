@@ -25,12 +25,14 @@ public class GUI {
 	private static JTabbedPane tabbedPane = new JTabbedPane();
 	private static ArrayList<String> tabFilePath = new ArrayList<String>(20);
 	
+	
 	/**
 	 * This method creates a populated frame 
 	 * @param name is the name of the window that you wish to create
 	 * @param x is the minimum width of the window
 	 * @param y is the minimum height of the window
 	 */
+	@SuppressWarnings("unused")
 	private GUI (){}
 	
 	public GUI (String name, int width, int height)
@@ -305,19 +307,19 @@ public class GUI {
 	}
 	
 	/**
-	 * @return JEditorPane of the in-focus tab
+	 * @return JTextArea of the in-focus tab
 	 */
-	public static JEditorPane getFocusEditorPane() throws Exception{
+	public static JTextPane getFocusTextPane() throws Exception{
 		//returns the tab component with focus
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		if(scroll==null){
 			throw new Exception();
 		}else{
-			JEditorPane editor = (JEditorPane) scroll.getComponent(0).getComponentAt(100, 100);
-			if(editor==null){
+			JTextPane txt = (JTextPane) scroll.getComponent(0).getComponentAt(100, 100);
+			if(txt==null){
 				throw new Exception();
 			}else{
-				return editor;
+				return txt;
 			}
 		}
 		

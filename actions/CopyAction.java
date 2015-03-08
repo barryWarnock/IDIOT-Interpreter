@@ -3,7 +3,7 @@ package actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 import main.GUI;
 
@@ -14,8 +14,8 @@ public class CopyAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		
 		try {
-			JEditorPane editor = GUI.getFocusEditorPane();
-			editor.copy();
+			JTextPane txt = GUI.getFocusTextPane();
+			txt.copy();
 		} catch (Exception e1) {
 			//cry??
 		}

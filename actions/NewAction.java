@@ -6,14 +6,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 
 import main.GUI;
 import main.TabButton;
+import main.SyntaxHighlighter;
 /**
  * 
  * @author bolster
@@ -30,8 +31,8 @@ public class NewAction extends AbstractAction {
 		JTabbedPane tabbedPane = GUI.getTabbedPane();
 		
 		//Create a scrolled text area to type into
-		JEditorPane IDIOT_file_content = new JEditorPane();
-		IDIOT_file_content.setEditable(true);
+		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile());
+		//IDIOT_file_content.setEditable(true);
 		
 		//add a scrollPane to tabbedPane
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
