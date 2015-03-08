@@ -1,6 +1,8 @@
 package main;
 /**
  * @author Dean Kutin
+ * TODO add checkbox that creates a file within the app to never show again
+ * TODO add a settings menu bar item to show the helpfulhints again
  */
 
 import java.awt.*;
@@ -26,6 +28,12 @@ public class HelpfulHints extends JFrame{
     public HelpfulHints(){
 
         super("Tip of the Day");
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(400,400);
+        setVisible(true);
+        setLocationRelativeTo(null);
+        
         // set up your tips
         tips.add("First Tip");
         tips.add("Second Tip");

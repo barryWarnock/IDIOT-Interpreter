@@ -25,7 +25,6 @@ public class GUI {
 	private static JTabbedPane tabbedPane = new JTabbedPane();
 	private static ArrayList<String> tabFilePath = new ArrayList<String>(20);
 	
-	
 	/**
 	 * This method creates a populated frame 
 	 * @param name is the name of the window that you wish to create
@@ -305,6 +304,7 @@ public class GUI {
 	{
 		return tabFilePath;
 	}
+
 	
 	/**
 	 * @return JTextArea of the in-focus tab

@@ -29,7 +29,7 @@ public class MainRun {
 		
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				new HintRun();
+				new HelpfulHints();
 			}
 		});
 		
