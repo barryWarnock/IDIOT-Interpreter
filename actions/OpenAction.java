@@ -1,5 +1,6 @@
 package actions;
 import main.GUI;
+import main.SyntaxHighlighter;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -65,8 +66,8 @@ public class OpenAction extends AbstractAction {
 	private void openTab(File file) throws BadLocationException, FileNotFoundException 
 	{
 		//Create a scrolled text area to type into
-		JEditorPane IDIOT_file_content = new JEditorPane();
-		IDIOT_file_content.setEditable(true);
+		JTextArea IDIOT_file_content = new JTextArea(SyntaxHighlighter.SyntaxHighlighterProfile());
+		//IDIOT_file_content.setEditable(true);
 			
 		// scans file into the JEditPane
 		Scanner scan = new Scanner(file,"UTF-8");

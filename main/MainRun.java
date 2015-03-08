@@ -1,5 +1,7 @@
 package main;
 
+import javax.swing.SwingUtilities;
+
 /**
  * 
  * @author bolster
@@ -13,23 +15,24 @@ public class MainRun {
 	public static void main(String[] args) {
 		
 		
-		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				interpreter = new Interpreter();
 			}
 		});
 		
-		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				new GUI("IDIOT IDE", 500, 500);
 			}
 		});
 		
-		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				new HintRun();
 			}
 		});
+		
 		
 	}
 	/**
