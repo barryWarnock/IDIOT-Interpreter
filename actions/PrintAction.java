@@ -4,7 +4,7 @@ import main.GUI;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 @SuppressWarnings("serial")
 public class PrintAction extends AbstractAction {
@@ -16,8 +16,8 @@ public class PrintAction extends AbstractAction {
 		
 		
 		try {
-			JEditorPane editor = GUI.getFocusEditorPane();
-			editor.print();	
+			JTextPane txt = GUI.getFocusTextPane();
+			txt.print();	
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 		}

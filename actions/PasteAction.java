@@ -3,7 +3,7 @@ package actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 import main.GUI;
 
@@ -13,8 +13,8 @@ public class PasteAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			JEditorPane editor = GUI.getFocusEditorPane();
-			editor.paste();
+			JTextPane txt = GUI.getFocusTextPane();
+			txt.paste();
 		} catch (Exception e1) {
 			//cry??
 		}

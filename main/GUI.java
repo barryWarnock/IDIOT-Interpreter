@@ -32,6 +32,7 @@ public class GUI {
 	 * @param x is the minimum width of the window
 	 * @param y is the minimum height of the window
 	 */
+	@SuppressWarnings("unused")
 	private GUI (){}
 	
 	public GUI (String name, int width, int height)
@@ -308,13 +309,13 @@ public class GUI {
 	/**
 	 * @return JTextArea of the in-focus tab
 	 */
-	public static JTextArea getFocusTextArea() throws Exception{
+	public static JTextPane getFocusTextPane() throws Exception{
 		//returns the tab component with focus
 		JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		if(scroll==null){
 			throw new Exception();
 		}else{
-			JTextArea txt = (JTextArea) scroll.getComponent(0).getComponentAt(100, 100);
+			JTextPane txt = (JTextPane) scroll.getComponent(0).getComponentAt(100, 100);
 			if(txt==null){
 				throw new Exception();
 			}else{

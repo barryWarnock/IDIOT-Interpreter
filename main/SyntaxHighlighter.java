@@ -7,7 +7,6 @@ package main;
 
 import java.awt.*;
 
-import javax.swing.JTextPane;
 import javax.swing.text.*;
 
 public class SyntaxHighlighter {
@@ -69,10 +68,18 @@ public class SyntaxHighlighter {
         	StyleConstants.setForeground(startStyle, new Color(0x008400)); //changes the color
         	StyleConstants.setBold(startStyle, true); //sets the font to bold
         	final AttributeSet startAttributes =  startStyle.copyAttributes();
+        	
         final Style endStyle = sc.addStyle("EndStyle", defaultStyle);
         	StyleConstants.setForeground(endStyle, Color.RED);
         	StyleConstants.setBold(endStyle, true);
         	final AttributeSet endAttributes =  endStyle.copyAttributes();
+        	
+        final Style catchAllStyle = sc.addStyle("MainStyle", defaultStyle);
+        	//StyleConstants.setFontSize(startStyle, 40); //changes the font size 
+        	StyleConstants.setForeground(catchAllStyle, Color.ORANGE); //changes the color
+        	StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
+        	final AttributeSet catchAllAttributes =  catchAllStyle.copyAttributes();
+        	
          
         //the styling profile as a styled document
         DefaultStyledDocument doc = new DefaultStyledDocument(sc) {
@@ -81,7 +88,6 @@ public class SyntaxHighlighter {
         		super.insertString(offset, str, a);
 
         		//create tokens of each line
-        		//TODO this looks horrible
                 String text = getText(0, getLength());
                 int before = findLastNonWordChar(text, offset);
                 if (before < 0) 
@@ -97,6 +103,8 @@ public class SyntaxHighlighter {
                             setCharacterAttributes(wordL, wordR - wordL, startAttributes, false);
                         }else if(text.substring(wordL, wordR).matches("(\\W)*(END)")){
                         	setCharacterAttributes(wordL, wordR - wordL, endAttributes, false);
+                        }else if (text.substring(wordL, wordR).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|CMT)")){
+                        	setCharacterAttributes(wordL, wordR - wordL, catchAllAttributes, false);
                         }else
                             setCharacterAttributes(wordL, wordR - wordL, defaultAttributes, false);
                         wordL = wordR;
@@ -118,6 +126,8 @@ public class SyntaxHighlighter {
                     setCharacterAttributes(before, after - before, startAttributes, false);
                 } else if (text.substring(before, after).matches("(\\W)*(END)")){
                 	setCharacterAttributes(before, after - before, endAttributes, false);
+                }else if(text.substring(before, after).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|CMT)")){
+                	setCharacterAttributes(before, after - before, catchAllAttributes, false);
                 }else{
                     setCharacterAttributes(before, after - before, defaultAttributes, false);
                 }
