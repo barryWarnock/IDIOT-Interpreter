@@ -79,7 +79,17 @@ public class OpenAction extends AbstractAction {
 		}
 		scan.close();
 		
+		//Add line numbering to the scrollpane
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
+		main.TextLineNumber lineNumbering = new main.TextLineNumber(IDIOT_file_content);
+		scroll.setRowHeaderView( lineNumbering );
+		
+		//remove .IDIOT extension
+		String name = file.getName();
+		if(name.endsWith(".IDIOT"))
+			name=name.substring(0, file.getName().indexOf(".IDIOT"));
+		
+		
 		tabbedPane.add(file.getName(),scroll);
 		
 		//newest tabs spawn to the right, find the newest's index
@@ -88,12 +98,7 @@ public class OpenAction extends AbstractAction {
 		//create a panel for the button and label
 		JPanel nameAndButton = new JPanel(new GridBagLayout());
 		nameAndButton.setOpaque(false);
-		
-		//make the label and button 
-		String name = file.getName();
-		if(name.endsWith(".IDIOT"))
-			name.substring(0, file.getName().indexOf(".IDIOT"));
-		
+
 		//make the label and button 
 		JLabel tabTitle = new JLabel(name);
 		JButton closeButton = new TabButton(tabbedPane);

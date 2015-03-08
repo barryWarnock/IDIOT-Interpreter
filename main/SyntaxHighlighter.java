@@ -61,10 +61,10 @@ public class SyntaxHighlighter {
         
         // Create the main document style
     	final Style defaultStyle = sc.getStyle(StyleContext.DEFAULT_STYLE);
-    	final AttributeSet defaultAttributes = defaultStyle.copyAttributes();
+    		StyleConstants.setForeground(defaultStyle, Color.BLACK);
+    		final AttributeSet defaultAttributes = defaultStyle.copyAttributes();
     	
-        final Style startStyle = sc.addStyle("MainStyle", defaultStyle);
-        	//StyleConstants.setFontSize(startStyle, 40); //changes the font size 
+        final Style startStyle = sc.addStyle("StartStyle", defaultStyle);
         	StyleConstants.setForeground(startStyle, new Color(0x008400)); //changes the color
         	StyleConstants.setBold(startStyle, true); //sets the font to bold
         	final AttributeSet startAttributes =  startStyle.copyAttributes();
@@ -74,11 +74,17 @@ public class SyntaxHighlighter {
         	StyleConstants.setBold(endStyle, true);
         	final AttributeSet endAttributes =  endStyle.copyAttributes();
         	
-        final Style catchAllStyle = sc.addStyle("MainStyle", defaultStyle);
-        	//StyleConstants.setFontSize(startStyle, 40); //changes the font size 
+        final Style commentStyle = sc.addStyle("CommentStyle", defaultStyle);
+        	StyleConstants.setForeground(commentStyle, Color.BLUE); //changes the color
+        	StyleConstants.setBold(commentStyle, true); //sets the font to bold
+        	final AttributeSet commentAttributes =  commentStyle.copyAttributes();
+        	
+        final Style catchAllStyle = sc.addStyle("CatchAllStyle", defaultStyle);
         	StyleConstants.setForeground(catchAllStyle, Color.ORANGE); //changes the color
         	StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
         	final AttributeSet catchAllAttributes =  catchAllStyle.copyAttributes();
+        	
+        	
         	
          
         //the styling profile as a styled document
@@ -103,7 +109,9 @@ public class SyntaxHighlighter {
                             setCharacterAttributes(wordL, wordR - wordL, startAttributes, false);
                         }else if(text.substring(wordL, wordR).matches("(\\W)*(END)")){
                         	setCharacterAttributes(wordL, wordR - wordL, endAttributes, false);
-                        }else if (text.substring(wordL, wordR).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|CMT)")){
+                        }else if(text.substring(wordL, wordR).matches("(\\W)*(CMT)")){
+                        	setCharacterAttributes(wordL, wordR - wordL, commentAttributes, false);
+                        }else if (text.substring(wordL, wordR).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
                         	setCharacterAttributes(wordL, wordR - wordL, catchAllAttributes, false);
                         }else
                             setCharacterAttributes(wordL, wordR - wordL, defaultAttributes, false);
@@ -124,9 +132,11 @@ public class SyntaxHighlighter {
 
                 if (text.substring(before, after).matches("(\\W)*(START)")) {
                     setCharacterAttributes(before, after - before, startAttributes, false);
-                } else if (text.substring(before, after).matches("(\\W)*(END)")){
+                }else if (text.substring(before, after).matches("(\\W)*(END)")){
                 	setCharacterAttributes(before, after - before, endAttributes, false);
-                }else if(text.substring(before, after).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|CMT)")){
+                }else if (text.substring(before, after).matches("(\\W)*(CMT)")){
+                	setCharacterAttributes(before, after - before, commentAttributes, false);
+                }else if(text.substring(before, after).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
                 	setCharacterAttributes(before, after - before, catchAllAttributes, false);
                 }else{
                     setCharacterAttributes(before, after - before, defaultAttributes, false);

@@ -37,6 +37,8 @@ public class NewAction extends AbstractAction {
 		//add a scrollPane to tabbedPane
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
 		tabbedPane.add("new file",scroll);
+		main.TextLineNumber lineNumbering = new main.TextLineNumber(IDIOT_file_content);
+		scroll.setRowHeaderView( lineNumbering );
 		
 		//newest tabs spawn to the right, find the newest's index
 		int index = (tabbedPane.getTabCount() - 1);
