@@ -2,7 +2,8 @@ package main;
 /**
  * 
  * @author bolster
- *
+ * This class is used to create styled documents that will change the color of 
+ * text input dynamically. 
  */
 
 import java.awt.*;
