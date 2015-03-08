@@ -66,7 +66,7 @@ public class OpenAction extends AbstractAction {
 	private void openTab(File file) throws BadLocationException, FileNotFoundException 
 	{
 		//Create a scrolled text area to type into
-		JTextArea IDIOT_file_content = new JTextArea(SyntaxHighlighter.SyntaxHighlighterProfile());
+		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile());
 		//IDIOT_file_content.setEditable(true);
 			
 		// scans file into the JEditPane

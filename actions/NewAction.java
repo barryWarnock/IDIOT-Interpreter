@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 import main.GUI;
 import main.TabButton;
@@ -31,7 +31,7 @@ public class NewAction extends AbstractAction {
 		JTabbedPane tabbedPane = GUI.getTabbedPane();
 		
 		//Create a scrolled text area to type into
-		JTextArea IDIOT_file_content = new JTextArea(SyntaxHighlighter.SyntaxHighlighterProfile());
+		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile());
 		//IDIOT_file_content.setEditable(true);
 		
 		//add a scrollPane to tabbedPane

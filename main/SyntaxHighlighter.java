@@ -7,6 +7,7 @@ package main;
 
 import java.awt.*;
 
+import javax.swing.JTextPane;
 import javax.swing.text.*;
 
 public class SyntaxHighlighter {
@@ -56,12 +57,25 @@ public class SyntaxHighlighter {
     {
     	//the attributes are the styles for the Tokens to be 'highlighted' with.
     	//TODO add more styles for different sets of tokens
-    	final StyleContext cont = StyleContext.getDefaultStyleContext();
-        final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLUE);
-        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+    	
+    	StyleContext sc = new StyleContext();
+        
+        // Create the main document style
+    	final Style defaultStyle = sc.getStyle(StyleContext.DEFAULT_STYLE);
+    	final AttributeSet defaultAttributes = defaultStyle.copyAttributes();
+    	
+        final Style startStyle = sc.addStyle("MainStyle", defaultStyle);
+        	//StyleConstants.setFontSize(startStyle, 40); //changes the font size 
+        	StyleConstants.setForeground(startStyle, new Color(0x008400)); //changes the color
+        	StyleConstants.setBold(startStyle, true); //sets the font to bold
+        	final AttributeSet startAttributes =  startStyle.copyAttributes();
+        final Style endStyle = sc.addStyle("EndStyle", defaultStyle);
+        	StyleConstants.setForeground(endStyle, Color.RED);
+        	StyleConstants.setBold(endStyle, true);
+        	final AttributeSet endAttributes =  endStyle.copyAttributes();
          
         //the styling profile as a styled document
-        DefaultStyledDocument doc = new DefaultStyledDocument() {
+        DefaultStyledDocument doc = new DefaultStyledDocument(sc) {
         	 
         	public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
         		super.insertString(offset, str, a);
@@ -79,10 +93,12 @@ public class SyntaxHighlighter {
                 //search the tokens for the specific ones to be highlighted 
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                        if (text.substring(wordL, wordR).matches("(\\W)*(ADD|GOTO|START|END)"))
-                            setCharacterAttributes(wordL, wordR - wordL, attr, false);
-                        else
-                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
+                        if (text.substring(wordL, wordR).matches("(\\W)*(START)")){
+                            setCharacterAttributes(wordL, wordR - wordL, startAttributes, false);
+                        }else if(text.substring(wordL, wordR).matches("(\\W)*(END)")){
+                        	setCharacterAttributes(wordL, wordR - wordL, endAttributes, false);
+                        }else
+                            setCharacterAttributes(wordL, wordR - wordL, defaultAttributes, false);
                         wordL = wordR;
                     }
                     wordR++;
@@ -98,13 +114,15 @@ public class SyntaxHighlighter {
                 	before = 0;
                 int after = findFirstNonWordChar(text, offs);
 
-                if (text.substring(before, after).matches("(\\W)*(ADD|START|END|GOTO)")) {
-                    setCharacterAttributes(before, after - before, attr, false);
-                } else {
-                    setCharacterAttributes(before, after - before, attrBlack, false);
+                if (text.substring(before, after).matches("(\\W)*(START)")) {
+                    setCharacterAttributes(before, after - before, startAttributes, false);
+                } else if (text.substring(before, after).matches("(\\W)*(END)")){
+                	setCharacterAttributes(before, after - before, endAttributes, false);
+                }else{
+                    setCharacterAttributes(before, after - before, defaultAttributes, false);
                 }
             }
-        };  
+        }; 
         return doc;
     }
 }
