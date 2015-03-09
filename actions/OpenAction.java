@@ -67,9 +67,8 @@ public class OpenAction extends AbstractAction {
 	{
 		//Create a scrolled text area to type into
 		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile());
-		//IDIOT_file_content.setEditable(true);
 			
-		// scans file into the JEditPane
+		// scans file into the JTextPane
 		Scanner scan = new Scanner(file,"UTF-8");
 		while (scan.hasNextLine()) {
 			String line = scan.nextLine();
