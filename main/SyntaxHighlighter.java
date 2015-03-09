@@ -53,8 +53,12 @@ public class SyntaxHighlighter {
      * should be.
      */
     @SuppressWarnings("serial")
-	public static DefaultStyledDocument SyntaxHighlighterProfile ()
+	public static DefaultStyledDocument SyntaxHighlighterProfile (int fontSize)
     {
+    	//set a minimum font size to prevent invisible text and errors
+    	if(1>=fontSize)
+    		fontSize=1;
+    	
     	//the attributes are the styles for the Tokens to be 'highlighted' with.
     	//TODO add more styles for different sets of tokens
     	
@@ -63,6 +67,7 @@ public class SyntaxHighlighter {
         // Create the main document style
     	final Style defaultStyle = sc.getStyle(StyleContext.DEFAULT_STYLE);
     		StyleConstants.setForeground(defaultStyle, Color.BLACK);
+    		StyleConstants.setFontSize(defaultStyle, fontSize);
     		final AttributeSet defaultAttributes = defaultStyle.copyAttributes();
     	
         final Style startStyle = sc.addStyle("StartStyle", defaultStyle);

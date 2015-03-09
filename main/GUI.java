@@ -39,6 +39,7 @@ public class GUI {
         JFrame frame = new JFrame(name);
         
         //initialize the frame
+        //TODO the default close operation should be to check if the file is saved then close.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(width, height));
         frame.setSize(2*width,2*height);
