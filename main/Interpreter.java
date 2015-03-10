@@ -3,11 +3,10 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 /**
  * @author Barry Warnock
@@ -18,7 +17,7 @@ import javax.swing.JTextArea;
  */
 public class Interpreter
 {
-	protected JTextArea io;
+	static protected JTextArea io;
 
 	Interpreter()
 	{
@@ -27,7 +26,19 @@ public class Interpreter
 
 	public void setIo(JTextArea io)
 	{
-		this.io = io;
+		Interpreter.io = io;
+		io.setEditable(false);
+	}
+	
+	static public void logToIo(final String message)
+	{
+		SwingUtilities.invokeLater(new Runnable() 
+		 {
+			    public void run() 
+			    {
+			    	io.append(message);
+			    }
+		 });
 	}
 	
 	/**
@@ -36,9 +47,8 @@ public class Interpreter
 	 * @param content the code to be run
 	 * @throws Exception 
 	 */
-	public void run(String content) throws Exception
+	static public void run(String content) throws Exception
 	{
-		System.out.println("Start of run");
 		if (io == null)
 		{
 			throw new Exception("No io Text Area set");
@@ -72,7 +82,7 @@ public class Interpreter
 						//if there is anything after the Command other than whitespace
 						if (tokens.length > 1 && tokens[1].trim().length() >= 1)
 						{
-							io.append(errorAt + "START contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "START contains too many arguments \n");
 							error = true;
 						}
 						else
@@ -85,12 +95,12 @@ public class Interpreter
 					}
 					else if (!tokens[0].equals("START") && !started)
 					{
-						io.append( errorAt + "IDIOT program must begin with START \n");
+						Interpreter.logToIo( errorAt + "IDIOT program must begin with START \n");
 						error = true;
 					}
 					else if (tokens[0].equals("START") && started)
 					{
-						io.append(errorAt + "only one START per IDIOT program \n");
+						Interpreter.logToIo(errorAt + "only one START per IDIOT program \n");
 						error = true;
 					}
 					else if (tokens[0].equals("END"))
@@ -99,7 +109,7 @@ public class Interpreter
 						//if there is anything after the Command other than whitespace
 						if (tokens.length > 1 && tokens[1].trim().length() >= 1)
 						{
-							io.append(errorAt + "END contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "END contains too many arguments \n");
 							error = true;
 						}
 						ended = true;
@@ -109,13 +119,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
-							io.append(errorAt + "ADD contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "ADD contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 4)
 						{
-							io.append(errorAt + "ADD contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "ADD contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -128,13 +138,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 3 && tokens[3].trim().length() >= 1)
 						{
-							io.append(errorAt + "ASSIGN contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "ASSIGN contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 3)
 						{
-							io.append(errorAt + "ASSIGN contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "ASSIGN contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -152,13 +162,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
-							io.append(errorAt + "DIV contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "DIV contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 4)
 						{
-							io.append(errorAt + "DIV contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "DIV contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -171,13 +181,13 @@ public class Interpreter
 						//if there is anything after the command name other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
-							io.append(errorAt + "ENTER contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "ENTER contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 2)
 						{
-							io.append(errorAt + "ENTER contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "ENTER contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -190,13 +200,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
-							io.append(errorAt + "INC contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "INC contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 2)
 						{
-							io.append(errorAt + "INC contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "INC contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -209,13 +219,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
-							io.append(errorAt + "MUL contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "MUL contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 4)
 						{
-							io.append(errorAt + "MUL contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "MUL contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -228,7 +238,7 @@ public class Interpreter
 						//if there are too few arguments
 						if (tokens.length < 2)
 						{
-							io.append(errorAt + "PRINT contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "PRINT contains too few arguments \n");
 							error = true;
 						}
 						String toPrint = "";
@@ -249,14 +259,14 @@ public class Interpreter
 							}
 							if(!closed)
 							{
-								io.append(errorAt + "no closing paren ')\'");
+								Interpreter.logToIo(errorAt + "no closing paren ')\'");
 								error = true;
 							}
 							else
 							{
 								if (tokens[tokens.length-1].charAt(tokens[tokens.length-1].length()-1) != ')')
 								{
-									io.append(errorAt + "PRINT contains too many arguments");
+									Interpreter.logToIo(errorAt + "PRINT contains too many arguments");
 									error = true;
 								}
 								else
@@ -271,7 +281,7 @@ public class Interpreter
 							//if there is anything after the command other than whitespace
 							if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 							{
-								io.append(errorAt + "PRINT contains too many arguments \n");
+								Interpreter.logToIo(errorAt + "PRINT contains too many arguments \n");
 								error = true;
 							}
 							else
@@ -285,13 +295,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
-							io.append(errorAt + "SUB contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "SUB contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 4)
 						{
-							io.append(errorAt + "SUB contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "SUB contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -304,13 +314,13 @@ public class Interpreter
 						//if there is anything after the variable name other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
-							io.append(errorAt + "VAR contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "VAR contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 2)
 						{
-							io.append(errorAt + "VAR contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "VAR contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -324,13 +334,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
-							io.append(errorAt + "GOTO contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "GOTO contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 2)
 						{
-							io.append(errorAt + "GOTO contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "GOTO contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -344,13 +354,13 @@ public class Interpreter
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
-							io.append(errorAt + "IF contains too many arguments \n");
+							Interpreter.logToIo(errorAt + "IF contains too many arguments \n");
 							error = true;
 						}
 						//if there are too few arguments
 						if (tokens.length < 4)
 						{
-							io.append(errorAt + "IF contains too few arguments \n");
+							Interpreter.logToIo(errorAt + "IF contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -374,7 +384,7 @@ public class Interpreter
 							}
 							else 
 							{
-								io.append(errorAt + "unrecognized condition passed to if \n");
+								Interpreter.logToIo(errorAt + "unrecognized condition passed to if \n");
 								error = true;
 							}
 							double val = Double.parseDouble(tokens[3]);
@@ -387,14 +397,14 @@ public class Interpreter
 							//if there is anything after the command other than whitespace
 							if (tokens.length > 1 && tokens[1].trim().length() >= 1)
 							{
-								io.append(errorAt + "ENDIF contains too many arguments \n");
+								Interpreter.logToIo(errorAt + "ENDIF contains too many arguments \n");
 								error = true;
 							}
 							else
 							{
 								if (IF.IFs.size() == 0)
 								{
-									io.append(errorAt + "No unclosed IF to close \n");
+									Interpreter.logToIo(errorAt + "No unclosed IF to close \n");
 								}
 								else
 								{
@@ -410,25 +420,21 @@ public class Interpreter
 					}
 					else
 					{
-						io.append(errorAt + "Unrecognized keyword \n");
+						Interpreter.logToIo(errorAt + "Unrecognized keyword \n");
 						error = true;
 					}
 					lineNumber++;
 				}
-				System.out.println("commands parsed");
 				if (!ended)
 				{
-					io.append("IDIOT program must end with END \n");
-					System.out.println("!ended");
+					Interpreter.logToIo("IDIOT program must end with END \n");	
 				}
 				else if (IF.IFs.size() > 0)
 				{
-					io.append("error at line " + IF.IFs.get(0).getLine() + " unclosed IF");
-					System.out.println("too many ifs");
+					Interpreter.logToIo("error at line " + IF.IFs.get(0).getLine() + " unclosed IF");
 				}
 				else
 				{
-					
 					Command current = head;
 					if(!error)
 					{
@@ -437,13 +443,11 @@ public class Interpreter
 							current = current.execute(variables, io);
 						}
 					}
-					System.out.println("done running through commands");
 				}
-				System.out.println("through error/if check + commands");
 			}
 			catch (IOException e)
 			{
-				io.append("error sending code to interpreter \n");
+				Interpreter.logToIo("error sending code to interpreter \n");
 			}
 			try
 			{
@@ -451,9 +455,8 @@ public class Interpreter
 			}
 			catch (IOException e)
 			{
-				io.append("Failed to close BufferedReader \n");
+				Interpreter.logToIo("Failed to close BufferedReader \n");
 			}
 		}
-		System.out.println("end of run");
 	}
 }
