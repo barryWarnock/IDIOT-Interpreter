@@ -63,7 +63,6 @@ public class Interpreter
 				{
 					line = line.trim();
 					String[] tokens = line.split(" ", 5);
-					System.out.println(tokens[0]);
 					errorAt = "Error at line ";
 					errorAt += lineNumber;
 					errorAt += ": ";
@@ -104,7 +103,7 @@ public class Interpreter
 						}
 						ended = true;
 					}
-					else if (line.startsWith("ADD"))
+					else if (tokens[0].equals("ADD"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
@@ -112,17 +111,29 @@ public class Interpreter
 							io.append(errorAt + "ADD contains too many arguments \n");
 							error = true;
 						}
+						//if there are too few arguments
+						if (tokens.length < 4)
+						{
+							io.append(errorAt + "ADD contains too few arguments \n");
+							error = true;
+						}
 						else
 						{
 							tail = tail.add(new ADD(tokens[1], tokens[2], tokens[3]), lineNumber);
 						}
 					}
-					else if (line.startsWith("ASSIGN"))
+					else if (tokens[0].equals("ASSIGN"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 3 && tokens[3].trim().length() >= 1)
 						{
 							io.append(errorAt + "ASSIGN contains too many arguments \n");
+							error = true;
+						}
+						//if there are too few arguments
+						if (tokens.length < 3)
+						{
+							io.append(errorAt + "ASSIGN contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -131,11 +142,11 @@ public class Interpreter
 							tail = tail.add(new ASSIGN(tokens[1], val), lineNumber);
 						}
 					}
-					else if (line.startsWith("CMT"))
+					else if (tokens[0].equals("CMT"))
 					{
 						tail = tail.add(new BLANK(), lineNumber);
 					}
-					else if (line.startsWith("DIV"))
+					else if (tokens[0].equals("DIV"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
@@ -143,12 +154,18 @@ public class Interpreter
 							io.append(errorAt + "DIV contains too many arguments \n");
 							error = true;
 						}
+						//if there are too few arguments
+						if (tokens.length < 4)
+						{
+							io.append(errorAt + "DIV contains too few arguments \n");
+							error = true;
+						}
 						else
 						{
 							tail = tail.add(new DIV(tokens[1], tokens[2], tokens[3]), lineNumber);
 						}
 					}
-					else if (line.startsWith("ENTER"))
+					else if (tokens[0].equals("ENTER"))
 					{
 						//if there is anything after the command name other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
@@ -156,12 +173,18 @@ public class Interpreter
 							io.append(errorAt + "ENTER contains too many arguments \n");
 							error = true;
 						}
+						//if there are too few arguments
+						if (tokens.length < 2)
+						{
+							io.append(errorAt + "ENTER contains too few arguments \n");
+							error = true;
+						}
 						else
 						{
 							tail = tail.add(new ENTER(tokens[1]), lineNumber);
 						}
 					}
-					else if (line.startsWith("INC"))
+					else if (tokens[0].equals("INC"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
@@ -169,17 +192,29 @@ public class Interpreter
 							io.append(errorAt + "INC contains too many arguments \n");
 							error = true;
 						}
+						//if there are too few arguments
+						if (tokens.length < 2)
+						{
+							io.append(errorAt + "INC contains too few arguments \n");
+							error = true;
+						}
 						else
 						{
 							tail = tail.add(new INC(tokens[1]), lineNumber);
 						}
 					}
-					else if (line.startsWith("MUL"))
+					else if (tokens[0].equals("MUL"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
 							io.append(errorAt + "MUL contains too many arguments \n");
+							error = true;
+						}
+						//if there are too few arguments
+						if (tokens.length < 4)
+						{
+							io.append(errorAt + "MUL contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -189,6 +224,12 @@ public class Interpreter
 					}
 					else if (tokens[0].equals("PRINT"))
 					{
+						//if there are too few arguments
+						if (tokens.length < 2)
+						{
+							io.append(errorAt + "PRINT contains too few arguments \n");
+							error = true;
+						}
 						String toPrint = "";
 						if (tokens[1].charAt(0) == '(')
 						{
@@ -238,7 +279,7 @@ public class Interpreter
 							}
 						}
 					}
-					else if (line.startsWith("SUB"))
+					else if (tokens[0].equals("SUB"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
@@ -246,17 +287,29 @@ public class Interpreter
 							io.append(errorAt + "SUB contains too many arguments \n");
 							error = true;
 						}
+						//if there are too few arguments
+						if (tokens.length < 4)
+						{
+							io.append(errorAt + "SUB contains too few arguments \n");
+							error = true;
+						}
 						else
 						{
 							tail = tail.add(new SUB(tokens[1], tokens[2], tokens[3]), lineNumber);
 						}
 					}
-					else if (line.startsWith("VAR"))
+					else if (tokens[0].equals("VAR"))
 					{
 						//if there is anything after the variable name other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
 							io.append(errorAt + "VAR contains too many arguments \n");
+							error = true;
+						}
+						//if there are too few arguments
+						if (tokens.length < 2)
+						{
+							io.append(errorAt + "VAR contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -265,12 +318,18 @@ public class Interpreter
 						}
 					}
 					
-					else if (line.startsWith("GOTO"))
+					else if (tokens[0].equals("GOTO"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 2 && tokens[2].trim().length() >= 1)
 						{
 							io.append(errorAt + "GOTO contains too many arguments \n");
+							error = true;
+						}
+						//if there are too few arguments
+						if (tokens.length < 2)
+						{
+							io.append(errorAt + "GOTO contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -279,12 +338,18 @@ public class Interpreter
 							tail = tail.add(new GOTO(gotoLine), lineNumber);
 						}
 					}
-					else if (line.startsWith("IF"))
+					else if (tokens[0].equals("IF"))
 					{
 						//if there is anything after the command other than whitespace
 						if (tokens.length > 4 && tokens[4].trim().length() >= 1)
 						{
 							io.append(errorAt + "IF contains too many arguments \n");
+							error = true;
+						}
+						//if there are too few arguments
+						if (tokens.length < 4)
+						{
+							io.append(errorAt + "IF contains too few arguments \n");
 							error = true;
 						}
 						else
@@ -315,7 +380,7 @@ public class Interpreter
 							tail = tail.add(new IF(tokens[1], condition, val), lineNumber);
 						}
 					}
-						else if (line.startsWith("ENDIF"))
+						else if (tokens[0].equals("ENDIF"))
 						{
 							
 							//if there is anything after the command other than whitespace
