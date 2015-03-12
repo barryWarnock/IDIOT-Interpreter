@@ -6,9 +6,6 @@ ehthumbs.db
 *.class
 *.classpath
 
-# NO png s as the license wont allow us to share them on github… I think
-*.png
-
 # Folder config file
 Desktop.ini
 
