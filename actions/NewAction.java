@@ -31,7 +31,7 @@ public class NewAction extends AbstractAction {
 		JTabbedPane tabbedPane = GUI.getTabbedPane();
 		
 		//Create a scrolled text area to type into
-		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile());
+		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile(0));
 		
 		
 		//add a scrollPane to tabbedPane
