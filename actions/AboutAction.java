@@ -25,10 +25,7 @@ public class AboutAction extends AbstractAction {
 				+ "Travis Kurucz,\n"
 				+ "Timothy Hillier,\n"
 				+ "Dean Kution,\n"
-				+ "Barry Warnock\n\n"
-				+ "Thanks to Visual Pharm for the icons which were released under\n"
-				+ "Creative Commons Attribution-No Derivative Works 3.0 Unported\n"
-				+ "They can be viewed at https://www.iconfinder.com/icons/27860/",
+				+ "Barry Warnock\n\n",
 				"About the IDIOT editor",JOptionPane.PLAIN_MESSAGE,icon);
 		
 	}
