@@ -12,6 +12,7 @@ import javax.swing.text.*;
 
 public class SyntaxHighlighter {
 
+	private static int fontSize = 12;
 	/**
 	 * 
 	 * @param text to find the last char of 
@@ -53,11 +54,12 @@ public class SyntaxHighlighter {
      * should be.
      */
     @SuppressWarnings("serial")
-	public static DefaultStyledDocument SyntaxHighlighterProfile (int fontSize)
+	public static DefaultStyledDocument SyntaxHighlighterProfile (int fontSizeChange)
     {
     	//set a minimum font size to prevent invisible text and errors
-    	if(1>=fontSize)
-    		fontSize=1;
+    	fontSize += fontSizeChange;
+    	if(10>=fontSize)
+    		fontSize=10;
     	
     	//the attributes are the styles for the Tokens to be 'highlighted' with.
     	//TODO add more styles for different sets of tokens
@@ -89,13 +91,10 @@ public class SyntaxHighlighter {
         	StyleConstants.setForeground(catchAllStyle, Color.ORANGE); //changes the color
         	StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
         	final AttributeSet catchAllAttributes =  catchAllStyle.copyAttributes();
-        	
-        	
-        	
          
         //the styling profile as a styled document
         DefaultStyledDocument doc = new DefaultStyledDocument(sc) {
-        	 
+
         	public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
         		super.insertString(offset, str, a);
 

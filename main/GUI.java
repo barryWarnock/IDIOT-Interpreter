@@ -146,6 +146,14 @@ public class GUI {
         tempButton.addActionListener(new CompileAction());
         toolbar.add(tempButton);
         
+        tempButton = makeButton("BiggerFontIcon", "BiggerFont");
+        tempButton.addActionListener(new BiggerFontAction());
+        toolbar.add(tempButton);
+        
+        tempButton = makeButton("SmallerFontIcon", "SmallerFont");
+        tempButton.addActionListener(new SmallerFontAction());
+        toolbar.add(tempButton);
+        
         return toolbar;
 	}
 	
@@ -308,7 +316,7 @@ public class GUI {
 
 	
 	/**
-	 * @return JTextArea of the in-focus tab
+	 * @return JTextPane of the in-focus tab
 	 */
 	public static JTextPane getFocusTextPane() throws Exception{
 		//returns the tab component with focus
