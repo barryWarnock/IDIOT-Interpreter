@@ -12,7 +12,7 @@ import javax.swing.text.*;
 
 public class SyntaxHighlighter {
 
-	private static int fontSize = 12;
+	private static int fontSize = 15;
 	/**
 	 * 
 	 * @param text to find the last char of 
@@ -75,21 +75,25 @@ public class SyntaxHighlighter {
         final Style startStyle = sc.addStyle("StartStyle", defaultStyle);
         	StyleConstants.setForeground(startStyle, new Color(0x008400)); //changes the color
         	StyleConstants.setBold(startStyle, true); //sets the font to bold
+        	StyleConstants.setFontSize(startStyle, fontSize);
         	final AttributeSet startAttributes =  startStyle.copyAttributes();
         	
         final Style endStyle = sc.addStyle("EndStyle", defaultStyle);
         	StyleConstants.setForeground(endStyle, Color.RED);
         	StyleConstants.setBold(endStyle, true);
+        	StyleConstants.setFontSize(endStyle, fontSize);
         	final AttributeSet endAttributes =  endStyle.copyAttributes();
         	
         final Style commentStyle = sc.addStyle("CommentStyle", defaultStyle);
         	StyleConstants.setForeground(commentStyle, Color.BLUE); //changes the color
         	StyleConstants.setBold(commentStyle, true); //sets the font to bold
+        	StyleConstants.setFontSize(commentStyle, fontSize);
         	final AttributeSet commentAttributes =  commentStyle.copyAttributes();
         	
         final Style catchAllStyle = sc.addStyle("CatchAllStyle", defaultStyle);
         	StyleConstants.setForeground(catchAllStyle, Color.ORANGE); //changes the color
         	StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
+        	StyleConstants.setFontSize(catchAllStyle, fontSize);
         	final AttributeSet catchAllAttributes =  catchAllStyle.copyAttributes();
          
         //the styling profile as a styled document
