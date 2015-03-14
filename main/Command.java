@@ -6,7 +6,8 @@ import javax.swing.JTextArea;
 
 
 /**
- * all Commands will extend Command so that a linked list of Commands can be built and iterated through
+ * all Commands will extend Command so that a linked list of Commands can be built and iterated through, each Command will do 
+ * all its work in the execute method
  */
 abstract class Command
 {
@@ -14,7 +15,6 @@ abstract class Command
 	protected Command next = null;
 	protected int lineNumber;
 	/**
-	 * every Command will do its work in the execute method
 	 * @param variables a HashMap containing all of the Variables in the program
 	 * @param io the JTextArea to be used for i/o
 	 * @return the next command in the list
@@ -48,7 +48,7 @@ abstract class Command
 		return next;
 	}
 	/**
-	 * @return the line number of the current command
+	 * @return the line number of the current Command
 	 */
 	public int getLine()
 	{
@@ -116,8 +116,8 @@ class ASSIGN extends Command
 	protected String var;
 	protected double val;
 	/**
-	 * @param var the name of the variable to be filled
-	 * @param val the value to place in var
+	 * @param var the name of the Variable to be filled
+	 * @param val the value to assign the Variable to be filled
 	 */
 	ASSIGN(String var, double val)
 	{
@@ -145,6 +145,10 @@ class ASSIGN extends Command
  */
 class BLANK extends Command
 {
+	/**
+	 * simply returns the next Command in the list
+	 * {@inheritDoc}
+	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io )
 	{
 		return this.next;
@@ -209,7 +213,7 @@ class ENTER extends Command
 		this.var = var;
 	}
 	/**
-	 * will somehow take input from the user and put it in the given Variable
+	 * takes input from the user and assigns it to the assigned Variable
 	 * {@inheritDoc}
 	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io)
@@ -219,11 +223,14 @@ class ENTER extends Command
 		{
 			logError("invalid variable passed to ENTER");
 		}
+		//keep track of the newest newline when we begin
 		int initial = io.getText().lastIndexOf('\n');
+		//if there is no newline initial will be set to -1
 		if (initial == -1)
 		{
 			initial = 0;
 		}
+		//allow the user to edit the text in io
 		io.setEditable(true);
 		//wait until a new newline is detected
 		if (io.getText().lastIndexOf('\n') == -1)
@@ -238,7 +245,9 @@ class ENTER extends Command
 			{
 			}
 		}
+		//once a new newline is detected we re-lock io
 		io.setEditable(false);
+		//take the text in between the old newline and the new and assign it to val
 		String input = io.getText().substring(initial, io.getText().lastIndexOf('\n'));
 		double val = 0;
 		try
@@ -360,7 +369,7 @@ class PRINT extends Command
 		this.val = val;
 	}
 	/**
-	 * checks what type the value it then prints it
+	 * checks what type the value is then prints it
 	 * {@inheritDoc}
 	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io )
@@ -443,7 +452,7 @@ class VAR extends Command
 {
 	protected String name;
 	/**
-	 * @param name
+	 * @param name the name of the new Variable
 	 */
 	VAR(String name)
 	{
@@ -451,6 +460,7 @@ class VAR extends Command
 	}
 	/**
 	 * creates a new Variable with the given name and adds it to the HashMap
+	 * {@inheritDoc}
 	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io )
 	{
@@ -473,13 +483,23 @@ class VAR extends Command
 
 
 //The following commands were not in the handout
+/**
+ * GOTO will bring the program flow to the assigned line number
+ */
 class GOTO extends Command
 {
 	int line;
+	/**
+	 * @param line the line to redirect the program to
+	 */
 	GOTO(int line)
 	{
 		this.line = line;
 	}
+	/**
+	 * GOTO brings the program to the designated line number
+	 * {@inheritDoc}
+	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
 	{
 		Command toReturn = this;
@@ -507,6 +527,14 @@ class GOTO extends Command
 		return toReturn;
 	}
 }
+
+/**
+ * IF takes a variable, a condition, and a value, if the variable has a value that 
+ * relates to the given value using the given condition then execute will return 
+ * the next Command in the list, otherwise it will return the next ENDIF statement
+ * <P>
+ * the valid conditions are: !, >, <, and =
+ */
 class IF extends Command
 {
 	//link to the closing ENDIF
@@ -515,7 +543,11 @@ class IF extends Command
 	public static ArrayList<IF> IFs = new ArrayList<IF>();
 	String var, cond;
 	double val;
-	//variable, condition, value
+	/**
+	 * @param variable the Variable to check against the given value
+	 * @param condition the condition to use when checking the Variable and value
+	 * @param value the value to check against the given Variable
+	 */
 	IF(String variable,String condition, double value)
 	{
 		var = variable;
@@ -523,7 +555,10 @@ class IF extends Command
 		val = value;
 		IFs.add(this);
 	}
-	//returns the next command if true otherwise returns else
+	/**
+	 * returns the next Command if true, otherwise return the next ENDIF
+	 * {@inheritDoc}
+	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
 	{
 		//runtime error if the Variable does not exist
@@ -571,12 +606,23 @@ class IF extends Command
 	}
 }
 
+/**
+ * ENDIF will close off the previous IF command
+ */
 class ENDIF extends Command
 {
+	/**
+	 * takes the most recent IF if the static list of unclosed IFs and point its 
+	 * else element to this ENDIF
+	 */
 	ENDIF()
 	{
 		IF.IFs.remove(IF.IFs.size()-1).elseIF = this;
 	}
+	/**
+	 * just returns the next Command in the list
+	 * {@inheritDoc}
+	 */
 	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
 	{
 		return next;

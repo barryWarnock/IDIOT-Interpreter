@@ -26,7 +26,7 @@ class Variable
 		return value;
 	}
 	/**
-	 * @param the new value of the Variable
+	 * @param value the new value of the Variable
 	 */
 	public void setValue(double value)
 	{
