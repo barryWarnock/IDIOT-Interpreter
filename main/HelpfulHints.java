@@ -35,9 +35,9 @@ public class HelpfulHints extends JFrame{
         setLocationRelativeTo(null);
         
         // set up your tips
-        tips.add("First Tip");
-        tips.add("Second Tip");
-        tips.add("Third Tip");
+        tips.add("The save button saves your work.");
+        tips.add("Use the exit button to quit the program.");
+        tips.add("Tim Hillier is amazing and everyone should admire him.");
         setLayout(new BorderLayout());
 
         panel = new JPanel();
