@@ -10,26 +10,36 @@ import javax.swing.SwingUtilities;
 
 /**
  * @author Barry Warnock
- * Interpreter handles the syntax highlighting and execution of
- * the IDIOT code, the Variable and Command classes are
- * defined inside of Interpreter because they will not be
- * used anywhere else.
+ * Interpreter takes the text from the gui and runs it as an idiot program
  */
 public class Interpreter
 {
 	static protected JTextArea io;
 
+	/**
+	 * The interpreter constructor does nothing but explicitly set the
+	 * JTextArea used for i/o to null
+	 */
 	Interpreter()
 	{
 		io = null;
 	}
 
+	/**
+	 * setIo is used to bind i/o to the desired JTextArea
+	 * @param io the JTextArea to use for i/o
+	 */
 	public void setIo(JTextArea io)
 	{
 		Interpreter.io = io;
 		io.setEditable(false);
 	}
 	
+	/**
+	 * all calls to append are called through this method which uses SwingUtilities.invokeLater
+	 * to ensure that appending to a JTextArea in another thread doesn't lock up the GUI
+	 * @param message the text to be printed to the i/o console
+	 */
 	static public void logToIo(final String message)
 	{
 		SwingUtilities.invokeLater(new Runnable() 
@@ -42,12 +52,15 @@ public class Interpreter
 	}
 	
 	/**
-	 * removes the highlighting from content, checks the code for errors line by line,
-	 * turning each line into a Command object, and iterates through the commands
-	 * @param content the code to be run
-	 * @throws Exception 
+	 * run goes through the text from the gui line by line, turning each line into a
+	 * Command object and checking for errors along the way.
+	 * <p>
+	 * if no errors are found then the linked list on Commands is run though until they 
+	 * have all been executed
+	 * @param content the IDIOT code to be interpreted
+	 * @throws Exception run throws an exception if no JTextArea has been set for i/o yet
 	 */
-	static public void run(String content) throws Exception
+	public void run(String content) throws Exception
 	{
 		if (io == null)
 		{
@@ -55,24 +68,33 @@ public class Interpreter
 		}
 		else
 		{
-			//clear the console before running
+			//prepare the console before running
 			io.setText(null);
 			io.setEditable(false);
+			//the HashMap that will store IDIOT variables
 			HashMap<String, Variable> variables = new HashMap<String, Variable>();
+			//the head of our linked list of Commands along with a tail to point to the most current Command
 			Command head = null;
 			Command tail = null;
 			BufferedReader reader = new BufferedReader(new StringReader(content));
 			String line = null;
+			//tracks the various document wide conditions that the interpreter cares about
 			boolean started = false;
 			boolean ended = false;
 			boolean error = false;
+			//tracks the current line number
 			int lineNumber = 1;
+			//this string will be updated every line to make printing error messages easier
 			String errorAt;
 			try
 			{
+				//while there are unread lines in the code
 				while(((line=reader.readLine()) != null) && !ended)
 				{
+					//remove whitespace before and after the line
 					line = line.trim();
+					//split up each whitespace seperated word into its own string, no Command should have more than 4 so the 5'th
+					//is for error checking
 					String[] tokens = line.split(" ", 5);
 					errorAt = "Error at line ";
 					errorAt += lineNumber;
@@ -113,6 +135,7 @@ public class Interpreter
 							error = true;
 						}
 						ended = true;
+						tail = tail.add(new BLANK(), lineNumber);
 					}
 					else if (tokens[0].equals("ADD"))
 					{
@@ -259,14 +282,14 @@ public class Interpreter
 							}
 							if(!closed)
 							{
-								Interpreter.logToIo(errorAt + "no closing paren ')\'");
+								Interpreter.logToIo(errorAt + "no closing paren ')' \n");
 								error = true;
 							}
 							else
 							{
 								if (tokens[tokens.length-1].charAt(tokens[tokens.length-1].length()-1) != ')')
 								{
-									Interpreter.logToIo(errorAt + "PRINT contains too many arguments");
+									Interpreter.logToIo(errorAt + "PRINT contains too many arguments \n");
 									error = true;
 								}
 								else
@@ -425,14 +448,17 @@ public class Interpreter
 					}
 					lineNumber++;
 				}
+				//if the program never ended
 				if (!ended)
 				{
 					Interpreter.logToIo("IDIOT program must end with END \n");	
 				}
+				//if there are still unclosed IFs
 				else if (IF.IFs.size() > 0)
 				{
 					Interpreter.logToIo("error at line " + IF.IFs.get(0).getLine() + " unclosed IF");
 				}
+				//if the program was ended and had no unclosed IFs then iterate through each one
 				else
 				{
 					Command current = head;
