@@ -36,11 +36,40 @@ public class GUI {
 	
 	public GUI (String name, int width, int height)
 	{
-        JFrame frame = new JFrame(name);
+        final JFrame frame = new JFrame(name);
+
+        //initialize the frameC
         
-        //initialize the frame
-        //TODO the default close operation should be to check if the file is saved then close.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        //asks to save when the program is closed
+   
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            	
+            	Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
+
+        		int result = JOptionPane.showOptionDialog(frame, "Do you want to save before you close?","Close Dialog",
+        		    JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
+            	
+            	
+        		if (result == JOptionPane.YES_OPTION)
+        		{
+        			//call the save action
+        			//Popup and ask if they want to save.
+        			SaveAction save = new SaveAction();
+        			save.actionPerformed(new ActionEvent(save, 1, ""));
+        			
+        			//TODO make sure that it actually saves before closing 
+        			System.exit(0);
+        		
+        		} else if(result == JOptionPane.NO_OPTION)
+        		{
+        			System.exit(0);	
+        		} 
+        	}
+
+        });
         frame.setMinimumSize(new Dimension(width, height));
         frame.setSize(2*width,2*height);
         frame.setLocationRelativeTo(null);
@@ -64,7 +93,7 @@ public class GUI {
 	 * @return JPanel filled with toys for all the good girls and boys 
 	 */
 	private JPanel createPanel(int dividerLocation) {
-    	
+		
     	Dimension minimumSize=new Dimension(100,100);
     	
     	//create the panel that will be returned 
@@ -338,4 +367,5 @@ public class GUI {
 	public String toString() {
 		return "This is a JFrame and a bunch of components";
 	} 
+	
 }
