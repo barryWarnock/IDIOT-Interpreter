@@ -56,7 +56,7 @@ abstract class Command
 	}
 	/**
 	 * takes an error message, adds line information and a newline, and prints it 
-	 * @param errMsg
+	 * @param errMsg the error to print
 	 */
 	protected void logError(String errMsg)
 	{
