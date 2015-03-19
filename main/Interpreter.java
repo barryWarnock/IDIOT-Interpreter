@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
 
 import actions.EnterAction;
 
@@ -17,7 +18,7 @@ import actions.EnterAction;
  */
 public class Interpreter
 {
-	static protected JTextArea io;
+	static protected JTextPane io;
 
 	/**
 	 * The interpreter constructor does nothing but explicitly set the
@@ -32,7 +33,7 @@ public class Interpreter
 	 * setIo is used to bind i/o to the desired JTextArea
 	 * @param io the JTextArea to use for i/o
 	 */
-	public void setIo(JTextArea io)
+	public void setIo(JTextPane io)
 	{
 		Interpreter.io = io;
 		io.setEditable(false);
@@ -75,7 +76,12 @@ public class Interpreter
 		 {
 			    public void run() 
 			    {
-			    	io.append(message);
+			    	try {
+						io.getDocument().insertString(io.getDocument().getLength(), message, null);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			    }
 		 });
 	}

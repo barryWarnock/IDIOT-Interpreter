@@ -1,10 +1,11 @@
 package main;
 
 import actions.EnterAction;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 
 /**
@@ -18,10 +19,10 @@ abstract class Command
 	protected int lineNumber;
 	/**
 	 * @param variables a HashMap containing all of the Variables in the program
-	 * @param io the JTextArea to be used for i/o
+	 * @param io the JTextPane to be used for i/o
 	 * @return the next command in the list
 	 */
-	public abstract Command execute(HashMap<String, Variable> variables, JTextArea io );
+	public abstract Command execute(HashMap<String, Variable> variables, JTextPane io );
 	/**
 	 * @param previous the Command that came before this one in the list
 	 */
@@ -86,7 +87,7 @@ class ADD extends Command
 	 * adds the first and second variables and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -130,7 +131,7 @@ class ASSIGN extends Command
 	 * assigns the given value to the given Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		//runtime error if the variable does not exist
 		if(variables.get(var) == null)
@@ -151,7 +152,7 @@ class BLANK extends Command
 	 * simply returns the next Command in the list
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		return this.next;
 	}
@@ -177,7 +178,7 @@ class DIV extends Command
 	 * divides the first number by the second and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -218,7 +219,7 @@ class ENTER extends Command
 	 * takes input from the user and assigns it to the assigned Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io)
+	public Command execute(HashMap<String, Variable> variables, JTextPane io)
 	{
 		//runtime error if the variable does not exist
 		if (variables.get(var) == null)
@@ -262,7 +263,7 @@ class INC extends Command
 	 * adds one to the given Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
@@ -301,7 +302,7 @@ class MUL extends Command
 	 * multiplies the first and second numbers and gives that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -354,7 +355,7 @@ class PRINT extends Command
 	 * checks what type the value is then prints it
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		if (isVar)
 		{
@@ -403,7 +404,7 @@ class SUB extends Command
 	 * divides the first number by the second and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -444,7 +445,7 @@ class VAR extends Command
 	 * creates a new Variable with the given name and adds it to the HashMap
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io )
+	public Command execute(HashMap<String, Variable> variables, JTextPane io )
 	{
 		//runtime error if the variable name includes '(' or ')'
 		if (name.contains("(") || name.contains(")"))
@@ -482,7 +483,7 @@ class GOTO extends Command
 	 * GOTO brings the program to the designated line number
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
+	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
 	{
 		Command toReturn = this;
 		boolean searching = true;
@@ -541,7 +542,7 @@ class IF extends Command
 	 * returns the next Command if true, otherwise return the next ENDIF
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
+	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
 	{
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
@@ -605,7 +606,7 @@ class ENDIF extends Command
 	 * just returns the next Command in the list
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextArea io) 
+	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
 	{
 		return next;
 	}

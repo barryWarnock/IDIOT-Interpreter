@@ -74,12 +74,12 @@ public class GUI {
     	Dimension minimumSize=new Dimension(100,100);
     	
     	//create the panel that will be returned 
-    	JPanel finalPanel=new JPanel(new BorderLayout());
+    	JPanel finalPanel = new JPanel(new BorderLayout());
     	
         tabbedPane.setMinimumSize(minimumSize);
         
 		//create the terminal text area and give it a label 
-        JTextArea output=new JTextArea();
+        JTextPane output=new JTextPane();
         output.setMinimumSize(minimumSize);
         JPanel terminalPanel=new JPanel(new BorderLayout());
         JScrollPane outputScroll = new JScrollPane(output);
