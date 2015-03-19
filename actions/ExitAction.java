@@ -1,17 +1,32 @@
 package actions;
 
 import java.awt.event.ActionEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
+import main.MainRun;
+
 
 @SuppressWarnings("serial")
 public class ExitAction extends AbstractAction {
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		Properties preferences = MainRun.getProperty();
+		try
+		{
+			FileOutputStream output = new FileOutputStream("preferences.dat");
+			preferences.store(output, "IDIOT Interpreter Preferences");
+			output.close();
+		}catch(IOException e2)
+		{
+			
+		}
 		//ask the user to save before closing 
 		Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
 
@@ -32,5 +47,4 @@ public class ExitAction extends AbstractAction {
 			System.exit(0);	
 		} 
 	}
-
 }

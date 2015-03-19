@@ -36,40 +36,17 @@ public class GUI {
 	
 	public GUI (String name, int width, int height)
 	{
+		//initialize the frame
         final JFrame frame = new JFrame(name);
-
-        //initialize the frameC
-        
+        //set the close operation... make sure it is called when the button is clicked
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //asks to save when the program is closed
-   
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-            	
-            	Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
-
-        		int result = JOptionPane.showOptionDialog(frame, "Do you want to save before you close?","Close Dialog",
-        		    JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
-            	
-            	
-        		if (result == JOptionPane.YES_OPTION)
-        		{
-        			//call the save action
-        			//Popup and ask if they want to save.
-        			SaveAction save = new SaveAction();
-        			save.actionPerformed(new ActionEvent(save, 1, ""));
-        			
-        			//TODO make sure that it actually saves before closing 
-        			System.exit(0);
-        		
-        		} else if(result == JOptionPane.NO_OPTION)
-        		{
-        			System.exit(0);	
-        		} 
-        	}
-
+        frame.addWindowListener(new WindowAdapter() {
+        	public void windowClosing(WindowEvent evt) {
+        		ExitAction exit = new ExitAction();
+       			exit.actionPerformed(new ActionEvent(exit, 1, ""));
+           }
         });
+        //set the graphics of the frame
         frame.setMinimumSize(new Dimension(width, height));
         frame.setSize(2*width,2*height);
         frame.setLocationRelativeTo(null);
