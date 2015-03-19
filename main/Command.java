@@ -226,6 +226,7 @@ class ENTER extends Command
 		{
 			logError("invalid variable passed to ENTER");
 		}
+		EnterAction.startListening();
 		String input = null;
 		while (input == null)
 		{

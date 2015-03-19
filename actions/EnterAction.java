@@ -10,6 +10,7 @@ import main.Interpreter;
 public class EnterAction extends AbstractAction
 {
 	private String digit;
+	private static boolean editable = false;
 	private static boolean lineIsTerminated = false;
 	private static String input = "";
 	public EnterAction(String digit)
@@ -18,7 +19,10 @@ public class EnterAction extends AbstractAction
 	}
 	public void actionPerformed(ActionEvent e)
 	{
-		if (digit == "\n")
+		if (!editable)
+		{
+		}
+		else if (digit == "\n")
 		{
 			lineIsTerminated = true;
 		}
@@ -27,6 +31,10 @@ public class EnterAction extends AbstractAction
 			Interpreter.logToIo(digit);
 			input += digit;
 		}
+	}
+	public static void startListening()
+	{
+		editable = true;
 	}
 	/**
 	 * returns the input if it is ready and resets the static fields of EnterAction
@@ -43,6 +51,7 @@ public class EnterAction extends AbstractAction
 			lineIsTerminated = false;
 			String toReturn = input;
 			input = "";
+			editable = false;
 			return toReturn;
 		}
 	}

@@ -30,7 +30,7 @@ public class Interpreter
 	}
 
 	/**
-	 * setIo is used to bind i/o to the desired JTextArea
+	 * setIo sets the JTextArea to be used for i/o and adds the keybindings to it that are used for ENTER
 	 * @param io the JTextArea to use for i/o
 	 */
 	public void setIo(JTextPane io)
