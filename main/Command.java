@@ -1,7 +1,9 @@
 package main;
 
+import actions.EnterAction;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.swing.JTextArea;
 
 
@@ -223,33 +225,13 @@ class ENTER extends Command
 		{
 			logError("invalid variable passed to ENTER");
 		}
-		//keep track of the newest newline when we begin
-		int initial = io.getText().lastIndexOf('\n');
-		//if there is no newline initial will be set to -1
-		if (initial == -1)
+		String input = null;
+		while (input == null)
 		{
-			initial = 0;
+			input = EnterAction.getInput();
 		}
-		//allow the user to edit the text in io
-		io.setEditable(true);
-		//wait until a new newline is detected
-		if (io.getText().lastIndexOf('\n') == -1)
-		{
-			while (io.getText().lastIndexOf('\n') == -1)
-			{
-			}
-		}
-		else
-		{
-			while(initial == (io.getText().lastIndexOf('\n')));
-			{
-			}
-		}
-		//once a new newline is detected we re-lock io
-		io.setEditable(false);
-		//take the text in between the old newline and the new and assign it to val
-		String input = io.getText().substring(initial, io.getText().lastIndexOf('\n'));
 		double val = 0;
+		Interpreter.logToIo("\n");
 		try
 		{
 			val = Double.parseDouble(input);

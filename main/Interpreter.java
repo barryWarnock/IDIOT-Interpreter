@@ -6,7 +6,10 @@ import java.io.StringReader;
 import java.util.HashMap;
 
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import actions.EnterAction;
 
 /**
  * @author Barry Warnock
@@ -33,6 +36,32 @@ public class Interpreter
 	{
 		Interpreter.io = io;
 		io.setEditable(false);
+		
+		io.getInputMap().put(KeyStroke.getKeyStroke("0"), "zero");
+		io.getActionMap().put("zero", new EnterAction("0"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("1"), "one");
+		io.getActionMap().put("one", new EnterAction("1"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("2"), "two");
+		io.getActionMap().put("two", new EnterAction("2"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("3"), "three");
+		io.getActionMap().put("three", new EnterAction("3"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("4"), "four");
+		io.getActionMap().put("four", new EnterAction("4"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("5"), "five");
+		io.getActionMap().put("five", new EnterAction("5"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("6"), "six");
+		io.getActionMap().put("six", new EnterAction("6"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("7"), "seven");
+		io.getActionMap().put("seven", new EnterAction("7"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("8"), "eight");
+		io.getActionMap().put("eight", new EnterAction("8"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("9"), "nine");
+		io.getActionMap().put("nine", new EnterAction("9"));
+		
+		io.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "enter");
+		io.getActionMap().put("enter", new EnterAction("\n"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("PERIOD"), "point");
+		io.getActionMap().put("point", new EnterAction("."));
 	}
 	
 	/**
