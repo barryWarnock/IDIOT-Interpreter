@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import actions.SaveAction;
+
 /**
  * See bottom for copyright notice from Oracle 
  * @author bolster
@@ -63,9 +65,10 @@ public class TabButton extends JButton implements ActionListener
     public void actionPerformed(ActionEvent e) {
         int i = pane.indexOfTabComponent(this.getParent());
         if (i != -1) {
+        	SaveAction save = new SaveAction();
+   			save.actionPerformed(new ActionEvent(save, 1, ""));
             pane.remove(i);
             GUI.getFilePathList().remove(i);
-            //TODO ask the user to save the tab before closing 
         }
     }
     

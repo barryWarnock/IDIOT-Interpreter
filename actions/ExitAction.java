@@ -17,6 +17,7 @@ public class ExitAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		//This next bit attempts to save the preferences to a file
 		Properties preferences = MainRun.getProperty();
 		try
 		{
@@ -25,8 +26,8 @@ public class ExitAction extends AbstractAction {
 			output.close();
 		}catch(IOException e2)
 		{
-			
 		}
+		
 		//ask the user to save before closing 
 		Object[] options = {"Save and Exit", "Exit Without Saving","Cancel"};
 

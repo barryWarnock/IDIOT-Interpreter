@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -28,16 +29,16 @@ public class OpenAction extends AbstractAction {
 			openTab(fileManager());
 		} catch (FileNotFoundException | BadLocationException e1) {
 			JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
-		} catch(Exception e2){}//this is only throw if the user selects cancel 
+		} catch(CancellationException e2){}//this is only thrown if the user selects cancel 
 		
 
 	}
-	/** This opens the file through the file manager
-	 * saves files differently depending on which save was used
-	 * appends .IDIOT to the end of files
-	 * 1-28-15
+	/** 
+	 * This opens the file through the file manager
+	 * @return The file that the user chose
+	 * @throws CancellationException if the user cancels
 	 */
-	private File fileManager() throws Exception
+	private File fileManager() throws CancellationException
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -53,13 +54,11 @@ public class OpenAction extends AbstractAction {
 			
 		} else 
 		{
-			final  Exception e = new Exception();
-			throw e;
+			throw new CancellationException();
 		}
 	}
 	
 	/**
-	 * TODO this should have a close button on the edge of the tab
 	 * @param file a file that you would like to open in a JEditorPane
 	 * @throws BadLocationException, FileNotFoundException
 	 */

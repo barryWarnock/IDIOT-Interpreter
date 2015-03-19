@@ -26,9 +26,10 @@ public class MainRun {
 			input.close();
 		}catch(IOException e)
 		{
-			
+			//if there is no preferences to load then it will be blank.
 		}
 		
+		//initialize the frames and back-end
 		interpreter = new Interpreter();
 		new GUI("IDIOT IDE", 500, 500);
 		new HelpfulHints();
@@ -73,16 +74,5 @@ public class MainRun {
 	public static Properties getProperty()
 	{
 		return preferences;
-	}
-	
-	
+	}	
 }
-
-
-
-
-
-
-
-
-
