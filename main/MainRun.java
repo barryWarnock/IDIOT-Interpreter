@@ -1,7 +1,5 @@
 package main;
 
-import javax.swing.SwingUtilities;
-
 /**
  * 
  * @author bolster
@@ -13,28 +11,11 @@ public class MainRun {
 	private static Interpreter interpreter=null;
 	
 	public static void main(String[] args) {
-		
-		
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run() {
-				interpreter = new Interpreter();
-			}
-		});
-		
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run() {
-				new GUI("IDIOT IDE", 500, 500);
-			}
-		});
-		
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run() {
-				new HelpfulHints();
-			}
-		});
-		
-		
+		interpreter = new Interpreter();
+		new GUI("IDIOT IDE", 500, 500);
+		new HelpfulHints();
 	}
+	
 	/**
 	 * @return Interpreter that is in its own thread so 
 	 * that it may be called by whatever needs it
