@@ -39,30 +39,46 @@ public class Interpreter
 		io.setEditable(false);
 		
 		io.getInputMap().put(KeyStroke.getKeyStroke("0"), "zero");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD0"), "zero");
 		io.getActionMap().put("zero", new EnterAction("0"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("1"), "one");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD1"), "one");
 		io.getActionMap().put("one", new EnterAction("1"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("2"), "two");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD2"), "two");
 		io.getActionMap().put("two", new EnterAction("2"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("3"), "three");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD3"), "three");
 		io.getActionMap().put("three", new EnterAction("3"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("4"), "four");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD4"), "four");
 		io.getActionMap().put("four", new EnterAction("4"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("5"), "five");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD5"), "five");
 		io.getActionMap().put("five", new EnterAction("5"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("6"), "six");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD6"), "six");
 		io.getActionMap().put("six", new EnterAction("6"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("7"), "seven");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD7"), "seven");
 		io.getActionMap().put("seven", new EnterAction("7"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("8"), "eight");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD8"), "eight");
 		io.getActionMap().put("eight", new EnterAction("8"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("9"), "nine");
+		io.getInputMap().put(KeyStroke.getKeyStroke("NUMPAD9"), "nine");
 		io.getActionMap().put("nine", new EnterAction("9"));
 		
 		io.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "enter");
 		io.getActionMap().put("enter", new EnterAction("\n"));
+		io.getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "backspace");
+		io.getActionMap().put("backspace", new EnterAction("back"));
 		io.getInputMap().put(KeyStroke.getKeyStroke("PERIOD"), "point");
+		io.getInputMap().put(KeyStroke.getKeyStroke("DECIMAL"), "point");
 		io.getActionMap().put("point", new EnterAction("."));
+		io.getInputMap().put(KeyStroke.getKeyStroke("MINUS"), "negative");
+		io.getInputMap().put(KeyStroke.getKeyStroke("SUBTRACT"), "negative");
+		io.getActionMap().put("negative", new EnterAction("-"));
 	}
 	
 	/**
@@ -85,6 +101,28 @@ public class Interpreter
 			    }
 		 });
 	}
+	/**
+	 * clears the i/o console
+	 */
+	static public void clearIo()
+	{
+		SwingUtilities.invokeLater(new Runnable() 
+		 {
+			    public void run() 
+			    {
+			    	io.setText(null);
+			    }
+		 });
+	}
+	/**
+	 * used by EnterAction to get the text inside of the i/o console
+	 * @return the text inside of the i/o console
+	 */
+	static public String getIoText()
+	{
+		//TODO hopefully implement this as a Callable
+		return io.getText();
+	}
 	
 	/**
 	 * run goes through the text from the gui line by line, turning each line into a
@@ -104,8 +142,7 @@ public class Interpreter
 		else
 		{
 			//prepare the console before running
-			io.setText(null);
-			io.setEditable(false);
+			clearIo();
 			//the HashMap that will store IDIOT variables
 			HashMap<String, Variable> variables = new HashMap<String, Variable>();
 			//the head of our linked list of Commands along with a tail to point to the most current Command

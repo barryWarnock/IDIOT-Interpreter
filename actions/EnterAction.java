@@ -26,6 +26,20 @@ public class EnterAction extends AbstractAction
 		{
 			lineIsTerminated = true;
 		}
+		else if (digit == "back")
+		{
+			 if (input.length() > 0) 
+			 {
+				 input = input.substring(0, input.length()-1);
+			 }
+			 String ioText = Interpreter.getIoText();
+			 if (ioText.length() > 0) 
+			 {
+				 ioText = ioText.substring(0, ioText.length()-1);
+			 }
+			 Interpreter.clearIo();
+			 Interpreter.logToIo(ioText);
+		}
 		else
 		{
 			Interpreter.logToIo(digit);
