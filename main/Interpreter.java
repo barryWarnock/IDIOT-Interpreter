@@ -30,11 +30,12 @@ public class Interpreter
 	}
 
 	/**
-	 * setIo sets the JTextArea to be used for i/o and adds the keybindings to it that are used for ENTER
-	 * @param io the JTextArea to use for i/o
+	 * setIo sets the JTextPane to be used for i/o and adds the keybindings to it that are used for ENTER
+	 * @param io the JTextPane to use for i/o
 	 */
 	public void setIo(JTextPane io)
 	{
+		
 		Interpreter.io = io;
 		io.setEditable(false);
 		
