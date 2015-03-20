@@ -26,14 +26,17 @@ public class GUI {
 	private static ArrayList<String> tabFilePath = new ArrayList<String>(20);
 	
 	/**
-	 * This method creates a populated frame 
-	 * @param name is the name of the window that you wish to create
-	 * @param x is the minimum width of the window
-	 * @param y is the minimum height of the window
+	 * This constructor serves no purpose, do not use.
 	 */
 	@SuppressWarnings("unused")
 	private GUI (){}
 	
+	/**
+	 * This constructer creates a populated frame 
+	 * @param name is the name of the window that you wish to create
+	 * @param x is the minimum width of the window
+	 * @param y is the minimum height of the window
+	 */
 	public GUI (String name, int width, int height)
 	{
 		//initialize the frame
