@@ -22,7 +22,7 @@ abstract class Command
 	 * @param io the JTextPane to be used for i/o
 	 * @return the next command in the list
 	 */
-	public abstract Command execute(HashMap<String, Variable> variables, JTextPane io );
+	public abstract Command execute(HashMap<String, Double> variables, JTextPane io );
 	/**
 	 * @param previous the Command that came before this one in the list
 	 */
@@ -87,27 +87,27 @@ class ADD extends Command
 	 * adds the first and second variables and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
 		* any of the Variables has not been created
 		* or if the first two don't have values
 		*/
-		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		if (!variables.containsKey(first) || !variables.containsKey(second) || !variables.containsKey(third) )
 		{
 			logError("invalid variable passed to ADD");
 			return null;
 		}
-		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		if (variables.get(first) == null || variables.get(second) == null)
 		{
 			logError("invalid first or second variable passed to ADD");
 			return null;
 		}
-		double f = variables.get(first).getValue();
-		double s = variables.get(second).getValue();
+		double f = variables.get(first);
+		double s = variables.get(second);
 		double t = f + s;
-		variables.get(third).setValue(t);
+		variables.put(third, t);
 		return this.next;
 	}
 }
@@ -131,15 +131,15 @@ class ASSIGN extends Command
 	 * assigns the given value to the given Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		//runtime error if the variable does not exist
-		if(variables.get(var) == null)
+		if(!variables.containsKey(var))
         {
             logError("Nonexistant variable passed to ASSIGN");
             return null;
         }
-		variables.get(var).setValue(val);
+		variables.put(var,val);
 		return this.next;
 	}
 }
@@ -152,7 +152,7 @@ class BLANK extends Command
 	 * simply returns the next Command in the list
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		return this.next;
 	}
@@ -178,7 +178,7 @@ class DIV extends Command
 	 * divides the first number by the second and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -190,15 +190,15 @@ class DIV extends Command
 			logError("invalid variable passed to DIV");
 			return null;
 		}
-		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		if (variables.get(first) == null || variables.get(second) == null)
 		{
 			logError("invalid first or second variable passed to DIV");
 			return null;
 		}
-		double f = variables.get(first).getValue();
-		double s = variables.get(second).getValue();
+		double f = variables.get(first);
+		double s = variables.get(second);
 		double t = f / s;
-		variables.get(third).setValue(t);
+		variables.put(third, t);
 		return this.next;
 	}
 }
@@ -219,10 +219,10 @@ class ENTER extends Command
 	 * takes input from the user and assigns it to the assigned Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io)
+	public Command execute(HashMap<String, Double> variables, JTextPane io)
 	{
 		//runtime error if the variable does not exist
-		if (variables.get(var) == null)
+		if (!variables.containsKey(var))
 		{
 			logError("invalid variable passed to ENTER");
 		}
@@ -243,7 +243,7 @@ class ENTER extends Command
 			logError("Input was not a number");
 			return null;
 		}
-		variables.get(var).setValue(val);
+		variables.put(var,val);
 		return this.next;
 	}
 }
@@ -264,7 +264,7 @@ class INC extends Command
 	 * adds one to the given Variable
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
@@ -273,12 +273,12 @@ class INC extends Command
             return null;
         }
         //runtime error if the Variable is not initialized
-		if(!variables.get(var).isInitialized())
+		if(variables.get(var)==null)
         {
 			logError("Uninitialized variable passed to INC");
             return null;
         }
-		variables.get(var).setValue((variables.get(var).getValue() + 1));
+		variables.put(var, variables.get(var)+1);
 		return this.next;
 	}
 }
@@ -303,7 +303,7 @@ class MUL extends Command
 	 * multiplies the first and second numbers and gives that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -315,15 +315,15 @@ class MUL extends Command
 			logError("invalid variable passed to MUL");
 			return null;
 		}
-		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		if (variables.get(first) == null || variables.get(second) == null)
 		{
 			logError("invalid first or second variable passed to MUL");
 			return null;
 		}
-		double f = variables.get(first).getValue();
-		double s = variables.get(second).getValue();
+		double f = variables.get(first);
+		double s = variables.get(second);
 		double t = f * s;
-		variables.get(third).setValue(t);
+		variables.put(third, t);
 		return this.next;
 	}
 }
@@ -356,22 +356,22 @@ class PRINT extends Command
 	 * checks what type the value is then prints it
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		if (isVar)
 		{
 			//runtime error if variable does not exist
-			if(variables.get(val) == null)
+			if(!variables.containsKey(val))
             {
 				logError("Nonexistant variable passed to PRINT");
                 return null;
             }
 			//runtime error if variable is not initialized
-			if (variables.get(val).isInitialized() == false)
+			if (variables.get(val) == null)
 			{
 				logError("Uninitialized variable passed to PRINT");
 			}
-			Interpreter.logToIo(variables.get(val).toString());
+			Interpreter.logToIo(variables.get(val).toString() +"\n");
 		}
 		else if (isString)
 		{
@@ -405,7 +405,7 @@ class SUB extends Command
 	 * divides the first number by the second and assigns that value to the third
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		/*
 		* there will be a runtime error if:
@@ -417,15 +417,15 @@ class SUB extends Command
 			logError("invalid variable passed to SUB");
 			return null;
 		}
-		if (!variables.get(first).isInitialized() || !variables.get(second).isInitialized())
+		if (variables.get(first) == null || variables.get(second) == null)
 		{
 			logError("invalid first or second variable passed to SUB");
 			return null;
 		}
-		double f = variables.get(first).getValue();
-		double s = variables.get(second).getValue();
+		double f = variables.get(first);
+		double s = variables.get(second);
 		double t = f - s;
-		variables.get(third).setValue(t);
+		variables.put(third, t);
 		return this.next;
 	}
 }
@@ -446,7 +446,7 @@ class VAR extends Command
 	 * creates a new Variable with the given name and adds it to the HashMap
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io )
+	public Command execute(HashMap<String, Double> variables, JTextPane io )
 	{
 		//runtime error if the variable name includes '(' or ')'
 		if (name.contains("(") || name.contains(")"))
@@ -460,7 +460,7 @@ class VAR extends Command
 			logError("Variable with that name already exists");
 			return null;
 		}
-		variables.put(name, new Variable(name));
+		variables.put(name, null);
 		return this.next;
 	}
 }
@@ -484,7 +484,7 @@ class GOTO extends Command
 	 * GOTO brings the program to the designated line number
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
+	public Command execute(HashMap<String, Double> variables, JTextPane io) 
 	{
 		Command toReturn = this;
 		boolean searching = true;
@@ -543,7 +543,7 @@ class IF extends Command
 	 * returns the next Command if true, otherwise return the next ENDIF
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
+	public Command execute(HashMap<String, Double> variables, JTextPane io) 
 	{
 		//runtime error if the Variable does not exist
 		if(variables.get(var) == null)
@@ -552,7 +552,7 @@ class IF extends Command
 		    return null;
 		}
 		//runtime error if the Variable is not initialized
-		if(!variables.get(var).isInitialized())
+		if(variables.get(var) == null)
 		{
 			logError("Uninitialized variable passed to IF");
 		return null;
@@ -560,28 +560,28 @@ class IF extends Command
 		Command toReturn = elseIF;
 		if (cond == "equals")
 		{
-			if (variables.get(var).getValue() == val)
+			if (variables.get(var) == val)
 			{
 				toReturn = next;
 			}
 		}
 		if (cond == "greater")
 		{
-			if (variables.get(var).getValue() > val)
+			if (variables.get(var) > val)
 			{
 				toReturn = next;
 			}
 		}
 		if (cond == "less")
 		{
-			if (variables.get(var).getValue() < val)
+			if (variables.get(var) < val)
 			{
 				toReturn = next;
 			}
 		}
 		if (cond == "not")
 		{
-			if (variables.get(var).getValue() != val)
+			if (variables.get(var) != val)
 			{
 				toReturn = next;
 			}
@@ -607,7 +607,7 @@ class ENDIF extends Command
 	 * just returns the next Command in the list
 	 * {@inheritDoc}
 	 */
-	public Command execute(HashMap<String, Variable> variables, JTextPane io) 
+	public Command execute(HashMap<String, Double> variables, JTextPane io) 
 	{
 		return next;
 	}

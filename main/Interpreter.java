@@ -145,7 +145,7 @@ public class Interpreter
 			//prepare the console before running
 			clearIo();
 			//the HashMap that will store IDIOT variables
-			HashMap<String, Variable> variables = new HashMap<String, Variable>();
+			HashMap<String, Double> variables = new HashMap<String, Double>();
 			//the head of our linked list of Commands along with a tail to point to the most current Command
 			Command head = null;
 			Command tail = null;
