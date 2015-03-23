@@ -1,5 +1,6 @@
 package actions;
-import main.*;
+import main.GUI;
+import main.MainRun;
 
 import java.awt.event.ActionEvent;
 
@@ -13,7 +14,7 @@ public class CompileAction extends AbstractAction {
 	{
 		Thread thread = new Thread() {
 			public void run() {
-				//sends a string to the interpreter
+				//sends a string to the interpreter for processing 
 				try {
 					MainRun.getInterpreter().run(GUI.getFocusTextPane().getText());
 				} catch (Exception e1) {

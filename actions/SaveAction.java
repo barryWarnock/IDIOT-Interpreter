@@ -2,6 +2,7 @@ package actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JScrollPane;
@@ -21,35 +22,45 @@ public class SaveAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	
 		
+		JTextPane textPane = null;
 		try {
-			JTextPane txt = GUI.getFocusTextPane();
-			
-			//find the path of the previous save file
-			JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
-			int index = GUI.getTabbedPane().indexOfComponent(scroll);
-			String filePath = null;
-			try {
-				
-				filePath = GUI.getFilePathList().get(index);
-			} catch (ArrayIndexOutOfBoundsException e2){}//do nothing :(
-			
-			//if there is no previous save direct the user to SaveAs 
-			if(filePath==null){
-					
-				SaveAsAction saveAs = new SaveAsAction();
-				saveAs.actionPerformed(new ActionEvent(saveAs, index, ""));
-			        
-			}else{
-				
-				//adds .IDIOT if it is not there. 
-				if(!filePath.endsWith(".IDIOT"))
-					filePath+=".IDIOT";
-				File file = new File(filePath);
-				FileUtils.writeStringToFile(file, txt.getText(),"UTF-8");
-			}
+			textPane = GUI.getFocusTextPane();
 		} catch (Exception e1) {
-			//cry?
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
+		//find the path of the previous save file
+		JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
+		int index = GUI.getTabbedPane().indexOfComponent(scroll);
+		String filePath = null;
+		try {			
+			filePath = GUI.getFilePathList().get(index);
+		} catch (ArrayIndexOutOfBoundsException e2){}//do nothing :(
+			
+		//if there is no previous save direct the user to SaveAs 
+		if(filePath==null){		
+			SaveAsAction saveAs = new SaveAsAction();
+			saveAs.actionPerformed(new ActionEvent(saveAs, index, ""));        
+		}else{
+			//adds .IDIOT if it is not there. 
+			if(!filePath.endsWith(".IDIOT"))
+				filePath+=".IDIOT";
+			File file = new File(filePath);
+			String txt = textPane.getText();
+			Thread thread = new Thread() {
+				public void run(){
+					try {
+						FileUtils.writeStringToFile(file, txt,"UTF-8");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+			thread.start();
 		}
 	}
 }
