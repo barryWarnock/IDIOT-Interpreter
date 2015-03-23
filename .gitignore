@@ -9,7 +9,6 @@ ehthumbs.db
 #preferences.dat changes with every run, making it so that 
 #we can't pull down new commits without creating a new commit with the changed date
 #also we should all be able to have our own preferences
-preferences.dat
 
 # Folder config file
 Desktop.ini
@@ -61,3 +60,5 @@ Temporary Items
 /Interpreter.class
 
 .classpath
+
+
