@@ -10,6 +10,9 @@ import main.Interpreter;
 public class EnterAction extends AbstractAction
 {
 	private String digit;
+	//used to detect when the user has backspaced to where they began
+	private static int digitsEntered = 0;
+	private static boolean hasTyped = false;
 	private static boolean editable = false;
 	private static boolean lineIsTerminated = false;
 	private static String input = "";
@@ -33,9 +36,10 @@ public class EnterAction extends AbstractAction
 				 input = input.substring(0, input.length()-1);
 			 }
 			 String ioText = Interpreter.getIoText();
-			 if (ioText.length() > 0) 
+			 if (digitsEntered > 0) 
 			 {
 				 ioText = ioText.substring(0, ioText.length()-1);
+				 digitsEntered--;
 			 }
 			 Interpreter.clearIo();
 			 Interpreter.logToIo(ioText);
@@ -44,6 +48,7 @@ public class EnterAction extends AbstractAction
 		{
 			Interpreter.logToIo(digit);
 			input += digit;
+			digitsEntered++;
 		}
 	}
 	public static void startListening()
@@ -66,6 +71,7 @@ public class EnterAction extends AbstractAction
 			String toReturn = input;
 			input = "";
 			editable = false;
+			digitsEntered = 0;
 			return toReturn;
 		}
 	}
