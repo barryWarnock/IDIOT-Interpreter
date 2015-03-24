@@ -13,11 +13,11 @@ import javax.swing.*;
 
 /**
  * @author bolster
- * @version 0.1.0
- * This creates a GUI complete with a menubar and a toolbar
- * <p>
- * There is no hashCode or equals methods for this class as there are no static variables or objects.
- * As well there is no constructor because this class does not need to initialize anything.
+ * @version 1.0.0
+ * This class launches a JFrame and handles the creation of menu bars, 
+ * tool bars, the console output and, the tabbed text pane. This method also 
+ * keeps a record of the file names of each of the open tabs. There are methods 
+ * providing access to the file names, the tabbed pane and, the open text pane.
  */
 public class GUI {
 	
@@ -32,7 +32,7 @@ public class GUI {
 	private GUI (){}
 	
 	/**
-	 * This constructer creates a populated frame 
+	 * This constructor creates a populated frame 
 	 * @param name is the name of the window that you wish to create
 	 * @param x is the minimum width of the window
 	 * @param y is the minimum height of the window

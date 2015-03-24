@@ -7,8 +7,8 @@ import java.util.Properties;
 /**
  * 
  * @author bolster
- * This class creates two threads for the application and contains
- * the main method. 
+ * This class contains the main method for the entire application. It handles 
+ * the loading and sharing of the preferences file as a Properties object.
  */
 public class MainRun {
  
