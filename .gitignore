@@ -56,3 +56,5 @@ Temporary Items
 /Interpreter.class
 
 .classpath
+
+*.dat
