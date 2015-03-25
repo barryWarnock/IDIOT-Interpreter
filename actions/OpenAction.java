@@ -72,19 +72,19 @@ public class OpenAction extends AbstractAction {
 		Scanner scan = new Scanner(file,"UTF-8");
 		Thread thread = new Thread(){
 			public void run(){
-		while (scan.hasNextLine()) {
-			String line = scan.nextLine();
-			Document doc = IDIOT_file_content.getDocument();
-			try {
-				doc.insertString(doc.getLength(), line+"\n", null);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				while (scan.hasNextLine()) {
+					String line = scan.nextLine();
+					Document doc = IDIOT_file_content.getDocument();
+					try {
+						doc.insertString(doc.getLength(), line+"\n", null);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				scan.close();
 			}
-			
-		}
-		scan.close();
-		}
 		};
 		thread.start(); 
 		//******
