@@ -5,8 +5,11 @@ import main.SyntaxHighlighter;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.CancellationException;
 
@@ -30,6 +33,10 @@ public class OpenAction extends AbstractAction {
 		} catch (FileNotFoundException | BadLocationException e1) {
 			JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
 		} catch(CancellationException e2){}//this is only thrown if the user selects cancel 
+ catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 
 	}
@@ -48,6 +55,8 @@ public class OpenAction extends AbstractAction {
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			// user selects file,return the selected file to whatever called
+			
+			
 			File selectedFile = fileChooser.getSelectedFile();
 
 			return selectedFile;
@@ -61,32 +70,48 @@ public class OpenAction extends AbstractAction {
 	/**
 	 * @param file a file that you would like to open in a JEditorPane
 	 * @throws BadLocationException, FileNotFoundException
+	 * @throws IOException 
 	 */
-	private void openTab(File file) throws BadLocationException, FileNotFoundException 
+	private void openTab(final File file) throws BadLocationException, IOException 
 	{
 		//Create a scrolled text area to type into
-		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile(0));
+		final JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile(0));
 			
 		// scans file into the JTextPane
 		// This should run in a new thread.
-		Scanner scan = new Scanner(file,"UTF-8");
-		Thread thread = new Thread(){
+		
+		  final Thread thread = new Thread() {
 			public void run(){
-				while (scan.hasNextLine()) {
-					String line = scan.nextLine();
-					Document doc = IDIOT_file_content.getDocument();
-					try {
-						doc.insertString(doc.getLength(), line+"\n", null);
-					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+		try(BufferedReader br = new BufferedReader(new FileReader(file))){
+			String line; 
+			while((line = br.readLine()) !=null){
+				Document doc= IDIOT_file_content.getDocument(); 
+				try {
+					doc.insertString(doc.getLength(), line+"\n", null);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				scan.close();
+				
 			}
-		};
-		thread.start(); 
+			
+				
+				
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			}
+			};
+			thread.start();
+		  
+		
+		
+
+		//thread.start(); 
 		//******
 		//Add line numbering to the scrollpane
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
@@ -128,5 +153,6 @@ public class OpenAction extends AbstractAction {
 		
 		//add the file path to a list for use when saving 
 		GUI.getFilePathList().add(file.getAbsolutePath());
-	}
+		
+		}
 }
