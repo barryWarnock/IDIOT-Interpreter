@@ -19,7 +19,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class HelpfulHints extends JFrame{
 
-    private JTextArea area; //This is my textarea to display hints
+    private JTextArea area; //This is my TextArea to display hints
     private JPanel panel;
     private JButton close, previous, next; //Three buttons to operate program
     private List <String> tips = new ArrayList<String>();
@@ -34,12 +34,32 @@ public class HelpfulHints extends JFrame{
         setVisible(true);
         setLocationRelativeTo(null);
         
-        // set up your tips
-        tips.add("The save button saves your work.");
-        tips.add("Use the exit button to quit the program.");
-        tips.add("Tim Hillier is amazing and everyone should admire him.");
+        // These are the tips that will appear in tip GUI
+        tips.add("You can hover over an icon in the menu bar to find out what\n"
+        + "the button does.");
+        tips.add("Sample Program:\n"
+        + "START\n"
+        + "CMT This is our Helpful Hints GUI\n"
+        + "VAR g\n"
+        + "VAR t\n"
+        + "VAR s\n"
+        + "ASSIGN g 5\n"
+        + "ASSIGN s 0\n"
+        + "PRINT (Enter a value for t)\n"
+        + "ENTER t\n"
+        + "ADD g t s\n"
+        + "PRINT s\n"
+        + "END");
+        tips.add("After hitting the compiler button, your output will be displayed\n"
+        + "in the console frame at the bottom of the screen.");
+        tips.add("Closing the program will allow you to Exit Without Saving, or\n"
+        + "Save and Exit the IDIOT Program. ");
+        tips.add("The menu bar contains buttons that allow you to, Save, Open,\n"
+        + "Create New Project, Copy, Cut, Paste, Print, Compile, Bigger \n"
+        + "Font, Smaller Font");
         setLayout(new BorderLayout());
 
+        //Create panel and FlowLayout
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
@@ -71,7 +91,7 @@ public class HelpfulHints extends JFrame{
 
         //Create the helpful hint area on the screen
         area = new JTextArea();
-        area.setEditable(true);
+        area.setEditable(false);
         area.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         //Set first tip
@@ -113,7 +133,7 @@ public class HelpfulHints extends JFrame{
                 next.setEnabled(true);
             }
             if (e.getSource() == close) {
-            	dispose();
+            dispose();
             }
         }
     }
