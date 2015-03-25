@@ -68,7 +68,10 @@ public class OpenAction extends AbstractAction {
 		JTextPane IDIOT_file_content = new JTextPane(SyntaxHighlighter.SyntaxHighlighterProfile(0));
 			
 		// scans file into the JTextPane
+		// This should run in a new thread.
 		Scanner scan = new Scanner(file,"UTF-8");
+		Thread thread = new Thread(){
+			public void run(){
 		while (scan.hasNextLine()) {
 			String line = scan.nextLine();
 			Document doc = IDIOT_file_content.getDocument();
@@ -76,7 +79,10 @@ public class OpenAction extends AbstractAction {
 			
 		}
 		scan.close();
-		
+		}
+		};
+		thread.start(); 
+		//******
 		//Add line numbering to the scrollpane
 		JScrollPane scroll = new JScrollPane(IDIOT_file_content);
 		main.TextLineNumber lineNumbering = new main.TextLineNumber(IDIOT_file_content);
