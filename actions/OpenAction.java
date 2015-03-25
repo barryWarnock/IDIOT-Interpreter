@@ -75,7 +75,12 @@ public class OpenAction extends AbstractAction {
 		while (scan.hasNextLine()) {
 			String line = scan.nextLine();
 			Document doc = IDIOT_file_content.getDocument();
-			doc.insertString(doc.getLength(), line+"\n", null);
+			try {
+				doc.insertString(doc.getLength(), line+"\n", null);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		scan.close();
