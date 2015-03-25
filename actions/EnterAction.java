@@ -12,7 +12,6 @@ public class EnterAction extends AbstractAction
 	private String digit;
 	//used to detect when the user has backspaced to where they began
 	private static int digitsEntered = 0;
-	private static boolean hasTyped = false;
 	private static boolean editable = false;
 	private static boolean lineIsTerminated = false;
 	private static String input = "";

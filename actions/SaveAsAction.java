@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 import org.apache.commons.io.FileUtils;
@@ -23,17 +26,17 @@ public class SaveAsAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
-		String fileName=null;
+		String filePath=null;
 
 		//choose a filename to save the file under. 
 		JFileChooser fileChooser = new JFileChooser();
 		if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-			fileName= fileChooser.getSelectedFile().toString();
+			filePath= fileChooser.getSelectedFile().toString();
 				
 			//adds .IDIOT extension to the file if it is not there. 
-			if(!fileName.endsWith(".IDIOT"))
-					fileName+=".IDIOT"; 
-			File file = new File(fileName);
+			if(!filePath.endsWith(".IDIOT"))
+					filePath+=".IDIOT"; 
+			File file = new File(filePath);
 				  
 			//saves the current file open in the JPane.  	  
 			JTextPane textPane = null;
@@ -44,6 +47,14 @@ public class SaveAsAction extends AbstractAction {
 				e1.printStackTrace();
 			}
 			String txt = textPane.getText();
+			
+			//Change the name of the current tab
+			JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
+			int index = GUI.getTabbedPane().indexOfComponent(scroll);
+			JPanel pane = (JPanel) GUI.getTabbedPane().getTabComponentAt(index);
+			JLabel label = (JLabel) pane.getComponent(0);
+			label.setText(filePath.substring(filePath.lastIndexOf("/")+1, filePath.lastIndexOf(".IDIOT")));
+			
 			Thread thread = new Thread() {
 				public void run(){
 					try {
@@ -55,7 +66,7 @@ public class SaveAsAction extends AbstractAction {
 				}
 			};
 			thread.start();
-			GUI.getFilePathList().set(e.getID(), fileName);
+			GUI.getFilePathList().set(e.getID(), filePath);
 		}
 	}
 }

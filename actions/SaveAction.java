@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
@@ -50,6 +52,12 @@ public class SaveAction extends AbstractAction {
 				filePath+=".IDIOT";
 			File file = new File(filePath);
 			String txt = textPane.getText();
+			
+			//Change the name of the current tab
+			JPanel pane = (JPanel) GUI.getTabbedPane().getTabComponentAt(index);
+			JLabel label = (JLabel) pane.getComponent(0);
+			label.setText(filePath.substring(filePath.lastIndexOf("/")+1, filePath.lastIndexOf(".IDIOT")));
+			
 			Thread thread = new Thread() {
 				public void run(){
 					try {
@@ -60,7 +68,7 @@ public class SaveAction extends AbstractAction {
 					}
 				}
 			};
-			thread.start();
+			thread.start();	
 		}
 	}
 }
