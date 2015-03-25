@@ -13,11 +13,9 @@ import javax.swing.JTextPane;
 import org.apache.commons.io.FileUtils;
 
 import main.*;
-
-/**TODO this should NOT ask where to save if the file already has a previous
- * save
- * TODO find a way to store the directory location of the previous save
- * TODO find a way to get filename from the editor pane or something.
+/**
+ * This Action saves the current open file. It performs the necessary cleanup
+ * such as renaming the tab to the most recent name as well.
  */
 @SuppressWarnings("serial")
 public class SaveAction extends AbstractAction {

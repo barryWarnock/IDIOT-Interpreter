@@ -1,6 +1,7 @@
 package main;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -75,4 +76,17 @@ public class MainRun {
 	{
 		return preferences;
 	}	
+	public static void saveProperty()
+	{
+		FileOutputStream output;
+		try {
+			output = new FileOutputStream("preferences.dat");
+			preferences.store(output, "IDIOT Interpreter Preferences");
+			output.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
