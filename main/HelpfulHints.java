@@ -22,6 +22,7 @@ public class HelpfulHints extends JFrame{
     private JTextArea area; //This is my TextArea to display hints
     private JPanel panel;
     private JButton close, previous, next; //Three buttons to operate program
+    private JCheckBox showtipsonstartup; //CheckBox that allows you to turn off helpful hints for future loadups
     private List <String> tips = new ArrayList<String>();
     private int displayedTipIndex = 0;
 
@@ -63,6 +64,10 @@ public class HelpfulHints extends JFrame{
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
+        //Create checkbox 
+        showtipsonstartup = new JCheckBox("Disable Tips");
+        add(showtipsonstartup);
+       
         //Create first button
         close= new JButton("Close");
         add(close);
@@ -76,9 +81,11 @@ public class HelpfulHints extends JFrame{
         add(next);
 
         //Add buttons to panel
+        panel.add(showtipsonstartup);
         panel.add(close);
         panel.add(previous);
         panel.add(next);
+        
 
         //Keep buttons to south of panel
         add(panel, BorderLayout.SOUTH);
