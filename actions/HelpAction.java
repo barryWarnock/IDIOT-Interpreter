@@ -3,20 +3,19 @@ package actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+
+import main.HelpfulHints;
 /**
  * 
  * @author bolster
- * TODO this needs to do something useful
+ * This Action Opens the helpful hints dialog.
  */
 @SuppressWarnings("serial")
 public class HelpAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-		System.out.println("View Help");
-
+		new HelpfulHints();
 	}
 
 }

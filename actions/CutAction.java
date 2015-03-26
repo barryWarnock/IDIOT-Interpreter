@@ -17,7 +17,7 @@ public class CutAction extends AbstractAction {
 			JTextPane txt = GUI.getFocusTextPane();
 			txt.cut();
 		} catch (Exception e1) {
-			//cry??
+			e1.printStackTrace();
 		}
 
 	}

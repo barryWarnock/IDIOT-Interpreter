@@ -14,7 +14,7 @@ public class PrintAction extends AbstractAction
 		try {
 			GUI.getFocusTextPane().print();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }

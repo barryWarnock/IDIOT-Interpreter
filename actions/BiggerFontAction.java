@@ -16,7 +16,6 @@ public class BiggerFontAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 		JTabbedPane tabbed = GUI.getTabbedPane();
 		
@@ -30,14 +29,12 @@ public class BiggerFontAction extends AbstractAction {
 					try {
 						words = txt.getDocument().getText(0, txt.getDocument().getLength());
 					} catch (BadLocationException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 					txt.setDocument(SyntaxHighlighter.SyntaxHighlighterProfile(1));
 					try {
 						txt.getDocument().insertString(0, words, null);
 					} catch (BadLocationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

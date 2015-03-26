@@ -84,7 +84,6 @@ public class MainRun {
 			preferences.store(output, "IDIOT Interpreter Preferences");
 			output.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

@@ -17,7 +17,7 @@ public class CopyAction extends AbstractAction {
 			JTextPane txt = GUI.getFocusTextPane();
 			txt.copy();
 		} catch (Exception e1) {
-			//cry??
+			e1.printStackTrace();
 		}
 		
 	}

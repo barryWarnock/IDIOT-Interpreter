@@ -28,7 +28,6 @@ public class SaveAction extends AbstractAction {
 		try {
 			textPane = GUI.getFocusTextPane();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 			
@@ -61,7 +60,6 @@ public class SaveAction extends AbstractAction {
 					try {
 						FileUtils.writeStringToFile(file, txt,"UTF-8");
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
