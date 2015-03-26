@@ -2,7 +2,6 @@ package main;
 /**
  * @author Dean Kutin
  * TODO add checkbox that creates a file within the app to never show again
- * TODO add a settings menu bar item to show the helpfulhints again
  */
 
 import java.awt.*;
@@ -22,9 +21,10 @@ public class HelpfulHints extends JFrame{
     private JTextArea area; //This is my TextArea to display hints
     private JPanel panel;
     private JButton close, previous, next; //Three buttons to operate program
-    private JCheckBox showtipsonstartup; //CheckBox that allows you to turn off helpful hints for future loadups
+    private JCheckBox showtipsonstartup; //CheckBox that allows you to turn off helpful hints for future load-up
     private List <String> tips = new ArrayList<String>();
     private int displayedTipIndex = 0;
+    //private static Properties preferences = new Properties();
 
     public HelpfulHints(){
 
@@ -64,7 +64,7 @@ public class HelpfulHints extends JFrame{
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        //Create checkbox 
+        //Create CheckBox 
         showtipsonstartup = new JCheckBox("Disable Tips");
         add(showtipsonstartup);
        
@@ -112,6 +112,7 @@ public class HelpfulHints extends JFrame{
         setVisible(true);
 
     }
+    
 
     //Inner class for button event handling
     private class ButtonHandler implements ActionListener {
@@ -144,4 +145,6 @@ public class HelpfulHints extends JFrame{
             }
         }
     }
+    
+    
 }
