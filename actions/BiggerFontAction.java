@@ -10,7 +10,11 @@ import javax.swing.text.BadLocationException;
 
 import main.SyntaxHighlighter;
 import main.GUI;
-
+/**
+ * 
+ * @author bolster
+ * This Action makes font bigger for the text editor.
+ */
 @SuppressWarnings("serial")
 public class BiggerFontAction extends AbstractAction {
 

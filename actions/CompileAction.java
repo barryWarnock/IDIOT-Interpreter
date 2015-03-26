@@ -5,7 +5,11 @@ import main.MainRun;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-
+/**
+ * 
+ * @author bolster
+ * This Action sends the current file to the interpreter for processing.
+ */
 @SuppressWarnings("serial")
 public class CompileAction extends AbstractAction {
 
@@ -18,7 +22,6 @@ public class CompileAction extends AbstractAction {
 				try {
 					MainRun.getInterpreter().run(GUI.getFocusTextPane().getText());
 				} catch (Exception e1) {
-					//TODO error message pop-up
 					e1.printStackTrace();
 				}
 			}

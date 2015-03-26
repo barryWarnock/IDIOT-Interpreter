@@ -6,7 +6,11 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
+/**
+ * 
+ * @author bolster
+ * This Action opens a window with credits about the authors.
+ */
 @SuppressWarnings("serial")
 public class AboutAction extends AbstractAction {
 
