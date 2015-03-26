@@ -16,7 +16,6 @@ import org.apache.commons.io.FileUtils;
 import main.GUI;
 
 /**
- * @author bolster
  * The class responsible for saving files. It takes the file from the 
  * current JEditorPane. 
  */

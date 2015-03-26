@@ -6,7 +6,11 @@ import javax.swing.AbstractAction;
 import javax.swing.JTextPane;
 
 import main.GUI;
-
+/**
+ * 
+ * @author bolster
+ * This action removes the selected text and copies it to the clipboard.
+ */
 @SuppressWarnings("serial")
 public class CutAction extends AbstractAction {
 

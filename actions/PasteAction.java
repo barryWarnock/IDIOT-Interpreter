@@ -6,7 +6,11 @@ import javax.swing.AbstractAction;
 import javax.swing.JTextPane;
 
 import main.GUI;
-
+/**
+ * 
+ * @author bolster
+ * This Action pastes the contents of the clipboard to the text at the selected index. 
+ */
 @SuppressWarnings("serial")
 public class PasteAction extends AbstractAction {
 

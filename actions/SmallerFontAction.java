@@ -10,7 +10,12 @@ import javax.swing.text.BadLocationException;
 
 import main.SyntaxHighlighter;
 import main.GUI;
-
+/**
+ * 
+ * @author bolster
+ * This Action makes the font smaller for the style document in 
+ * SyntaxHighlighter.java
+ */
 @SuppressWarnings("serial")
 public class SmallerFontAction extends AbstractAction {
 

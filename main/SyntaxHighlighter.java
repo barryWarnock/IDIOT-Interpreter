@@ -92,7 +92,7 @@ public class SyntaxHighlighter {
         	
         final Style catchAllStyle = sc.addStyle("CatchAllStyle", defaultStyle);
         	StyleConstants.setForeground(catchAllStyle, Color.ORANGE); //changes the color
-        	StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
+        	//StyleConstants.setBold(catchAllStyle, true); //sets the font to bold
         	StyleConstants.setFontSize(catchAllStyle, fontSize);
         	final AttributeSet catchAllAttributes =  catchAllStyle.copyAttributes();
          

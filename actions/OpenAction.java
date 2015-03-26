@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.concurrent.CancellationException;
 
 import javax.swing.*;
@@ -19,6 +18,10 @@ import javax.swing.text.Document;
 
 import main.TabButton;
 
+/**
+ * This Action opens a file into a new tab. 
+ *
+ */
 @SuppressWarnings("serial")
 public class OpenAction extends AbstractAction {
 
@@ -34,7 +37,6 @@ public class OpenAction extends AbstractAction {
 			JOptionPane.showMessageDialog(null, "The file you selected could not be found.");	
 		} catch(CancellationException e2){}//this is only thrown if the user selects cancel 
  catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -89,7 +91,6 @@ public class OpenAction extends AbstractAction {
 				try {
 					doc.insertString(doc.getLength(), line+"\n", null);
 				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -98,10 +99,8 @@ public class OpenAction extends AbstractAction {
 				
 				
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			}
