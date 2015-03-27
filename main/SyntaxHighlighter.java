@@ -71,6 +71,12 @@ public class SyntaxHighlighter {
     		StyleConstants.setForeground(defaultStyle, Color.BLACK);
     		StyleConstants.setFontSize(defaultStyle, fontSize);
     		final AttributeSet defaultAttributes = defaultStyle.copyAttributes();
+    		
+    	final Style ifStyle = sc.addStyle("IfStyle", defaultStyle);
+    		StyleConstants.setForeground(ifStyle, Color.MAGENTA);
+    		StyleConstants.setFontSize(ifStyle, fontSize);
+    		StyleConstants.setBold(ifStyle, true);
+    		final AttributeSet ifAttributes = ifStyle.copyAttributes();
     	
         final Style startStyle = sc.addStyle("StartStyle", defaultStyle);
         	StyleConstants.setForeground(startStyle, new Color(0x008400)); //changes the color
@@ -120,7 +126,9 @@ public class SyntaxHighlighter {
                         	setCharacterAttributes(wordL, wordR - wordL, endAttributes, false);
                         }else if(text.substring(wordL, wordR).matches("(\\W)*(CMT)")){
                         	setCharacterAttributes(wordL, wordR - wordL, commentAttributes, false);
-                        }else if (text.substring(wordL, wordR).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
+                        }else if(text.substring(wordL, wordR).matches("(\\W)*(IF|ENDIF)")){
+                        	setCharacterAttributes(wordL, wordR - wordL, ifAttributes, false);
+                        }else if (text.substring(wordL, wordR).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){              
                         	setCharacterAttributes(wordL, wordR - wordL, catchAllAttributes, false);
                         }else
                             setCharacterAttributes(wordL, wordR - wordL, defaultAttributes, false);
@@ -145,7 +153,9 @@ public class SyntaxHighlighter {
                 	setCharacterAttributes(before, after - before, endAttributes, false);
                 }else if (text.substring(before, after).matches("(\\W)*(CMT)")){
                 	setCharacterAttributes(before, after - before, commentAttributes, false);
-                }else if(text.substring(before, after).matches("(\\W)*(VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
+                }else if (text.substring(before, after).matches("(\\W)*(IF|ENDIF)")){
+                	setCharacterAttributes(before, after - before, ifAttributes, false);
+                }else if(text.substring(before, after).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
                 	setCharacterAttributes(before, after - before, catchAllAttributes, false);
                 }else{
                     setCharacterAttributes(before, after - before, defaultAttributes, false);
