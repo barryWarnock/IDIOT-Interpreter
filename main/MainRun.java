@@ -33,7 +33,7 @@ public class MainRun {
 		//initialize the frames and back-end
 		interpreter = new Interpreter();
 		new GUI("IDIOT IDE", 500, 500);
-		new HelpfulHints();
+		new HelpfulHints(true);
 
 	}
 	

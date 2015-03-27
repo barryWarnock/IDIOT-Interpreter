@@ -15,7 +15,7 @@ public class HelpAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new HelpfulHints();
+		new HelpfulHints(false);
 	}
 
 }
