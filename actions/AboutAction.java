@@ -28,7 +28,7 @@ public class AboutAction extends AbstractAction {
 				+ "Jeremy Bolster,\n"
 				+ "Travis Kurucz,\n"
 				+ "Timothy Hillier,\n"
-				+ "Dean Kution,\n"
+				+ "Dean Kutin,\n"
 				+ "Barry Warnock\n\n",
 				"About the IDIOT editor",JOptionPane.PLAIN_MESSAGE,icon);
 		
