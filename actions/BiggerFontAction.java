@@ -33,7 +33,7 @@ public class BiggerFontAction extends AbstractAction {
 				if(txt!=null){
 					String words = null;
 					try {
-						//store the words temporarely as a string
+						//store the words temporarily as a string
 						words = txt.getDocument().getText(0, txt.getDocument().getLength());
 					} catch (BadLocationException e2) {
 						e2.printStackTrace();
