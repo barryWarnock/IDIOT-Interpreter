@@ -23,20 +23,23 @@ public class SmallerFontAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		
 		JTabbedPane tabbed = GUI.getTabbedPane();
+		SyntaxHighlighter.SyntaxHighlighterProfile(-1);
 		
 		for(int i=0; i<tabbed.getComponentCount(); i++){
-			//returns the tab component with focus
-			JScrollPane scroll = (JScrollPane) tabbed.getComponentAt(0);
+			//returns all the tabs 
+			JScrollPane scroll = (JScrollPane) tabbed.getComponentAt(i);
 			if(scroll!=null){
 				JTextPane txt = (JTextPane) scroll.getComponent(0).getComponentAt(100, 100);
 				if(txt!=null){
 					String words = null;
 					try {
+						//store the words temporarily as a string
 						words = txt.getDocument().getText(0, txt.getDocument().getLength());
 					} catch (BadLocationException e2) {
 						e2.printStackTrace();
 					}
-					txt.setDocument(SyntaxHighlighter.SyntaxHighlighterProfile(-1));
+					//update the document to the smaller font size one
+					txt.setDocument(SyntaxHighlighter.SyntaxHighlighterProfile(0));
 					try {
 						txt.getDocument().insertString(0, words, null);
 					} catch (BadLocationException e1) {

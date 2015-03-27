@@ -53,8 +53,7 @@ public class OpenAction extends AbstractAction {
 	 */
 	private File fileManager() throws CancellationException {
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System
-				.getProperty("user.home")));
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int option = fileChooser.showOpenDialog(fileChooser);
 
 		// TODO add a filter into this to get only a certain result

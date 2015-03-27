@@ -63,6 +63,7 @@ public class SaveAsAction extends AbstractAction {
 				}
 			};
 			thread.start();
+			//set the name of the tab to the same as the file 
 			GUI.getFilePathList().set(e.getID(), filePath);
 		}
 	}

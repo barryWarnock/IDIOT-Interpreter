@@ -23,7 +23,6 @@ public class SaveAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	
-		
 		JTextPane textPane = null;
 		try {
 			textPane = GUI.getFocusTextPane();
@@ -32,12 +31,16 @@ public class SaveAction extends AbstractAction {
 		}
 			
 		//find the path of the previous save file
-		JScrollPane scroll = (JScrollPane) GUI.getTabbedPane().getComponentAt(GUI.getTabbedPane().getSelectedIndex());
+		JScrollPane scroll = (JScrollPane) GUI.getTabbedPane()
+				.getComponentAt(GUI.getTabbedPane().getSelectedIndex());
+		
 		int index = GUI.getTabbedPane().indexOfComponent(scroll);
 		String filePath = null;
 		try {			
 			filePath = GUI.getFilePathList().get(index);
-		} catch (ArrayIndexOutOfBoundsException e2){}//do nothing :(
+		} catch (ArrayIndexOutOfBoundsException e2){
+			e2.printStackTrace();
+		}
 			
 		//if there is no previous save direct the user to SaveAs 
 		if(filePath==null){		
