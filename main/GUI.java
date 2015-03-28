@@ -13,7 +13,6 @@ import javax.swing.*;
 
 /**
  * @author bolster
- * @version 1.0
  * This class launches a JFrame and handles the creation of menu bars, 
  * tool bars, the console output and, the tabbed text pane. This method also 
  * keeps a record of the file names of each of the open tabs. There are methods 
@@ -62,8 +61,7 @@ public class GUI {
         frame.setJMenuBar(makeMenuBar());
         //I added to this line as well
         frame.setContentPane(createPanel(height));
-        frame.setVisible(true);
-        
+        frame.setVisible(true);      
 	}
 	
 	/**
