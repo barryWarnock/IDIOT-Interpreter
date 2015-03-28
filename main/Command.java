@@ -91,7 +91,7 @@ class ADD extends Command
 	{
 		/*
 		* there will be a runtime error if:
-		* any of the Variables has not been created
+		* any of the Variables have not been created
 		* or if the first two don't have values
 		*/
 		if (!variables.containsKey(first) || !variables.containsKey(second) || !variables.containsKey(third) )
