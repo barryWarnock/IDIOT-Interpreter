@@ -66,16 +66,9 @@ public class MainRun {
 	{
 		preferences.setProperty(key, value.toString());
 	}
-	
 	/**
-	 * DO NOT CALL THIS UNLESS YOU KNOW WHAT YOU'RE DOING!!!!
-	 * 
-	 * @return The preferences as a property object.
+	 * Saves the preferences to a file on the disk	
 	 */
-	public static Properties getProperty()
-	{
-		return preferences;
-	}	
 	public static void saveProperty()
 	{
 		FileOutputStream output;
