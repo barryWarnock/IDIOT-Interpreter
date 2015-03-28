@@ -67,7 +67,9 @@ public class TabButton extends JButton implements ActionListener
         if (i != -1) {
         	SaveAction save = new SaveAction();
    			save.actionPerformed(new ActionEvent(save, 1, ""));
+   			//remove the tabbed pane
             pane.remove(i);
+            //remove the tab name from the list of tab names
             GUI.getFilePathList().remove(i);
         }
     }
