@@ -1,7 +1,7 @@
 package main;
 /**
  * 
- * @author bolster
+ * @author Travis
  * This class is used to create styled documents that will change the color of 
  * text input dynamically. 
  */
