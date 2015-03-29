@@ -47,13 +47,13 @@ public class SaveAction extends AbstractAction {
 			SaveAsAction saveAs = new SaveAsAction();
 			saveAs.actionPerformed(new ActionEvent(saveAs, index, ""));        
 		}else{
-			//adds .IDIOT if it is not there. 
+			//adds .IDIOT to the file name. 
 			if(!filePath.endsWith(".IDIOT"))
 				filePath+=".IDIOT";
 			File file = new File(filePath);
 			String txt = textPane.getText();
 			
-			//Change the name of the current tab
+			//Change the name of the current tab to the file name
 			JPanel pane = (JPanel) GUI.getTabbedPane().getTabComponentAt(index);
 			JLabel label = (JLabel) pane.getComponent(0);
 			label.setText(filePath.substring(filePath.lastIndexOf("/")+1, filePath.lastIndexOf(".IDIOT")));
@@ -61,6 +61,7 @@ public class SaveAction extends AbstractAction {
 			Thread thread = new Thread() {
 				public void run(){
 					try {
+						//Does the saving
 						FileUtils.writeStringToFile(file, txt,"UTF-8");
 					} catch (IOException e) {
 						e.printStackTrace();
