@@ -31,7 +31,7 @@ public class OpenAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		// opens a new tab from a file
+		// Opens the file chosen in a new tab. 
 		try {
 			openTab(fileManager());
 		} catch (FileNotFoundException | BadLocationException e1) {
@@ -56,7 +56,7 @@ public class OpenAction extends AbstractAction {
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int option = fileChooser.showOpenDialog(fileChooser);
 
-		// TODO add a filter into this to get only a certain result
+		
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			// user selects file,return the selected file to whatever called
@@ -81,8 +81,8 @@ public class OpenAction extends AbstractAction {
 		final JTextPane IDIOT_file_content = new JTextPane(
 				SyntaxHighlighter.SyntaxHighlighterProfile(0));
 
-		// scans file into the JTextPane
-		// This should run in a new thread.
+		// puts the file into the JTextPane
+		//runs in a new Thread
 
 		final Thread thread = new Thread() {
 			public void run() {
@@ -114,7 +114,7 @@ public class OpenAction extends AbstractAction {
 				IDIOT_file_content);
 		scroll.setRowHeaderView(lineNumbering);
 
-		// remove .IDIOT extension
+		// remove .IDIOT extension for cleaner UI
 		String name = file.getName();
 		if (name.endsWith(".IDIOT"))
 			name = name.substring(0, file.getName().indexOf(".IDIOT"));
@@ -133,7 +133,7 @@ public class OpenAction extends AbstractAction {
 		JButton closeButton = new TabButton(tabbedPane);
 
 		// Do some funky stuff with the layout manager to make everything appear
-		// nice
+		// real beautiful
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
