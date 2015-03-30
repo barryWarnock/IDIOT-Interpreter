@@ -18,20 +18,31 @@ public class EnterAction extends AbstractAction
 	private static boolean editable = false;
 	private static boolean lineIsTerminated = false;
 	private static String input = "";
+	/**
+	 * the constructor sets which button this event represents
+	 * @param digit the key this event represents, 0-9 for numbers, "\n" for enter and "back" for backspace
+	 */
 	public EnterAction(String digit)
 	{
 		this.digit = digit;
 	}
+	/**
+	 * if the user hit backspace, remove a character
+	 * <p>
+	 * if the user hit enter finish the input
+	 * <p>
+	 * if the user hit a number add it to the input
+	 */
 	public void actionPerformed(ActionEvent e)
 	{
 		if (!editable)
 		{
 		}
-		else if (digit == "\n")
+		else if (digit.equals("\n"))
 		{
 			lineIsTerminated = true;
 		}
-		else if (digit == "back")
+		else if (digit.equals("back"))
 		{
 			 if (input.length() > 0) 
 			 {
