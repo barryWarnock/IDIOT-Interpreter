@@ -137,6 +137,7 @@ public class Interpreter
 		 {
 			    public void run() 
 			    {
+			    	io.setForeground(Color.black);
 			    	io.setText(null);
 			    }
 		 });
