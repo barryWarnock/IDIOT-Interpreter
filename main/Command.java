@@ -63,7 +63,7 @@ abstract class Command
 	 */
 	protected void logError(String errMsg)
 	{
-		Interpreter.logToIo("Error at line " + lineNumber +": " + errMsg + "\n");
+		Interpreter.logErrorToIo("Error at line " + lineNumber +": " + errMsg + "\n");
 	}
 }
 /**
