@@ -8,9 +8,9 @@ import javax.swing.JTextPane;
 import main.GUI;
 /**
  * 
- * @author bolster
- * This class selects all of the text in the open tab
  * 
+ * This class selects all of the text in the open tab
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class SelectAllAction extends AbstractAction {

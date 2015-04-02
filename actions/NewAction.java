@@ -17,10 +17,11 @@ import main.TabButton;
 import main.SyntaxHighlighter;
 /**
  * 
- * @author bolster
+ *
  * This class creates a new tab with a blank window. The 
  * tab is put at the rightmost position in the tab listing 
  * and adds a close button to the tab 
+ *  @author bolster
  */
 @SuppressWarnings("serial")
 public class NewAction extends AbstractAction {

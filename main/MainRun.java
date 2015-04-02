@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @version 31.415926
- * @author bolster
+ * 
  * This class contains the main method for the entire application. It handles 
  * the loading and sharing of the preferences file as a Properties object.
+ * @version 31.415926
+ * @author bolster
  */
 public class MainRun {
  

@@ -8,8 +8,9 @@ import javax.swing.JTextPane;
 import main.GUI;
 /**
  * 
- * @author bolster
+ * 
  * This Action copies the selected text to the clipboard.
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class CopyAction extends AbstractAction {

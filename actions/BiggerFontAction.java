@@ -12,8 +12,8 @@ import main.SyntaxHighlighter;
 import main.GUI;
 /**
  * 
- * @author bolster
  * This Action makes font bigger for the text editor.
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class BiggerFontAction extends AbstractAction {

@@ -8,8 +8,9 @@ import javax.swing.JTextPane;
 import main.GUI;
 /**
  * 
- * @author bolster
+ *
  * This Action pastes the contents of the clipboard to the text at the selected index. 
+ *  @author bolster
  */
 @SuppressWarnings("serial")
 public class PasteAction extends AbstractAction {

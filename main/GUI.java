@@ -12,11 +12,12 @@ import javax.swing.*;
 
 
 /**
- * @author bolster
+ * 
  * This class launches a JFrame and handles the creation of menu bars, 
  * tool bars, the console output and, the tabbed text pane. This method also 
  * keeps a record of the file names of each of the open tabs. There are methods 
  * providing access to the file names, the tabbed pane and, the open text pane.
+ * @author bolster
  */
 public class GUI {
 	

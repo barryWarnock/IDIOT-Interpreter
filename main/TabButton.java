@@ -19,9 +19,9 @@ import actions.SaveAction;
 
 /**
  * See bottom for copyright notice from Oracle 
- * @author bolster
  * This is a custom button for tabs in a JTabbedPane. A large portion of the code for
  * this button was obtained directly from Oracle. 
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class TabButton extends JButton implements ActionListener 

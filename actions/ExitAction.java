@@ -8,9 +8,10 @@ import main.MainRun;
 
 /**
  * 
- * @author bolster
+ * 
  *	This Action asks the user if they wish to save before they close,
  *	and performs the necessary actions to properly close the application.
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class ExitAction extends AbstractAction {

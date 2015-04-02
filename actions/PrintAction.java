@@ -6,8 +6,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 /**
  * 
- * @author bolster
+ *
  * This action prints the open file to a printer.
+ *  @author bolster
  */
 @SuppressWarnings("serial")
 public class PrintAction extends AbstractAction 

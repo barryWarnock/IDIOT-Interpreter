@@ -12,9 +12,10 @@ import main.SyntaxHighlighter;
 import main.GUI;
 /**
  * 
- * @author bolster
+ * 
  * This Action makes the font smaller for the style document in 
  * SyntaxHighlighter.java
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class SmallerFontAction extends AbstractAction {

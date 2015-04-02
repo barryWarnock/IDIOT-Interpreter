@@ -6,8 +6,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 /**
  * 
- * @author bolster
  * This Action opens a window with credits about the authors.
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class AboutAction extends AbstractAction {

@@ -7,8 +7,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 /**
  * 
- * @author bolster
+ * 
  * This Action sends the current file to the interpreter for processing.
+ * @author bolster
  */
 @SuppressWarnings("serial")
 public class CompileAction extends AbstractAction {
