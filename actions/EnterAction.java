@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import main.Interpreter;
 /**
  * This Action monitors user input when the interpreter is running.
- *
+ * @author Barry Warnock
  */
 @SuppressWarnings("serial")
 public class EnterAction extends AbstractAction

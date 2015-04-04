@@ -14,8 +14,8 @@ import javax.swing.text.BadLocationException;
 import actions.EnterAction;
 
 /**
- * @author Barry Warnock
  * Interpreter takes the text from the gui and runs it as an idiot program
+ * @author Barry Warnock
  */
 public class Interpreter
 {

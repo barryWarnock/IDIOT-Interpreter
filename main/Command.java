@@ -11,6 +11,7 @@ import javax.swing.JTextPane;
 /**
  * all Commands will extend Command so that a linked list of Commands can be built and iterated through, each Command will do 
  * all its work in the execute method
+ * @author Barry Warnock
  */
 abstract class Command
 {

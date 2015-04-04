@@ -52,7 +52,7 @@ public class SaveAction extends AbstractAction {
 				filePath+=".IDIOT";
 			File file = new File(filePath);
 			String txt = textPane.getText();
-			
+	
 			//Change the name of the current tab to the file name
 			JPanel pane = (JPanel) GUI.getTabbedPane().getTabComponentAt(index);
 			JLabel label = (JLabel) pane.getComponent(0);
