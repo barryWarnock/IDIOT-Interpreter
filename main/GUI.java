@@ -122,11 +122,11 @@ public class GUI {
 		
 		//add buttons 
 		
-		tempButton = makeButton("saveIcon", "Save");
+		tempButton = makeButton("SaveIcon", "Save");
 		tempButton.addActionListener(new SaveAction());
 		toolbar.add(tempButton);
 		
-		tempButton = makeButton("openIcon", "Open");
+		tempButton = makeButton("OpenIcon", "Open");
 		tempButton.addActionListener(new OpenAction());
 		toolbar.add(tempButton);
 		
@@ -138,7 +138,7 @@ public class GUI {
         tempButton.addActionListener(new CopyAction());
         toolbar.add(tempButton);
         
-        tempButton = makeButton("cutIcon", "Cut");
+        tempButton = makeButton("CutIcon", "Cut");
         tempButton.addActionListener(new CutAction());
         toolbar.add(tempButton);
         
@@ -146,7 +146,7 @@ public class GUI {
         tempButton.addActionListener(new PasteAction());
         toolbar.add(tempButton);
         
-        tempButton = makeButton("printIcon", "Print");
+        tempButton = makeButton("PrintIcon", "Print");
         tempButton.addActionListener(new PrintAction());
         toolbar.add(tempButton);
         
@@ -173,14 +173,14 @@ public class GUI {
 	 */
 	private JButton makeButton(String imageName, String toolTipText)
     {
+		//Create and initialize the button.
+        JButton button = new JButton();
+        button.setToolTipText(toolTipText);
+        
     	//Search for the icon
         String imgLocation = "/images/"+ imageName + ".png";
         URL imageURL = this.getClass().getResource(imgLocation);
 
-        //Create and initialize the button.
-        JButton button = new JButton();
-        button.setToolTipText(toolTipText);
-        
         if (imageURL != null) { //if image is found make a nice button                  
             button.setIcon(new ImageIcon(imageURL, imageName));
         } else { 
