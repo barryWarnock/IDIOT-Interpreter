@@ -128,7 +128,7 @@ public class SyntaxHighlighter {
                         	setCharacterAttributes(wordL, wordR - wordL, commentAttributes, false);
                         }else if(text.substring(wordL, wordR).matches("(\\W)*(IF|ENDIF)")){
                         	setCharacterAttributes(wordL, wordR - wordL, ifAttributes, false);
-                        }else if (text.substring(wordL, wordR).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){              
+                        }else if (text.substring(wordL, wordR).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|INC)")){              
                         	setCharacterAttributes(wordL, wordR - wordL, catchAllAttributes, false);
                         }else
                             setCharacterAttributes(wordL, wordR - wordL, defaultAttributes, false);
@@ -155,7 +155,7 @@ public class SyntaxHighlighter {
                 	setCharacterAttributes(before, after - before, commentAttributes, false);
                 }else if (text.substring(before, after).matches("(\\W)*(IF|ENDIF)")){
                 	setCharacterAttributes(before, after - before, ifAttributes, false);
-                }else if(text.substring(before, after).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER)")){
+                }else if(text.substring(before, after).matches("(\\W)*(GOTO|VAR|ASSIGN|ADD|SUB|MUL|DIV|PRINT|ENTER|INC)")){
                 	setCharacterAttributes(before, after - before, catchAllAttributes, false);
                 }else{
                     setCharacterAttributes(before, after - before, defaultAttributes, false);
