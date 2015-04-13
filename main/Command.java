@@ -186,7 +186,7 @@ class DIV extends Command
 		* any of the Variables has not been created
 		* or if the first two don't have values
 		*/
-		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		if (!variables.containsKey(first) || !variables.containsKey(second) || !variables.containsKey(third))
 		{
 			logError("invalid variable passed to DIV");
 			return null;
@@ -311,7 +311,7 @@ class MUL extends Command
 		* any of the Variables has not been created
 		* or if the first two don't have values
 		*/
-		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		if (!variables.containsKey(first) || !variables.containsKey(second) || !variables.containsKey(third))
 		{
 			logError("invalid variable passed to MUL");
 			return null;
@@ -413,7 +413,7 @@ class SUB extends Command
 		* any of the Variables has not been created
 		* or if the first two don't have values
 		*/
-		if (variables.get(first) == null || variables.get(second) == null || variables.get(third) == null)
+		if (!variables.containsKey(first) || !variables.containsKey(second) || !variables.containsKey(third))
 		{
 			logError("invalid variable passed to SUB");
 			return null;
