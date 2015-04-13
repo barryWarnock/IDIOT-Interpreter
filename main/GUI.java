@@ -122,11 +122,11 @@ public class GUI {
 		
 		//add buttons 
 		
-		tempButton = makeButton("SaveIcon", "Save");
+		tempButton = makeButton("saveIcon", "Save");
 		tempButton.addActionListener(new SaveAction());
 		toolbar.add(tempButton);
 		
-		tempButton = makeButton("OpenIcon", "Open");
+		tempButton = makeButton("openIcon", "Open");
 		tempButton.addActionListener(new OpenAction());
 		toolbar.add(tempButton);
 		
@@ -138,7 +138,7 @@ public class GUI {
         tempButton.addActionListener(new CopyAction());
         toolbar.add(tempButton);
         
-        tempButton = makeButton("CutIcon", "Cut");
+        tempButton = makeButton("cutIcon", "Cut");
         tempButton.addActionListener(new CutAction());
         toolbar.add(tempButton);
         
@@ -146,7 +146,7 @@ public class GUI {
         tempButton.addActionListener(new PasteAction());
         toolbar.add(tempButton);
         
-        tempButton = makeButton("PrintIcon", "Print");
+        tempButton = makeButton("printIcon", "Print");
         tempButton.addActionListener(new PrintAction());
         toolbar.add(tempButton);
         
