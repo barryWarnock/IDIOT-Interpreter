@@ -26,6 +26,16 @@ public class MainRun {
 			FileInputStream input = new FileInputStream("preferences.dat");
 			preferences.load(input);
 			input.close();
+			//try to load recent files 
+			for(int i=0; 10>i; i=i+2)
+			{
+				String str = preferences.getProperty("JMenuItem"+i);
+				if(str!=null){
+					String path = str.substring(0, str.indexOf("*.*.*.*.*"));
+					String name = str.substring(str.indexOf("*.*.*.*.*")+9,str.length());
+					GUI.addRecentFile(path, name);
+				}
+			}
 		}catch(IOException e)
 		{
 			//if there is no preferences to load then it will be blank.
@@ -67,11 +77,20 @@ public class MainRun {
 	{
 		preferences.setProperty(key, value.toString());
 	}
+	
 	/**
 	 * Saves the preferences to a file on the disk	
 	 */
 	public static void saveProperty()
 	{
+		//store the most recent file locations
+		String[] str = GUI.dumpRecentFileMenuItems();
+		for(Integer i=0; str.length>i;i=i+2)
+		{
+			preferences.setProperty("JMenuItem"+i, str[i]+"*.*.*.*.*"+str[i+1]);
+		}
+
+		//try saving the preferences file
 		FileOutputStream output;
 		try {
 			output = new FileOutputStream("preferences.dat");

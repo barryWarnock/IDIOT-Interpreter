@@ -1,13 +1,14 @@
 package main;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.net.URL;
 import java.util.ArrayList;
 
-import actions.*;
-
 import javax.swing.*;
+
+import actions.*;
 
 
 
@@ -311,20 +312,71 @@ public class GUI {
         return menubar;
     }
 	/**
-	 * 
-	 * @param string containing the file path of the file to be added.
+	 * @param path The file path 
+	 * @param name The file name
 	 */
 	public static void addRecentFile(String path, String name)
 	{
-		if (!tabFilePath.contains(path))
+		
+		String shortPath = name;
+		JMenuItem menuItem = new JMenuItem(path);
+		
+		//create a shorter menu item if the length is too long
+		if(path.length()>45){
+			shortPath = "..."+path.substring(path.length()-40, path.length()-6);
+			menuItem = new JMenuItem(shortPath);
+		}
+		if (!recentFileMenuContainsMenuItem(path, shortPath))	
 		{
-			//create a new menu item without .IDIOT on the end 
-			JMenuItem menuItem = new JMenuItem("..."+path.substring(path.length()-40, path.length()-6));
+			
 	        menuItem.getAccessibleContext().setAccessibleDescription("Opens "+name);
 	        menuItem.setToolTipText("Opens "+name);
 	        menuItem.addActionListener(new OpenRecentAction(path));
+	        menuItem.setName(path); //store the path in the menuItem for saving
 	        recentFileMenu.add(menuItem);
 		}
+	}
+	/**
+	 * 
+	 * @param path File path
+	 * @param shortPath Shortened File Path
+	 * @return boolean does the recent file menu contain the particular menu item?
+	 */
+	private static boolean recentFileMenuContainsMenuItem(String path, String shortPath)
+	{
+		for(int i=0; recentFileMenu.getItemCount()>i; i++)
+		{
+			JMenuItem item = recentFileMenu.getItem(i);
+			if(item.getText().equals(path) || item.getText().equals(shortPath))
+			{
+				return true;		
+			}
+			
+		}
+		return false;
+	}
+	public static String[] dumpRecentFileMenuItems()
+	{
+		
+		int value;
+		if(recentFileMenu.getItemCount()>5){
+			value = 10;
+		}else{
+			value = recentFileMenu.getItemCount()*2;
+		}
+		//create a string array that holds two strings for each menu item (path and name)
+		String [] strings = new String[value];
+		
+		for(int i=0; value>i; i=i+2)
+		{
+			JMenuItem item = recentFileMenu.getItem(i/2);
+			//path
+			strings[i] = item.getName();
+			//name
+			strings[i+1] = item.getToolTipText().substring(5);
+			
+		}
+		return strings;
 	}
 	/**
 	 * @return JTabbedPane containing the content tabs
