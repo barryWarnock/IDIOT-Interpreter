@@ -53,6 +53,10 @@ public class SaveAsAction extends AbstractAction {
 			JLabel label = (JLabel) pane.getComponent(0);
 			label.setText(filePath.substring(filePath.lastIndexOf("/")+1, filePath.lastIndexOf(".IDIOT")));
 			
+			//add this file to the recent files
+			GUI.addRecentFile(file.getAbsolutePath(), 
+					filePath.substring(filePath.lastIndexOf("/")+1, filePath.lastIndexOf(".IDIOT")));
+			
 			Thread thread = new Thread() {
 				public void run(){
 					try {

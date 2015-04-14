@@ -51,7 +51,7 @@ public class OpenAction extends AbstractAction {
 	 * @return The file that the user chose
 	 * @throws CancellationException if the user cancels
 	 */
-	private File fileManager() throws CancellationException {
+	protected File fileManager() throws CancellationException {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int option = fileChooser.showOpenDialog(fileChooser);
@@ -75,7 +75,7 @@ public class OpenAction extends AbstractAction {
 	 * @throws BadLocationException, FileNotFoundException
 	 * @throws IOException
 	 */
-	private void openTab(final File file) throws BadLocationException,
+	protected void openTab(final File file) throws BadLocationException,
 			IOException {
 		// Create a scrolled text area to type into
 		final JTextPane IDIOT_file_content = new JTextPane(
@@ -148,7 +148,8 @@ public class OpenAction extends AbstractAction {
 		// put the fancy pane on the right tab
 		tabbedPane.setTabComponentAt(index, nameAndButton);
 
-		// add the file path to a list for use when saving
+		// add the file path to a list for use when saving and add it to recent open files
+		GUI.addRecentFile(file.getAbsolutePath(), name);
 		GUI.getFilePathList().add(file.getAbsolutePath());
 
 	}

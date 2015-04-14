@@ -24,6 +24,7 @@ public class GUI {
 	//this allows actionListeners to call tabbedPane.makeNewTab(); and the interpreter 
 	private static JTabbedPane tabbedPane = new JTabbedPane();
 	private static ArrayList<String> tabFilePath = new ArrayList<String>(20);
+	private static JMenu recentFileMenu = new JMenu("Open Recent");
 	
 	/**
 	 * This constructor serves no purpose, do not use.
@@ -215,9 +216,14 @@ public class GUI {
         menuItem = new JMenuItem("Open");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Opens a file from the disk");
-        menuItem.setToolTipText("Opens a new file from the disk");
+        menuItem.setToolTipText("Opens a file from the disk");
         menuItem.addActionListener(new OpenAction());
         file.add(menuItem);
+        
+        
+        recentFileMenu.getAccessibleContext().setAccessibleDescription("Opens a recent file from the disk");
+        recentFileMenu.setToolTipText("Opens a recent file from the disk");
+        file.add(recentFileMenu);
         
         menuItem = new JMenuItem("Save");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -304,7 +310,22 @@ public class GUI {
         
         return menubar;
     }
-	
+	/**
+	 * 
+	 * @param string containing the file path of the file to be added.
+	 */
+	public static void addRecentFile(String path, String name)
+	{
+		if (!tabFilePath.contains(path))
+		{
+			//create a new menu item without .IDIOT on the end 
+			JMenuItem menuItem = new JMenuItem("..."+path.substring(path.length()-40, path.length()-6));
+	        menuItem.getAccessibleContext().setAccessibleDescription("Opens "+name);
+	        menuItem.setToolTipText("Opens "+name);
+	        menuItem.addActionListener(new OpenRecentAction(path));
+	        recentFileMenu.add(menuItem);
+		}
+	}
 	/**
 	 * @return JTabbedPane containing the content tabs
 	 */
