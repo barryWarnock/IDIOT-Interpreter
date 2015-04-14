@@ -369,7 +369,8 @@ public class GUI {
 		
 		for(int i=0; value>i; i=i+2)
 		{
-			JMenuItem item = recentFileMenu.getItem(i/2);
+			//get only the newest items in the menu
+			JMenuItem item = recentFileMenu.getItem(recentFileMenu.getItemCount()-1-i/2);
 			//path
 			strings[i] = item.getName();
 			//name
